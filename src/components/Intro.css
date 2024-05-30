@@ -1,14 +1,41 @@
-.t1{
+/* Default styles */
+.t1 {
     position: absolute;
-    top:250px;
-    left:15%;
+    top: 250px;
+    left: 15%;
     width: 70%;
+    
 }
-.t2{
+
+.t2 {
     width: 50%;
 }
-.group1{
+
+.group1 {
     position: absolute;
-    top:20%;
-    left:55%;
+    top: 20%;
+    left: 55%;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .t1 {
+        position: relative; /* Change position to relative */
+        top: auto;
+        left: auto;
+        width: 100%; /* Adjust width as needed */
+        margin-top: 50%;
+    }
+
+    .t2 {
+        width: 100%; /* Adjust width as needed */
+    }
+
+    .group1 {
+        position: relative; /* Change position to relative */
+        top: auto;
+        left: auto;
+        margin-top: 20px; /* Add margin to separate from the above text */
+        width: 100%; /* Adjust width as needed */
+    }
 }

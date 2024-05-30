@@ -1,23 +1,69 @@
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 72px; /* Set the height to 50 pixels */
+    background-color:#ffffff;
+    z-index: 4; /* Ensure the pseudo-element is on top of other content */
+}
+
 .navbar{
     position:fixed;
     top: 20px;
     left: 70%;
+    z-index: 5;
+    width: 30%;
+
+    
 }
 .logo{
     position:fixed;
     left:2%;
     top:2px;
+    z-index: 5;
+    
 }
 .hr1{
     position: fixed;
-    top: 70px;
+    top: 60px;
     right:1%;
     border: none;
     height: 5px;
     background: #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: 2.5%;
     width: 98%;
+    z-index: 6;
 
             
             
 }
+
+
+
+
+@media (max-width: 600px) { 
+    .navbar {
+        position: relative;
+        left:0%;
+        width: 100%;
+        top: 100px;
+        z-index: 3;
+        
+        
+        
+        
+        }
+.logo{
+    z-index: 5;
+}
+body::before {
+    z-index: 4;
+}
+
+}
+
+
+
