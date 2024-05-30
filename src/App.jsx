@@ -1,11 +1,16 @@
 
 import "./App.css"
-import {BasicButtons,NavBar } from './components'
+import {BasicButtons,NavBar,Intro,Titles,NText } from './components'
 function App() {
   
   return (
     <>
+    
     <NavBar/>
+    <Intro/>
+    
+    
+
       
     </>
   )

@@ -9,12 +9,15 @@
     top:2px;
 }
 .hr1{
-    position: relative;
+    position: fixed;
     top: 70px;
+    right:1%;
     border: none;
     height: 5px;
     background: #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 98%;
+
             
             
 }
