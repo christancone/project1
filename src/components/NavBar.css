@@ -1,0 +1,20 @@
+.navbar{
+    position:fixed;
+    top: 20px;
+    left: 70%;
+}
+.logo{
+    position:fixed;
+    left:2%;
+    top:2px;
+}
+.hr1{
+    position: relative;
+    top: 70px;
+    border: none;
+    height: 5px;
+    background: #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            
+            
+}

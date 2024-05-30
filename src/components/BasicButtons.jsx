@@ -2,12 +2,19 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-export default function BasicButtons() {
+export default function BasicButtons(props) {
+  const {bgcolor, hovercolor,name, fontcolor} = props;
+  
   return (
-    <Stack spacing={2} direction="row">
+    
+    <>
+    
+    
+      <Stack spacing={2} direction="row">
       
-      <Button  variant="contained" sx={{ backgroundColor: '#5D29AB', '&:hover': { backgroundColor: 'darkpurple' } , borderRadius: '12px', fontFamily: 'Poppins, sans-serif'}}>Sign Up</Button>
+        <Button  variant="contained" sx={{ backgroundColor: bgcolor, '&:hover': { backgroundColor: hovercolor } , borderRadius: '12px', fontFamily: 'Poppins, sans-serif', color:fontcolor}}>{name|| 'Button'}</Button>
       
-    </Stack>
+      </Stack>
+    </>
   );
 }
