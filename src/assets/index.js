@@ -1,7 +1,12 @@
 import logo from './tt.png';
 import group1 from './group1.png';
+import imglist from './imglist.png'
+
+
 
 export{
     logo,
-    group1
+    group1,
+    imglist
+
 }
