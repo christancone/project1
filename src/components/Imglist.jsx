@@ -8,6 +8,7 @@ export default function Imglist(){
 
     return(
     <>
+     
         
         <div className="img">
         <div className="key">
@@ -15,6 +16,7 @@ export default function Imglist(){
             <NText TText='Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae voluptas minima, illo consequuntur sunt temporibus reprehenderit porro. Quae, fugit dolorum.'/> 
         </div> 
             <img src={imglist}/></div>
+
 
     </>
     )

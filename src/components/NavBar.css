@@ -33,7 +33,7 @@ body::before {
     height: 5px;
     background: #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin-top: 2.5%;
+    margin-top: 1%;
     width: 98%;
     z-index: 6;
 
@@ -61,6 +61,9 @@ body::before {
 }
 body::before {
     z-index: 4;
+}
+.hr1{
+    margin-top: 2%;
 }
 
 }

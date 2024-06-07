@@ -1,6 +1,6 @@
 
 import "./App.css"
-import {BasicButtons,NavBar,Intro,Titles,NText,Imglist } from './components'
+import {BasicButtons,NavBar,Intro,Titles,NText,Imglist, Footer } from './components'
 function App() {
   
   return (
@@ -9,6 +9,7 @@ function App() {
     <NavBar/>
     <Intro/>
     <Imglist/>
+    <Footer/>
     
     
     

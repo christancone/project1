@@ -4,6 +4,7 @@ import Intro from "./Intro";
 import Titles from "./Titles";
 import NText from "./NText";
 import Imglist from "./Imglist";
+import Footer from "./Footer.jsx";
 
 export{
     BasicButtons,
@@ -11,5 +12,6 @@ export{
     Intro,
     Titles,
     NText,
-    Imglist
+    Imglist,
+    Footer
 }
