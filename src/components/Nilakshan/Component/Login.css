@@ -1,0 +1,89 @@
+.login{
+    padding-top: 150px;
+    padding-bottom: 150px;
+    display: flex;
+}
+
+
+
+
+.login .login-container {
+    padding: 100px;
+    max-width: 800px;
+    max-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    background-color: #fafafa;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    box-shadow: 8px 8px 20px 0px #9290C3;
+}
+
+.login .content1{
+    padding-right: 50px;
+    max-width: 400px;
+
+}
+
+
+.login .content1 .head {
+    display: flex;
+    align-items: left;
+}
+
+.login .content1 .head img{
+    width: 30px;
+    padding-right: 10px;
+}
+
+.login .content1 .para {
+    justify-content: left;
+    padding: 2px 0 40px 0;
+}
+
+.login .vertical-line {
+  width: 1px;
+  height: 500px; /* Adjust the height as needed */
+  background-color: #6A41AE; /* Change the color as needed */
+  margin-right: 20px; /* Adjust the spacing as needed */
+  align-items: center;
+  justify-content: center;
+}
+
+.login .sign {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 400px;
+    margin: auto;
+    padding-left: 80px;
+}
+
+
+.login .sign .buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.login .sign .buttons .button {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 20px;
+}
+
+.login .sign .buttons h2 {
+    font-size: 40px;
+}
+
+
+
+.login .back-image {
+    width: 1px;
+    display: flex;
+    height: 1000px;
+    position: relative;
+    z-index: -1;
+    left: -500px; /* Moves the image 30px to the right from its normal position */
+}

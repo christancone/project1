@@ -1,0 +1,37 @@
+.about h2{
+    font-size: 75px;
+    text-align: center;
+    justify-content: center;
+    width: 1200px;
+}
+
+.about{
+    display: flex;        
+    align-items: center;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.about p{
+    font-size: 15px;
+    padding: 10px;
+    color:  #9290C3;
+}
+
+.about .content {
+    text-align: center;
+    justify-content: center;
+    width: 1200px;
+}
+.about .image-group {
+    display: flex;
+}
+
+.about .image-group .image1 {
+    width: 500px;
+    padding: 20px;
+}
+.about .image-group .image2 {
+    width: 250px;
+    padding: 20px;
+}

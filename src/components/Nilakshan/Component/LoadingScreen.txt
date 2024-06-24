@@ -1,0 +1,21 @@
+ 
+import SyncLoader from "react-spinners/SyncLoader"
+ 
+ 
+ 
+ 
+ 
+ const [loading, setLoading] = useState(false)
+  useEffect(()=>{
+    setLoading(true)
+    setTimeout(()=>{
+      setLoading(false)
+    },5000)
+  },[])
+
+
+{
+        loading?
+        <SyncLoader color="#36d7b7" />:
+
+}

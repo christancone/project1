@@ -1,0 +1,33 @@
+.real1 {
+    display: flex;
+    max-width: 1500px;
+    margin: auto;
+    align-items: center;
+    padding:100px 0 0 0;
+}
+
+.real .real-content {
+    max-width: 900px;
+}
+
+.real h3{
+    font-size: 40px;
+}
+
+
+.real .real-content1 {
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+/*button */
+.real .real1 .real-content1 .button {
+    margin-top: 20px;
+  }
+  
+.map {
+    max-width: 1500px;
+    margin: auto;
+    align-items: center;
+    padding:50px 0 0 0;
+}

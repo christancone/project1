@@ -1,0 +1,117 @@
+.parent{
+    padding-top: 200px;
+    padding-bottom: 200px;
+    display: flex;
+    max-width: 1500px;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.parent .parent1 {
+    max-width: 800px;
+    padding-right: 100px;
+}
+
+.parent img {
+    max-width: 200px;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.parent .parent2 {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    border-radius: 6px;
+    border: 2px solid #6A41AE;
+    padding: 40px;
+}
+
+.parent .parent2 .or {
+    padding-top: 20px;
+    display: flex;
+}
+
+.parent .parent2 .or hr {
+    width: 100px;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border: none; /* Removes the default border */
+    border-top: 0px solid #6A41AE; /* Adds a new colored border */
+    color: #6A41AE; /* Sets the color of the horizontal rule */
+    background-color: #6A41AE; /* Sets the background color */
+    height: 2px;
+}
+
+
+.parent .parent2 br{
+    width: 200px;
+}
+
+.parent2 input{
+    padding: 20px;
+    margin: 10px 0 10px 0;
+}
+
+.parent .parent2 img {
+    width: 20px;
+}
+
+.parent .parent2 .sign-button{
+    background: #fafafa;
+    border-radius: 6px;
+    color: #6A41AE;
+    border: 2px solid #6A41AE;
+    cursor: pointer;
+    display: flex;
+
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    padding: 5px 20px;
+    margin-top: 10px;
+
+    font-size: 15px;
+
+    transition: all 0.3s;
+}
+
+.parent .parent2 .sign-button img {
+    align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 20px;
+}
+
+.parent .parent2 .sign-button:hover {
+    color: #fafafa;
+    background-color: #6A41AE;
+}
+
+.parent3 {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+
+.parent3 p {
+    font-size: 15px;
+    padding-right: 2px;
+    padding-top: 10px;
+}
+
+.parent3 .signup {
+    color: #6A41AE;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.img-marquee img{
+    height: 200px;
+}

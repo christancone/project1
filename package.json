@@ -13,12 +13,24 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
-    "@mui/icons-material": "^5.15.19",
-    "@mui/material": "^5.15.19",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0",
-    "styled-components": "^6.1.11"
+    "@mui/x-charts": "^7.7.1",
+    "@nextui-org/card": "^2.0.31",
+    "@nextui-org/react": "^2.4.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.2.11",
+    "google-map-react": "^2.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-fast-marquee": "^1.6.4",
+    "react-router-dom": "^6.23.1",
+    "react-spinners": "^0.13.8",
+    "styled-components": "^6.1.11",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -32,9 +44,5 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "vite": "^5.2.0"
-  },
-  "peerDependencies": {
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0"
   }
 }

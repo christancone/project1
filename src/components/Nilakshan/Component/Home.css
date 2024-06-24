@@ -1,0 +1,25 @@
+.home {
+    padding: 200px 0px;
+    display: flex;
+    align-items: center;
+    width: 1200px;
+    margin: auto;
+}
+
+h2{
+    font-size: 75px;
+}
+.home-content {
+    max-width: 600px;
+}
+
+
+.home .image1{
+    width: 600px;
+    margin-left: auto;
+}
+
+p{
+    color: #9290C3;
+    font-size: 15px;
+}

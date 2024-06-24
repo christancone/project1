@@ -1,0 +1,33 @@
+.why .why-content h2{
+    font-size: 75px;
+}
+
+.why .why-content{
+    max-width: 700px;
+}
+
+.why{
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    width: 1200px;
+    margin: 0 auto;
+
+}
+
+.why img {
+    max-width: 700px;
+    padding: 20px 0;
+}
+
+.why .why-content2 {
+    padding: 0 60px;
+    max-width: 500px;
+    margin-top: 200px;
+    margin-bottom: 0;
+}
+
+.why .why-content2 p {
+    padding: 0 0 150px 0;
+}
+

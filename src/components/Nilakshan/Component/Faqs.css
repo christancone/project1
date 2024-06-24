@@ -1,0 +1,51 @@
+.faq{
+    max-width: 1200px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 100px;
+}
+
+
+.faq h3{
+    font-size: 40px;
+}
+.faq h4{
+    color: #9290C3;
+    font-weight: 400;
+}
+
+.faq-contain {
+    text-align: center;
+    max-width: 1200px;
+    margin: auto;
+    align-items: center;
+    padding:100px 0 0 0;
+}
+
+.faq hr{
+    margin: auto;
+    max-width: 1200px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border: none; /* Removes the default border */
+    border-top: 0px solid #6A41AE; /* Adds a new colored border */
+    color: #6A41AE; /* Sets the color of the horizontal rule */
+    background-color: #6A41AE; /* Sets the background color */
+    height: 2px; /* Sets the height of the horizontal rule */
+    
+}
+
+
+
+
+.faq p {
+    padding: 20px 0 40px 0;
+}
+
+.faq h5{
+    font-size: 20px;
+    padding: 20px 0 0 0;
+
+}

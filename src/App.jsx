@@ -1,15 +1,13 @@
 
-import "./App.css"
-import {BasicButtons,NavBar,Intro,Titles,NText,Imglist, Footer } from './components'
+import { ResponsiveDrawer } from './components/Christan/components'
+import Final from "./components/Nilakshan/Final"
 function App() {
   
   return (
     <>
-    
-    <NavBar/>
-    <Intro/>
-    <Imglist/>
-    <Footer/>
+ <Final/>
+ {/* <ResponsiveDrawer/> */}
+   
     
     
     
