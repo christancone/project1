@@ -33,4 +33,21 @@ Ensure you have the following installed:
 ```bash
 git clone https://github.com/christancone/project1.git
 cd project1
+```
 
+### Installing Dependencies
+
+Using npm:
+
+```bash
+npm install
+```
+
+### Running the Development Server
+
+Using npm:
+
+```bash
+npm run dev
+```
+Have a happy coding 😊
