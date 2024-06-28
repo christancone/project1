@@ -17,7 +17,7 @@ export default function TextFieldOutlined2() {
       noValidate
       autoComplete="off"
     >
-      <Stack direction="row">
+      <Stack direction="column">
           <BasicTimePickerFrom/>
           <BasicTimePickerTo/>
       </Stack>
