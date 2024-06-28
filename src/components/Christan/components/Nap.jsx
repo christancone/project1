@@ -1,9 +1,14 @@
 import React from 'react'
+import SelectAllTransferList from './SelectAllTransferList'
+import TextFieldOutlined2 from './TextFieldOutlined2'
 
-const Nap = () => {
+function Dining() {
   return (
-    <div>Nap</div>
+    <div>
+      <TextFieldOutlined2/>
+      <SelectAllTransferList/>
+    </div>
   )
 }
 
-export default Nap
+export default Dining
