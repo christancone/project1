@@ -58,6 +58,8 @@ const Parent = () => {
             <input type="search" name="" id="subscribe" placeholder='Email or User name'/>
 
             <button className="button" onClick={otpButton}>Login</button>
+
+            
             <div className="or">
                 <hr />
                 <p>or</p>
