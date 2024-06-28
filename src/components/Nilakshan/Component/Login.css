@@ -87,3 +87,27 @@
     z-index: -1;
     left: -500px; /* Moves the image 30px to the right from its normal position */
 }
+
+
+/*button */
+.sign .buttons .button {
+    background: #6A41AE;
+    border-radius: 6px;
+    border: 2px solid transparent;
+  
+    box-shadow: 8px 8px 20px 0px #9290C3;
+  
+    line-height: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+  
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+  
+  .sign .buttons .button:hover {
+    color: #6A41AE;
+    background-color: #fafafa;
+    border: 2px solid #6A41AE;
+  }
