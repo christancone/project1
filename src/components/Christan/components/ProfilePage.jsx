@@ -1,82 +1,250 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import React, { useState } from 'react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Grid,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+  Select,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import SaveIcon from '@mui/icons-material/Save';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Profile3 from '../assets/pfp.jpg';
 
-const ProfilePage = () => {
-  // Dummy profile data (replace with actual data from your application)
-  const profile = {
-    name: 'John Doe',
-    username: 'johndoe123',
-    ability: 'Web Developer',
-    profilePicture: 'https://media.licdn.com/dms/image/D5603AQETaGNnc-Qa_g/profile-displayphoto-shrink_800_800/0/1675168697969?e=1724889600&v=beta&t=fit9xnfhXQCNbGLAq5GrJZxU4_XnnUcV54k26f5o2O0', // Replace with actual profile picture URL
-  };
+const GeneralInfoForm = () => {
+  const [birthday, setBirthday] = useState(null);
+  const [gender, setGender] = useState('');
 
-  const handleChangePassword = () => {
-    // Handle change password logic
-    console.log('Change password clicked');
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
   };
 
   return (
-    
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'left',
-            alignItems: 'center',
-            height: '60vh',
-            bgcolor: '#f0f2f5',
-        
-          }}
-        >
-          <Paper
-            elevation={3}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              textAlign: 'center',
-              width: 300,
-            }}
-          >
-            <Avatar
-              alt={profile.name}
-              src={profile.profilePicture}
-              sx={{
-                width: 150,
-                height: 150,
-                mx: 'auto',
-                mb: 2,
-                bgcolor: '#3f51b5',
-              }}
+    <Card sx={{ mb: 2, boxShadow: 3, height: '100%' }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>General Information</Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="First Name"
+              variant="outlined"
+              sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
             />
-            <Typography variant="h4" sx={{ mb: 1, color: '#3f51b5' }}>
-              {profile.name}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ mb: 2, color: '#757575' }}>
-              @{profile.username}
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 4, color: '#333' }}>
-              {profile.ability}
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleChangePassword}
-              sx={{
-                bgcolor: '#3f51b5',
-                ':hover': {
-                  bgcolor: '#303f9f',
-                },
-              }}
-            >
-              Change Password
-            </Button>
-          </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Last Name"
+              variant="outlined"
+              sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Birthday"
+                value={birthday}
+                onChange={(newValue) => setBirthday(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth variant="outlined" sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+              <InputLabel>Gender</InputLabel>
+              <Select
+                value={gender}
+                onChange={handleGenderChange}
+                label="Gender"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={'Male'}>Male</MenuItem>
+                <MenuItem value={'Female'}>Female</MenuItem>
+                <MenuItem value={'Other'}>Other</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Phone Number"
+              variant="outlined"
+              sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
+            />
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
+  );
+};
+
+const ProfileCardWidget = ({ name, setName, username, setUsername, onChoosePhoto, profilePhoto }) => {
+  return (
+    <Card sx={{ mb: 2, boxShadow: 3, height: '100%' }}>
+      <CardContent>
+        <Avatar
+          alt="Profile Picture"
+          src={profilePhoto}
+          sx={{ width: 100, height: 100, mx: 'auto', mb: 2, boxShadow: 2 }}
+        />
+        <Button
+          fullWidth
+          variant="outlined"
+          sx={{ mb: 2 }}
+          startIcon={<PhotoCameraIcon />}
+          onClick={onChoosePhoto}
+        >
+          Choose Photo
+        </Button>
+        <TextField
+          fullWidth
+          label="Name"
+          variant="outlined"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
+        />
+        <TextField
+          fullWidth
+          label="Username"
+          variant="outlined"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
+        />
+      </CardContent>
+      <Divider />
+      <CardActions>
+        <Button fullWidth variant="contained" color="primary">
+          Change Password
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
+const ProfilePage = () => {
+  const [statusAnchorEl, setStatusAnchorEl] = useState(null);
+  const [name, setName] = useState('John Doe');
+  const [username, setUsername] = useState('johndoe123');
+  const [status, setStatus] = useState('Active');
+  const [profilePhoto, setProfilePhoto] = useState(Profile3);
+
+  const handleStatusMenuClick = (event) => {
+    setStatusAnchorEl(event.currentTarget);
+  };
+
+  const handleStatusMenuClose = () => {
+    setStatusAnchorEl(null);
+  };
+
+  const handleStatusChange = (newStatus) => {
+    setStatus(newStatus);
+    setStatusAnchorEl(null);
+  };
+
+  const handleChoosePhoto = () => {
+    // Implement your choose photo logic here
+    alert('Choose photo clicked');
+  };
+
+  const handleSave = () => {
+    // Implement your save logic here
+    alert('Save clicked');
+  };
+
+  return (
+    <Box sx={{ p: 3, bgcolor: '#f4f6f8' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 3,
+        }}
+      >
+        <Box>
+          <Button
+            variant="contained"
+            color={status === 'Active' ? 'success' : 'error'}
+            startIcon={status === 'Active' ? <CheckCircleIcon /> : <CancelIcon />}
+            onClick={handleStatusMenuClick}
+            sx={{ boxShadow: 2 }}
+          >
+            {status}
+            <ExpandMoreIcon className="ms-1" />
+          </Button>
+          <Menu
+            anchorEl={statusAnchorEl}
+            open={Boolean(statusAnchorEl)}
+            onClose={handleStatusMenuClose}
+          >
+            <MenuItem onClick={() => handleStatusChange('Active')}>
+              <CheckCircleIcon className="me-2" color="success" /> Active
+            </MenuItem>
+            <MenuItem onClick={() => handleStatusChange('Offline')}>
+              <CancelIcon className="me-2" color="error" /> Offline
+            </MenuItem>
+          </Menu>
         </Box>
-   
+        <Button
+          variant="contained"
+          startIcon={<SaveIcon />}
+          onClick={handleSave}
+          sx={{ boxShadow: 2 }}
+        >
+          Save
+        </Button>
+      </Box>
+
+      <Grid container spacing={3} sx={{ height: 'calc(100vh - 150px)' }}>
+        <Grid item xs={12} md={8} sx={{ height: '80%' }}>
+          <GeneralInfoForm />
+        </Grid>
+        <Grid item xs={12} md={4} sx={{ height: '80%' }}>
+          <ProfileCardWidget
+            name={name}
+            setName={setName}
+            username={username}
+            setUsername={setUsername}
+            onChoosePhoto={handleChoosePhoto}
+            profilePhoto={profilePhoto}
+          />
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
