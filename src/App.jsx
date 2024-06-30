@@ -10,8 +10,8 @@ function App() {
 
   return (
     <>
-      {/* <Nilakshan /> */}
-      <ResponsiveDrawer/>
+      {<Nilakshan />}
+      {/*<ResponsiveDrawer/> */}
       {/* <Mishaf /> */}
 
 
