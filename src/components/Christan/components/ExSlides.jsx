@@ -13,7 +13,7 @@ const ExSlides = () => {
           sx={{
             boxShadow: 3,
             bgcolor: '#f0f0f0',
-            borderRadius: 10,
+            borderRadius: 5,
             transition: 'background-color 0.3s',
             '&:hover': {
               bgcolor: '#e0e0e0',
