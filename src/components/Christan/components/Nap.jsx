@@ -4,7 +4,7 @@ import TextFieldOutlined2 from './TextFieldOutlined2'
 
 function Dining() {
   return (
-    <div>
+    <div style={{ backgroundColor: '#f4f6f8', height: '100%' }}>
       <TextFieldOutlined2/>
       <SelectAllTransferList/>
     </div>

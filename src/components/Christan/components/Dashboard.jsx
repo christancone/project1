@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Stack, useTheme, useMediaQuery, Card } from '@mui/material';
 import BasicBars from './BasicBars';
 import BasicLineChart from './BasicLineChart';
+import Slides from './Slides';
 
 
 const Dashboard = () => {
@@ -11,6 +12,7 @@ const Dashboard = () => {
   return (
     
     <div>
+      <Slides/>
       
       <Stack direction={isMediumScreenUp ? 'row' : 'column'} spacing={2}>
         <BasicBars/>
