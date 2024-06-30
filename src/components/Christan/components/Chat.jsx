@@ -21,8 +21,8 @@ const Chat = () => {
   const messageEndRef = useRef(null);
   const [messages, setMessages] = useState([
     { id: 1, text: "Hey man, What's up ?", sender: 'right', time: '09:30' },
-    { id: 2, text: "Hey, I am Good! What about you ?", sender: 'left', time: '09:31' },
-    { id: 3, text: "Cool. I am good, let's catch up!", sender: 'right', time: '10:30' },
+    { id: 2, text: "Hey, how's my kid doing with the feaver?", sender: 'left', time: '09:31' },
+    { id: 3, text: "He is doing pretty good, took meds before meals 😊❤️", sender: 'right', time: '10:30' },
   ]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -52,7 +52,7 @@ const Chat = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#f4f6f8', height: '100%',padding:"2%" }}>
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h5" className="header-message">Parents' Chat</Typography>
