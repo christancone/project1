@@ -21,8 +21,8 @@ const Chat = () => {
   const messageEndRef = useRef(null);
   const [messages, setMessages] = useState([
     { id: 1, text: "Hey man, What's up ?", sender: 'right', time: '09:30' },
-    { id: 2, text: "Hey, how's my kid doing with the feaver?", sender: 'left', time: '09:31' },
-    { id: 3, text: "He is doing pretty good, took meds before meals 😊❤️", sender: 'right', time: '10:30' },
+    { id: 2, text: "Hey, I am Good! What about you ?", sender: 'left', time: '09:31' },
+    { id: 3, text: "Cool. Are everything good?", sender: 'right', time: '10:30' },
   ]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -52,50 +52,63 @@ const Chat = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#f4f6f8', height: '100%',padding:"2%" }}>
+    <div>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h5" className="header-message">Parents' Chat</Typography>
+          <Typography variant="h5" className="header-message">Chats</Typography>
         </Grid>
       </Grid>
       <Grid container component={Paper} style={classes.chatSection}>
-        <Grid item xs={3} style={classes.borderRight500}>
+        <Grid item xs={4} style={classes.borderRight500}>
           <List>
             <ListItem button key="RemySharp">
               <ListItemIcon>
-                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
+                <Avatar alt="Mishaf Hasan" src="#" />
               </ListItemIcon>
-              <ListItemText primary="John Wick" />
+              <ListItemText primary="Mishaf Hasan" />
             </ListItem>
           </List>
           <Divider />
           <Grid item xs={12} style={{ padding: '10px' }}>
-            <TextField id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
+            <TextField id="outlined-basic-search" label="Search..." variant="outlined" fullWidth />
           </Grid>
           <Divider />
           <List>
-            <ListItem button key="RemySharp">
+            <ListItem button key="Mishaf Hasan">
               <ListItemIcon>
-                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
+                <Avatar alt="Mishaf Hasan" src="#" />
               </ListItemIcon>
-              <ListItemText primary="Remy Sharp" />
-              <ListItemText secondary="online" align="right" />
+              <ListItemText primary="Mishaf Hasan" />
+              <ListItemText secondary="🟢" align="right" /> {/* Online Status */}
             </ListItem>
-            <ListItem button key="Alice">
+            <ListItem button key="Christan Cone">
               <ListItemIcon>
-                <Avatar alt="Alice" src="https://material-ui.com/static/images/avatar/3.jpg" />
+                <Avatar alt="Christan Cone" src="#" />
               </ListItemIcon>
-              <ListItemText primary="Alice" />
+              <ListItemText primary="Christan Cone" />
+              <ListItemText secondary="🟢" align="right" /> {/* Online Status */}
             </ListItem>
-            <ListItem button key="CindyBaker">
+            <ListItem button key="Saralan">
               <ListItemIcon>
-                <Avatar alt="Cindy Baker" src="https://material-ui.com/static/images/avatar/2.jpg" />
+                <Avatar alt="Saralan" src="#" />
               </ListItemIcon>
-              <ListItemText primary="Cindy Baker" />
+              <ListItemText primary="Saralan" />
+            </ListItem>
+            <ListItem button key="Nilakshan">
+              <ListItemIcon>
+                <Avatar alt="Nilakshan" src="#" />
+              </ListItemIcon>
+              <ListItemText primary="Nilakshan" />
+            </ListItem>
+            <ListItem button key="Vishagan">
+              <ListItemIcon>
+                <Avatar alt="Vishagan" src="#" />
+              </ListItemIcon>
+              <ListItemText primary="Vishagan" />
             </ListItem>
           </List>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <List style={classes.messageArea}>
             {messages.map((message) => (
               <ListItem key={message.id}>
@@ -113,9 +126,9 @@ const Chat = () => {
           </List>
           <Divider />
           <Grid container style={{ padding: '20px' }}>
-            <Grid item xs={11}>
+            <Grid item xs={10}>
               <TextField
-                id="outlined-basic-email"
+                id="outlined-basic-search"
                 label="Type Something"
                 fullWidth
                 value={newMessage}
@@ -123,7 +136,7 @@ const Chat = () => {
                 onKeyPress={handleKeyPress}
               />
             </Grid>
-            <Grid item xs={1} align="right">
+            <Grid item xs={2} align="right">
               <Fab color="primary" aria-label="add" onClick={handleSendMessage}>
                 <SendIcon />
               </Fab>

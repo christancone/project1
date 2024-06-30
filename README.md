@@ -1,8 +1,53 @@
-# React + Vite
+# TinyToes Childcare Management Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+TinyToes is a comprehensive web application designed to revolutionize childcare management. It aims to provide daycare businesses with the tools to efficiently manage their operations while offering parents real-time updates on their child's activities and well-being. Built using modern web technologies like React JS, Vite, Material UI, and Tailwind CSS, TinyToes ensures a seamless, user-friendly experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+
+- Efficient management of daycare operations including employee management, attendance tracking, and billing.
+- Real-time updates for parents on their child's status, activities, meals, and medications.
+- Secure communication between parents and caretakers.
+- Inventory and finance management for daycare centers.
+- Scalable and secure architecture.
+
+## Technologies Used
+
+- React JS
+- Vite
+- Material UI
+- Tailwind CSS
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- Node.js (version 14.x or higher)
+- npm or yarn
+
+### Cloning the Repository
+
+```bash
+git clone https://github.com/christancone/project1.git
+cd project1
+```
+
+### Installing Dependencies
+
+Using npm:
+
+```bash
+npm install
+```
+
+### Running the Development Server
+
+Using npm:
+
+```bash
+npm run dev
+```
+Have a happy coding 😊
