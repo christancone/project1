@@ -68,6 +68,7 @@ const Parent = () => {
         <input
           type="search"
           placeholder='Email or User name'
+          id='subscribe'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

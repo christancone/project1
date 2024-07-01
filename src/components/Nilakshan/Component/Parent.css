@@ -19,6 +19,13 @@
     padding-top: 10px;
 }
 
+.parent .parent2  #subscribe {
+    width: 280px;
+    padding: 10px;
+    border: 1px solid #6A41AE;
+    border-radius: 5px;
+  }
+
 .parent .parent2 {
     display: flex;
     flex-direction: column;

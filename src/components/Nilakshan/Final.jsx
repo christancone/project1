@@ -7,6 +7,7 @@ import Login from './Component/Login';
 import Parent from './Component/Parent';
 import OTP from './Component/OTP';
 import "./index.css";
+import "../Nilakshan/Final.css"
 
 
 const Final = () => {
