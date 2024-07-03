@@ -25,6 +25,7 @@ const Login = () => {
 
         <div className="login-container">
             <div className="content1">
+              
               <div className="head">
                 <img src={img1} alt="" />
                 <h3>Daycare</h3>

@@ -6,7 +6,7 @@
     margin: auto;
 }
 
-h2{
+.home .home-content h2{
     font-size: 75px;
 }
 .home-content {
@@ -19,7 +19,7 @@ h2{
     margin-left: auto;
 }
 
-p{
+.home p{
     color: #9290C3;
     font-size: 15px;
 }
