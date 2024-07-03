@@ -12,18 +12,18 @@ const ExSlides = () => {
           variant='outlined'
           sx={{
             boxShadow: 3,
-            bgcolor: '#f0f0f0',
+            bgcolor: '#ffd700', // Gold color
             borderRadius: 5,
             transition: 'background-color 0.3s',
             '&:hover': {
-              bgcolor: '#e0e0e0',
+              bgcolor: '#ffd700', // Darker gold on hover
             },
           }}
         >
           <CardHeader title="Total Count" style={{ textAlign: "center", color: '#333' }} />
           <CardContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-            <FaChild style={{ fontSize: 65, marginBottom: 2, color: '#888' }} />
-            <Typography variant="h4" style={{ color: '#555' }}>30</Typography>
+            <FaChild style={{ fontSize: 65, marginBottom: 2, color: '#333' }} /> {/* Dark gray icon */}
+            <Typography variant="h4" style={{ color: '#333' }}>30</Typography> {/* Dark gray text */}
           </CardContent>
         </Card>
       </Grid>
@@ -32,18 +32,18 @@ const ExSlides = () => {
           variant='outlined'
           sx={{
             boxShadow: 3,
-            bgcolor: '#f0f0f0',
+            bgcolor: '#87ceeb', // Sky blue color
             borderRadius: 10,
             transition: 'background-color 0.3s',
             '&:hover': {
-              bgcolor: '#e0e0e0',
+              bgcolor: '#87ceeb', // Darker blue on hover
             },
           }}
         >
           <CardHeader title="Present Today" style={{ textAlign: "center", color: '#333' }} />
           <CardContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-            <AccessTimeIcon sx={{ fontSize: 50, marginBottom: 2, color: '#888' }} />
-            <Typography variant="h4" style={{ color: '#555' }}>15</Typography>
+            <AccessTimeIcon sx={{ fontSize: 50, marginBottom: 2, color: '#333' }} /> {/* Dark gray icon */}
+            <Typography variant="h4" style={{ color: '#333' }}>15</Typography> {/* Dark gray text */}
           </CardContent>
         </Card>
       </Grid>
@@ -52,18 +52,18 @@ const ExSlides = () => {
           variant='outlined'
           sx={{
             boxShadow: 3,
-            bgcolor: '#f0f0f0',
+            bgcolor: '#ff6347', // Tomato red color
             borderRadius: 10,
             transition: 'background-color 0.3s',
             '&:hover': {
-              bgcolor: '#e0e0e0',
+              bgcolor: '#ff6347', // Darker red on hover
             },
           }}
         >
           <CardHeader title="Sick Children" style={{ textAlign: "center", color: '#333' }} />
           <CardContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-            <LocalHospitalIcon sx={{ fontSize: 50, marginBottom: 2, color: '#888' }} />
-            <Typography variant="h4" style={{ color: '#555' }}>5</Typography>
+            <LocalHospitalIcon sx={{ fontSize: 50, marginBottom: 2, color: '#333' }} /> {/* Dark gray icon */}
+            <Typography variant="h4" style={{ color: '#333' }}>5</Typography> {/* Dark gray text */}
           </CardContent>
         </Card>
       </Grid>
