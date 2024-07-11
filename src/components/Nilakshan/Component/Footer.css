@@ -42,6 +42,14 @@ input::placeholder {
     margin: auto;
 }
 
+.footer .subscribe .box #subscribe {
+    width: 280px;
+    padding: 10px;
+    border: 1px solid #6A41AE;
+    border-radius: 5px;
+  }
+
+  
 .footer .subscribe .box .button{
     margin: auto;
 }

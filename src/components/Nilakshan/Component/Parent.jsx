@@ -68,10 +68,13 @@ const Parent = () => {
         <input
           type="search"
           placeholder='Email or User name'
+          id='subscribe'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
+
+          
         <button className="button" onClick={otpButton}>Login</button>
         {message && <p className="message">{message}</p>}
         <div className="or">
@@ -84,6 +87,7 @@ const Parent = () => {
         <div className="parent3">
           <p>Don't have an account?</p>
           <p className="signup">Sign up</p>
+
         </div>
       </div>
     </div>
