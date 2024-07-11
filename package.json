@@ -36,10 +36,7 @@
     "react-router-dom": "^6.23.1",
     "react-spinners": "^0.13.8",
     "recharts": "^2.12.7",
-
     "run": "^1.5.0",
-
-
     "styled-components": "^6.1.11",
     "tailwind-merge": "^2.3.0"
   },

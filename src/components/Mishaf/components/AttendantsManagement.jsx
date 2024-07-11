@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
+// Initial data for the attendants
 const initialData = [
   { id: 1, name: 'Arun Kumar', attendantId: 'A001', children: ['Kavya Kumar', 'Ravi Kumar'] },
   { id: 2, name: 'Ayesha Begum', attendantId: 'A002', children: ['Zara Begum'] },
@@ -37,58 +38,88 @@ const initialData = [
 ];
 
 const AttendantsManagement = () => {
-  const [attendants, setAttendants] = useState(initialData);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [open, setOpen] = useState(false);
-  const [newAttendant, setNewAttendant] = useState({ name: '', attendantId: '', children: '' });
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  // State for managing the list of attendants
+const [attendants, setAttendants] = useState(initialData);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+// State for handling the search functionality
+const [searchTerm, setSearchTerm] = useState('');
+
+// State for managing the dialog visibility
+const [open, setOpen] = useState(false);
+
+// State for handling the form data for adding/editing an attendant
+const [newAttendant, setNewAttendant] = useState({ name: '', attendantId: '', children: '' });
+
+// State for tracking if the form is in edit mode
+const [isEditing, setIsEditing] = useState(false);
+
+// State for storing the ID of the attendant being edited
+const [currentId, setCurrentId] = useState(null);
+
+  // Handle search input change
+const handleSearch = (event) => {
+  setSearchTerm(event.target.value);
+};
+
+// Open the dialog for adding a new attendant
+const handleOpen = () => {
+  setNewAttendant({ name: '', attendantId: '', children: '' });
+  setIsEditing(false);
+  setOpen(true);
+};
+
+// Close the dialog
+const handleClose = () => {
+  setOpen(false);
+};
+
+// Add a new attendant to the list
+const handleAdd = () => {
+  const newAttendantWithId = {
+    ...newAttendant,
+    id: attendants.length + 1,
+    children: newAttendant.children.split(',')
   };
+  setAttendants([...attendants, newAttendantWithId]);
+  handleClose();
+};
 
-  const handleOpen = () => {
-    setNewAttendant({ name: '', attendantId: '', children: '' });
-    setIsEditing(false);
-    setOpen(true);
-  };
+// Open the dialog for editing an existing attendant
+const handleEdit = (attendant) => {
+  setNewAttendant({ ...attendant, children: attendant.children.join(', ') });
+  setIsEditing(true);
+  setCurrentId(attendant.id);
+  setOpen(true);
+};
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleAdd = () => {
-    setAttendants([...attendants, { ...newAttendant, id: attendants.length + 1, children: newAttendant.children.split(',') }]);
-    handleClose();
-  };
-
-  const handleEdit = (attendant) => {
-    setNewAttendant({ ...attendant, children: attendant.children.join(', ') });
-    setIsEditing(true);
-    setCurrentId(attendant.id);
-    setOpen(true);
-  };
-
-  const handleUpdate = () => {
-    setAttendants(attendants.map(attendant => 
-      attendant.id === currentId ? { ...newAttendant, id: currentId, children: newAttendant.children.split(',') } : attendant
-    ));
-    handleClose();
-  };
-
-  const handleDelete = (id) => {
-    setAttendants(attendants.filter(attendant => attendant.id !== id));
-  };
-
-  const filteredAttendants = attendants.filter(attendant =>
-    attendant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    attendant.attendantId.toLowerCase().includes(searchTerm.toLowerCase())
+// Update an existing attendant in the list
+const handleUpdate = () => {
+  const updatedAttendants = attendants.map(attendant =>
+    attendant.id === currentId
+      ? { ...newAttendant, id: currentId, children: newAttendant.children.split(',') }
+      : attendant
   );
+  setAttendants(updatedAttendants);
+  handleClose();
+};
+
+// Delete an attendant from the list
+const handleDelete = (id) => {
+  const remainingAttendants = attendants.filter(attendant => attendant.id !== id);
+  setAttendants(remainingAttendants);
+};
+
+// Filter attendants based on the search term
+const filteredAttendants = attendants.filter(attendant =>
+  attendant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  attendant.attendantId.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   return (
     <Container>
-      <div className='text-4xl mb-5' >Attendants Management</div>
+      <div className='text-4xl mb-5'>Attendants Management</div>
+      
+      {/* Search Field */}
       <TextField 
         label="Search Attendants" 
         variant="outlined" 
@@ -97,9 +128,13 @@ const AttendantsManagement = () => {
         value={searchTerm} 
         onChange={handleSearch} 
       />
+      
+      {/* Add Attendant Button */}
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Attendant
       </Button>
+      
+      {/* Attendants Table */}
       <TableContainer component={Paper} className='mt-3'>
         <Table>
           <TableHead>
@@ -129,6 +164,8 @@ const AttendantsManagement = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      
+      {/* Add/Edit Attendant Dialog */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{isEditing ? 'Edit Attendant' : 'Add New Attendant'}</DialogTitle>
         <DialogContent>
