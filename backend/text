@@ -1,0 +1,296 @@
+Class: User
+Attributes:
+
+private int id
+private String name
+private String email
+private String password
+private String role
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public String getName()
+public void setName(String name)
+public String getEmail()
+public void setEmail(String email)
+public String getPassword()
+public void setPassword(String password)
+public String getRole()
+public void setRole(String role)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Child
+Attributes:
+
+private int id
+private String firstName
+private String lastName
+private LocalDate dateOfBirth
+private int parentId
+private String medicalInfo
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public String getFirstName()
+public void setFirstName(String firstName)
+public String getLastName()
+public void setLastName(String lastName)
+public LocalDate getDateOfBirth()
+public void setDateOfBirth(LocalDate dateOfBirth)
+public int getParentId()
+public void setParentId(int parentId)
+public String getMedicalInfo()
+public void setMedicalInfo(String medicalInfo)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Attendance
+Attributes:
+
+private int id
+private int childId
+private LocalDate date
+private String status
+private LocalTime checkInTime
+private LocalTime checkOutTime
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getChildId()
+public void setChildId(int childId)
+public LocalDate getDate()
+public void setDate(LocalDate date)
+public String getStatus()
+public void setStatus(String status)
+public LocalTime getCheckInTime()
+public void setCheckInTime(LocalTime checkInTime)
+public LocalTime getCheckOutTime()
+public void setCheckOutTime(LocalTime checkOutTime)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Activity
+Attributes:
+
+private int id
+private int childId
+private LocalDate date
+private String description
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getChildId()
+public void setChildId(int childId)
+public LocalDate getDate()
+public void setDate(LocalDate date)
+public String getDescription()
+public void setDescription(String description)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Message
+Attributes:
+
+private int id
+private int senderId
+private int receiverId
+private String message
+private LocalDateTime timestamp
+private String status
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getSenderId()
+public void setSenderId(int senderId)
+public int getReceiverId()
+public void setReceiverId(int receiverId)
+public String getMessage()
+public void setMessage(String message)
+public LocalDateTime getTimestamp()
+public void setTimestamp(LocalDateTime timestamp)
+public String getStatus()
+public void setStatus(String status)
+Class: Inventory
+Attributes:
+
+private int id
+private String itemName
+private int quantity
+private double price
+private LocalDate expiryDate
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public String getItemName()
+public void setItemName(String itemName)
+public int getQuantity()
+public void setQuantity(int quantity)
+public double getPrice()
+public void setPrice(double price)
+public LocalDate getExpiryDate()
+public void setExpiryDate(LocalDate expiryDate)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Billing
+Attributes:
+
+private int id
+private int childId
+private double amount
+private LocalDate dueDate
+private String status
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getChildId()
+public void setChildId(int childId)
+public double getAmount()
+public void setAmount(double amount)
+public LocalDate getDueDate()
+public void setDueDate(LocalDate dueDate)
+public String getStatus()
+public void setStatus(String status)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Payment
+Attributes:
+
+private int id
+private int billingId
+private double amount
+private LocalDate paymentDate
+private String paymentMethod
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getBillingId()
+public void setBillingId(int billingId)
+public double getAmount()
+public void setAmount(double amount)
+public LocalDate getPaymentDate()
+public void setPaymentDate(LocalDate paymentDate)
+public String getPaymentMethod()
+public void setPaymentMethod(String paymentMethod)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Feedback
+Attributes:
+
+private int id
+private int userId
+private int rating
+private String comments
+private LocalDateTime timestamp
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getUserId()
+public void setUserId(int userId)
+public int getRating()
+public void setRating(int rating)
+public String getComments()
+`
+Continue generating
+ChatGPT
+Sure, here's the continuation:
+
+Class: Feedback (continued)
+Methods (continued):
+public void setComments(String comments)
+public LocalDateTime getTimestamp()
+public void setTimestamp(LocalDateTime timestamp)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Notification
+Attributes:
+
+private int id
+private int userId
+private String message
+private boolean isRead
+private LocalDateTime timestamp
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getUserId()
+public void setUserId(int userId)
+public String getMessage()
+public void setMessage(String message)
+public boolean getIsRead()
+public void setIsRead(boolean isRead)
+public LocalDateTime getTimestamp()
+public void setTimestamp(LocalDateTime timestamp)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
+Class: Schedule
+Attributes:
+
+private int id
+private int childId
+private String activity
+private LocalTime startTime
+private LocalTime endTime
+private LocalDate date
+private LocalDateTime createdAt
+private LocalDateTime updatedAt
+Methods:
+
+public int getId()
+public void setId(int id)
+public int getChildId()
+public void setChildId(int childId)
+public String getActivity()
+public void setActivity(String activity)
+public LocalTime getStartTime()
+public void setStartTime(LocalTime startTime)
+public LocalTime getEndTime()
+public void setEndTime(LocalTime endTime)
+public LocalDate getDate()
+public void setDate(LocalDate date)
+public LocalDateTime getCreatedAt()
+public void setCreatedAt(LocalDateTime createdAt)
+public LocalDateTime getUpdatedAt()
+public void setUpdatedAt(LocalDateTime updatedAt)
