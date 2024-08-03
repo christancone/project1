@@ -12,24 +12,18 @@ import {
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { lo } from '../assets';
 
+// Component to display the profile card with user details
 const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, profilePhoto, details }) => {
   return (
     <Card sx={{ mb: 2, boxShadow: 3 }}>
       <CardContent>
+        {/* Avatar for profile picture */}
         <Avatar
           alt="Profile Picture"
           src={details.profilePhoto}
           sx={{ width: 100, height: 100, mx: 'auto', mb: 2, boxShadow: 2 }}
         />
-        <Button
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 2 }}
-          startIcon={<PhotoCameraIcon />}
-          onClick={onChoosePhoto}
-        >
-          Choose Photo
-        </Button>
+        {/* TextField for displaying the name */}
         <TextField
           fullWidth
           label="Name"
@@ -40,6 +34,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
           }}
           sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
         />
+        {/* TextField for displaying the about section */}
         <TextField
           fullWidth
           label="About"
@@ -52,6 +47,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
           rows={4}
           sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
         />
+        {/* TextField for displaying the number of childcares */}
         <TextField
           fullWidth
           label="Number of Childcares"
@@ -62,6 +58,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
           }}
           sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
         />
+        {/* TextField for displaying the number of registered users */}
         <TextField
           fullWidth
           label="Users Registered"
@@ -72,6 +69,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
           }}
           sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
         />
+        {/* TextField for displaying the number of employees */}
         <TextField
           fullWidth
           label="Employees Working"
@@ -82,6 +80,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
           }}
           sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
         />
+        {/* TextField for displaying the annual profit */}
         <TextField
           fullWidth
           label="Annual Profit"
@@ -92,6 +91,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
           }}
           sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
         />
+        {/* TextField for displaying the net worth */}
         <TextField
           fullWidth
           label="Net Worth"
@@ -105,6 +105,7 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
       </CardContent>
       <Divider />
       <CardActions>
+        {/* Button to change the password */}
         <Button fullWidth variant="contained" color="primary">
           Change Password
         </Button>
@@ -113,7 +114,9 @@ const ProfileCardWidget = ({ name, setName, about, setAbout, onChoosePhoto, prof
   );
 };
 
+// Main Profile component
 const Profile = () => {
+  // Details object containing profile information
   const details = {
     name: "Tiny Toes",
     about: "An online platform facilitating childcare and nursing services, connecting families with qualified caregivers and healthcare professionals.",
@@ -125,8 +128,8 @@ const Profile = () => {
     netWorth: '$10,000,000'
   };
 
+  // Handler for choosing a new photo
   const handleChoosePhoto = () => {
-    // Implement your choose photo logic here
     alert('Choose photo clicked');
   };
 
@@ -134,6 +137,7 @@ const Profile = () => {
     <Box sx={{ p: 3, bgcolor: '#f4f6f8', height: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Grid container spacing={3} sx={{ width: '100%', maxWidth: 600 }}>
         <Grid item xs={12} md={12}>
+          {/* Render the ProfileCardWidget with the provided details */}
           <ProfileCardWidget
             onChoosePhoto={handleChoosePhoto}
             details={details}

@@ -19,21 +19,21 @@ import {
 import { Edit, Delete } from '@mui/icons-material';
 
 const initialData = [
-  { id: 1, name: 'Little Stars Daycare', address: '123 Galle Rd, Colombo', children: ['Arjun Kumar', 'Aisha Begum'], childcareId: 'C001', attendantIds: ['A001', 'A002'] },
-  { id: 2, name: 'Happy Kids Preschool', address: '456 Kandy Rd, Kandy', children: ['Nimal Perera'], childcareId: 'C002', attendantIds: ['A003'] },
-  { id: 3, name: 'Bright Futures Nursery', address: '789 Matara Rd, Matara', children: ['Kavya Nair', 'Rashid Khan', 'Samanthi Silva'], childcareId: 'C003', attendantIds: ['A004', 'A005'] },
-  { id: 4, name: 'Sunshine Daycare', address: '101 Galle Rd, Galle', children: ['Anjali Raj'], childcareId: 'C004', attendantIds: ['A006'] },
-  { id: 5, name: 'Rainbow Childcare', address: '202 Anuradhapura Rd, Anuradhapura', children: [], childcareId: 'C005', attendantIds: [] },
-  { id: 6, name: 'Tiny Tots Daycare', address: '303 Kurunegala Rd, Kurunegala', children: ['Lakshmi Iyer', 'Ahmed Ali'], childcareId: 'C006', attendantIds: ['A007', 'A008'] },
-  { id: 7, name: 'Little Explorers', address: '404 Negombo Rd, Negombo', children: ['Tharindu Jayasinghe'], childcareId: 'C007', attendantIds: ['A009'] },
-  { id: 8, name: 'Happy Hearts Daycare', address: '505 Ratnapura Rd, Ratnapura', children: ['Meera Reddy', 'Fatima Noor'], childcareId: 'C008', attendantIds: ['A010', 'A011'] },
-  { id: 9, name: 'Bright Minds Preschool', address: '606 Badulla Rd, Badulla', children: ['Naveen Fernando'], childcareId: 'C009', attendantIds: ['A012'] },
-  { id: 10, name: 'Little Learners', address: '707 Nuwara Eliya Rd, Nuwara Eliya', children: ['Priya Menon', 'Zainab Hussain'], childcareId: 'C010', attendantIds: ['A013', 'A014'] },
-  { id: 11, name: 'Tiny Treasures', address: '808 Trincomalee Rd, Trincomalee', children: ['Harini Subramanian', 'Imran Malik'], childcareId: 'C011', attendantIds: ['A015'] },
-  { id: 12, name: 'Happy Days Nursery', address: '909 Jaffna Rd, Jaffna', children: ['Eshan Wijesinghe'], childcareId: 'C012', attendantIds: ['A016'] },
-  { id: 13, name: 'Little Angels Daycare', address: '1010 Batticaloa Rd, Batticaloa', children: ['Anitha Ramesh', 'Yusuf Khan'], childcareId: 'C013', attendantIds: ['A017', 'A018'] },
-  { id: 14, name: 'Bright Beginnings', address: '1111 Hambantota Rd, Hambantota', children: ['Nadeesha Perera'], childcareId: 'C014', attendantIds: ['A019'] },
-  { id: 15, name: 'Tiny Scholars', address: '1212 Polonnaruwa Rd, Polonnaruwa', children: ['Vijay Kumar', 'Amina Begum'], childcareId: 'C015', attendantIds: ['A020', 'A021'] },
+  { id: 1, name: 'Little Stars Daycare', address: '123 Galle Rd, Colombo', children: ['CH001', 'CH002'], childcareId: 'C001', attendantIds: ['A001', 'A002'] },
+  { id: 2, name: 'Happy Kids Preschool', address: '456 Kandy Rd, Kandy', children: ['CH003'], childcareId: 'C002', attendantIds: ['A003'] },
+  { id: 3, name: 'Bright Futures Nursery', address: '789 Matara Rd, Matara', children: ['CH004', 'CH005', 'CH006'], childcareId: 'C003', attendantIds: ['A004', 'A005'] },
+  { id: 4, name: 'Sunshine Daycare', address: '101 Galle Rd, Galle', children: ['CH007'], childcareId: 'C004', attendantIds: ['A006'] },
+  { id: 5, name: 'Rainbow Childcare', address: '202 Anuradhapura Rd, Anuradhapura', children: ['CH100', 'CH1001'], childcareId: 'C005', attendantIds: ['A100', 'A101'] },
+  { id: 6, name: 'Tiny Tots Daycare', address: '303 Kurunegala Rd, Kurunegala', children: ['CH008', 'CH009'], childcareId: 'C006', attendantIds: ['A007', 'A008'] },
+  { id: 7, name: 'Little Explorers', address: '404 Negombo Rd, Negombo', children: ['CH010'], childcareId: 'C007', attendantIds: ['A009'] },
+  { id: 8, name: 'Happy Hearts Daycare', address: '505 Ratnapura Rd, Ratnapura', children: ['CH011', 'CH012'], childcareId: 'C008', attendantIds: ['A010', 'A011'] },
+  { id: 9, name: 'Bright Minds Preschool', address: '606 Badulla Rd, Badulla', children: ['CH013'], childcareId: 'C009', attendantIds: ['A012'] },
+  { id: 10, name: 'Little Learners', address: '707 Nuwara Eliya Rd, Nuwara Eliya', children: ['CH014', 'CH015'], childcareId: 'C010', attendantIds: ['A013', 'A014'] },
+  { id: 11, name: 'Tiny Treasures', address: '808 Trincomalee Rd, Trincomalee', children: ['CH016', 'CH017'], childcareId: 'C011', attendantIds: ['A015'] },
+  { id: 12, name: 'Happy Days Nursery', address: '909 Jaffna Rd, Jaffna', children: ['CH018'], childcareId: 'C012', attendantIds: ['A016'] },
+  { id: 13, name: 'Little Angels Daycare', address: '1010 Batticaloa Rd, Batticaloa', children: ['CH019', 'CH020'], childcareId: 'C013', attendantIds: ['A017', 'A018'] },
+  { id: 14, name: 'Bright Beginnings', address: '1111 Hambantota Rd, Hambantota', children: ['CH021'], childcareId: 'C014', attendantIds: ['A019'] },
+  { id: 15, name: 'Tiny Scholars', address: '1212 Polonnaruwa Rd, Polonnaruwa', children: ['CH022', 'CH023'], childcareId: 'C015', attendantIds: ['A020', 'A021'] },
 ];
 
 const AdminManagement = () => {
@@ -90,7 +90,7 @@ const AdminManagement = () => {
 
   return (
     <Container>
-      <div className='text-4xl mb-5' >Admin Management</div>
+      <div className='text-4xl mb-5'>Admin Management</div>
       <TextField 
         label="Search Childcares" 
         variant="outlined" 
@@ -109,8 +109,8 @@ const AdminManagement = () => {
               <TableCell className="bg-gray-200">Name</TableCell>
               <TableCell className="bg-gray-200">Childcare ID</TableCell>
               <TableCell className="bg-gray-200">Address</TableCell>
-              <TableCell className="bg-gray-200">Children</TableCell>
-              <TableCell className="bg-gray-200">Attendant IDs</TableCell>
+              <TableCell className="bg-gray-200">Children ID</TableCell>
+              <TableCell className="bg-gray-200">Attendant ID</TableCell>
               <TableCell className="bg-gray-200">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -157,7 +157,7 @@ const AdminManagement = () => {
           />
           <TextField
             margin="dense"
-            label="Children (comma separated)"
+            label="Children ID (comma separated)"
             type="text"
             fullWidth
             value={newChildcare.children}
@@ -173,7 +173,7 @@ const AdminManagement = () => {
           />
           <TextField
             margin="dense"
-            label="Attendant IDs (comma separated)"
+            label="Attendant ID (comma separated)"
             type="text"
             fullWidth
             value={newChildcare.attendantIds}

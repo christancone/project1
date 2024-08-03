@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Paper, Grid, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab, Divider } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 
+// Define styles for the chat components
 const useStyles = {
   chatSection: {
     width: '100%',
@@ -18,7 +19,7 @@ const useStyles = {
 
 const Chat = () => {
   const classes = useStyles;
-  const messageEndRef = useRef(null);
+  const messageEndRef = useRef(null); // Reference to the end of the message list
   const [messages, setMessages] = useState([
     { id: 1, text: "Hey man, What's up ?", sender: 'right', time: '09:30' },
     { id: 2, text: "Hey, I am Good! What about you ?", sender: 'left', time: '09:31' },
@@ -26,25 +27,29 @@ const Chat = () => {
   ]);
   const [newMessage, setNewMessage] = useState('');
 
+  // Scroll to the bottom of the message list whenever messages change
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
+  // Handle sending a new message
   const handleSendMessage = () => {
-    if (newMessage.trim() === '') return;
+    if (newMessage.trim() === '') return; // Do not send empty messages
 
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const newMessageObj = { id: messages.length + 1, text: newMessage, sender: 'right', time: currentTime };
     setMessages([...messages, newMessageObj]);
-    setNewMessage('');
+    setNewMessage(''); // Clear the input field
   };
 
+  // Handle input change in the message field
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
   };
 
+  // Handle pressing the Enter key to send a message
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSendMessage();
@@ -122,7 +127,7 @@ const Chat = () => {
                 </Grid>
               </ListItem>
             ))}
-            <div ref={messageEndRef} />
+            <div ref={messageEndRef} /> {/* Reference to the end of the message list */}
           </List>
           <Divider />
           <Grid container style={{ padding: '20px' }}>
