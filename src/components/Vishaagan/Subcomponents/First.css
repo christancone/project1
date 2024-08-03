@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+}
+
+.heading {
+  font-size: 1em;
+  font-weight: bold;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  animation: slide-in 1s ease-out forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(40%);
+    opacity: 1;
+  }
+}
+.container{
+  display:flex;
+  flex-direction:row;
+  margin-top: 5%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+   
+}
+ .box{
+  border:2px solid black;
+  width:20%;
+  height:40%;
+  border-radius: 5px;
+  margin-right: 10px;
+  
+ }
+
+ .chart{
+  display: flex;
+ }
