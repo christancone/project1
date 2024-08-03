@@ -1,4 +1,10 @@
-<?php
+
+
+
+
+
+
+  <?php
 header('Content-Type: application/json');
 
 // Allow requests from any origin (for development purposes)
