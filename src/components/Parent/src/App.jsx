@@ -19,7 +19,7 @@ import User from './Pages/User';
 function Parent() {
   return (
     <>
-    <Route path="/" element={<User />} />
+    {/* <Route path="/" element={<User />} /> */}
       <Router>
         <div className="app">
           <Navbar />
