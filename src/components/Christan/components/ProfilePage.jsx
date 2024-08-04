@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Box,
@@ -12,13 +12,8 @@ import {
   MenuItem,
   TextField,
   Typography,
-  Select,
-  FormControl,
-  InputLabel,
 } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import SaveIcon from '@mui/icons-material/Save';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -27,14 +22,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import Profile3 from '../assets/pfp.jpg';
 
-const GeneralInfoForm = ({ isEditing }) => {
-  const [birthday, setBirthday] = useState(null);
-  const [gender, setGender] = useState('');
-
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
-  };
-
+const GeneralInfoForm = ({ isEditing, userData, handleChange }) => {
   return (
       <Card sx={{ mb: 2, boxShadow: 3, height: '100%' }}>
         <CardContent>
@@ -45,6 +33,8 @@ const GeneralInfoForm = ({ isEditing }) => {
                   fullWidth
                   label="First Name"
                   variant="outlined"
+                  value={userData.firstname}
+                  onChange={(e) => handleChange('firstname', e.target.value)}
                   disabled={!isEditing}
                   sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
               />
@@ -54,50 +44,19 @@ const GeneralInfoForm = ({ isEditing }) => {
                   fullWidth
                   label="Last Name"
                   variant="outlined"
+                  value={userData.lastname}
+                  onChange={(e) => handleChange('lastname', e.target.value)}
                   disabled={!isEditing}
                   sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                    label="Birthday"
-                    value={birthday}
-                    onChange={(newValue) => setBirthday(newValue)}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            fullWidth
-                            disabled={!isEditing}
-                            sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
-                        />
-                    )}
-                />
-              </LocalizationProvider>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth variant="outlined" sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
-                <InputLabel>Gender</InputLabel>
-                <Select
-                    value={gender}
-                    onChange={handleGenderChange}
-                    label="Gender"
-                    disabled={!isEditing}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={'Male'}>Male</MenuItem>
-                  <MenuItem value={'Female'}>Female</MenuItem>
-                  <MenuItem value={'Other'}>Other</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                   fullWidth
                   label="Email"
                   variant="outlined"
+                  value={userData.email}
+                  onChange={(e) => handleChange('email', e.target.value)}
                   disabled={!isEditing}
                   sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
               />
@@ -107,6 +66,8 @@ const GeneralInfoForm = ({ isEditing }) => {
                   fullWidth
                   label="Phone Number"
                   variant="outlined"
+                  value={userData.phone_no}
+                  onChange={(e) => handleChange('phone_no', e.target.value)}
                   disabled={!isEditing}
                   sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1 }}
               />
@@ -117,7 +78,7 @@ const GeneralInfoForm = ({ isEditing }) => {
   );
 };
 
-const ProfileCardWidget = ({ name, setName, username, setUsername, onChoosePhoto, profilePhoto, isEditing }) => {
+const ProfileCardWidget = ({ username, setUsername, onChoosePhoto, profilePhoto, isEditing }) => {
   return (
       <Card sx={{ mb: 2, boxShadow: 3, height: '100%' }}>
         <CardContent>
@@ -135,15 +96,6 @@ const ProfileCardWidget = ({ name, setName, username, setUsername, onChoosePhoto
           >
             Choose Photo
           </Button>
-          <TextField
-              fullWidth
-              label="Name"
-              variant="outlined"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={!isEditing}
-              sx={{ boxShadow: 1, bgcolor: 'background.paper', borderRadius: 1, mb: 2 }}
-          />
           <TextField
               fullWidth
               label="Username"
@@ -166,11 +118,42 @@ const ProfileCardWidget = ({ name, setName, username, setUsername, onChoosePhoto
 
 const ProfilePage = () => {
   const [statusAnchorEl, setStatusAnchorEl] = useState(null);
-  const [name, setName] = useState('John Doe');
+  const [userData, setUserData] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone_no: '',
+  });
   const [username, setUsername] = useState('johndoe123');
   const [status, setStatus] = useState('Active');
   const [profilePhoto, setProfilePhoto] = useState(Profile3);
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    // Fetch user data on component mount
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('http://localhost/Christan/get_user.php?id=4'); // Correct URL with protocol
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setUserData({
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        phone_no: data.phone_no,
+      });
+      setUsername(data.username);
+      // Assuming data.profile_photo exists and is a valid URL
+      setProfilePhoto(data.profile_photo || Profile3);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   const handleStatusMenuClick = (event) => {
     setStatusAnchorEl(event.currentTarget);
@@ -190,14 +173,46 @@ const ProfilePage = () => {
     alert('Choose photo clicked');
   };
 
-  const handleSave = () => {
-    // Implement your save logic here
-    alert('Save clicked');
-    setIsEditing(false); // Disable editing mode after saving
+  const handleSave = async () => {
+    try {
+      const response = await fetch('http://localhost/Christan/update_user.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: 4, // Change this dynamically based on session
+          firstname: userData.firstname,
+          lastname: userData.lastname,
+          email: userData.email,
+          phone_no: userData.phone_no,
+          username: username,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json();
+      if (result.success) {
+        alert('User data updated successfully');
+      } else {
+        alert('Failed to update user data');
+      }
+      setIsEditing(false); // Disable editing mode after saving
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
   };
 
   const handleEdit = () => {
     setIsEditing(true); // Enable editing mode
+  };
+
+  const handleChange = (field, value) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
   };
 
   return (
@@ -244,19 +259,21 @@ const ProfilePage = () => {
           </Button>
         </Box>
 
-        <Grid container spacing={3} sx={{ height: 'calc(100vh - 150px)' }}>
-          <Grid item xs={12} md={8} sx={{ height: '80%' }}>
-            <GeneralInfoForm isEditing={isEditing} />
-          </Grid>
-          <Grid item xs={12} md={4} sx={{ height: '80%' }}>
+        <Grid container spacing={3} sx={{ height: '100%' }}>
+          <Grid item xs={12} sm={4}>
             <ProfileCardWidget
-                name={name}
-                setName={setName}
                 username={username}
                 setUsername={setUsername}
                 onChoosePhoto={handleChoosePhoto}
                 profilePhoto={profilePhoto}
                 isEditing={isEditing}
+            />
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <GeneralInfoForm
+                isEditing={isEditing}
+                userData={userData}
+                handleChange={handleChange}
             />
           </Grid>
         </Grid>

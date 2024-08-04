@@ -12,12 +12,14 @@ function App() {
 
   return (
     <>
-      <Final />
-      {/* <ResponsiveDrawer/> */}
+
+
+      {/*<Final />*/}
+       <ResponsiveDrawer/>
       
 
-      {/*< Mishaf/> */}
-      {/* <Admin/> */}
+      {/*< Mishaf /> */}
+      {/*<Admin/>*/}
 
 
 
