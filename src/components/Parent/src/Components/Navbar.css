@@ -1,0 +1,30 @@
+.navbar {
+    background-color: #6A41AE;
+    width: 100%;
+
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    box-shadow: 8px 8px 20px 0px #9290C3;
+
+    
+    position:fixed;
+
+    padding: 2%;
+
+    margin-left: 20%;
+
+}
+
+.navbar h4{
+    color: #FFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    
+}

@@ -1,0 +1,57 @@
+.sidebar{
+    width: 20%;
+    margin: 0;
+    position:fixed;
+    
+}
+
+.sidebar .container {
+    color: #6A41AE;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    
+    box-shadow: 0px 4px 14px 0px #6A41AE;
+    flex-shrink: 0;
+}
+
+.sidebar .container .logo_container {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 8% 0;
+}
+.sidebar .container .logo{
+    max-height: 100%;
+    width: 20%;
+}
+
+.sidebar .container .container1{
+    padding: 15% 0;
+}
+
+.sidebar .container .container2{
+    padding: 15% 0;
+}
+
+
+.sidebar .container .field {
+    display: flex;
+    align-items: center;
+    padding: 5% 20%;
+}
+
+.sidebar .container .field img{
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    padding-right: 5%;
+}
+
+.sidebar .container .field h4{
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

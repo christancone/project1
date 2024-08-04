@@ -1,0 +1,75 @@
+.childStatus {
+    width: 80%;
+    padding-left: 20%;
+
+}
+
+.childStatus .content {
+    padding-top: 10%;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.childStatus .content h1 {
+
+    color: #6A41AE;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+
+
+.childStatus .content .components {
+    display: flex;
+    align-items: center;
+    color: #6A41AE;
+    padding-bottom: 20px;
+}
+
+.childStatus .content .components h3 {
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.childStatus .content .components .btn {
+    margin-top: 10px;
+    border: #6A41AE;
+
+    border-radius: 1px;
+    border: 2px solid #6A41AE;
+
+    padding: 20px;
+}
+
+.childStatus .content .components .btn {
+    border: 2px solid #6A41AE;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    /* Default color */
+    color: #6A41AE;
+    /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.childStatus .content .components .btn.clicked {
+    background-color: #6A41AE;
+    /* Color when clicked */
+    color: white;
+    /* Text color when clicked */
+}
+
+.childStatus .content .footer {
+    margin-top: 30%;
+}
+
+.childStatus .content .footer h3{
+    color: #9290C3;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
