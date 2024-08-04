@@ -14,10 +14,12 @@ import Billing from './Pages/Billing';
 import Feedback from './Pages/Feedback';
 import Profile from './Pages/Profile';
 import { Logout } from '@mui/icons-material';
+import User from './Pages/User';
 
 function Parent() {
   return (
     <>
+    <Route path="/" element={<User />} />
       <Router>
         <div className="app">
           <Navbar />

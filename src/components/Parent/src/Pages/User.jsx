@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import './User.css';
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,15 @@ const User = () => {
     medical_report: null,
     message: ''
   });
+
+  const navigate = useNavigate();
+
+  const handleSubmitd = () => {
+    // Redirect to the dashboard
+    navigate('/dashboard');
+  };
+
+
 
   const handleFileUpload = (e, field) => {
     e.preventDefault();
@@ -52,7 +62,7 @@ const User = () => {
   return (
     <div className="user">
       <div className="container1">
-        <img src={logo} alt="Logo" />
+        <img src={logo} alt="Logo" className='logo' />
         <h1>Update Child Info</h1>
       </div>
 
@@ -287,31 +297,34 @@ const User = () => {
                       readOnly
                       placeholder='PDF/JPG/JPEG/PNG only allowed'
                       value={formData.medical_report ? formData.medical_report.name : ''}
-                      />
-                      </div>
-                      <button className="upload-button" onClick={(e) => handleFileUpload(e, 'medical_report')}>Upload</button>
-                    </div>
-                  </div>
-                  
-                  <div className="field">
-                    <label htmlFor="message" className="resumeField">Leave a Note:</label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      className='message'
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Give a brief note about your child.? (Any special needs or details you need to inform us)"
                     />
                   </div>
+                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'medical_report')}>Upload</button>
+                </div>
+              </div>
 
-          <button type="submit" name="submit" className="continue_button">Continue</button>
-        </form>
+              <div className="field">
+                <label htmlFor="message" className="resumeField">Leave a Note:</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  className='message'
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Give a brief note about your child.? (Any special needs or details you need to inform us)"
+                />
+              </div>
+
+
+              <button type="submit" name="submit" className="continue_button" onClick={handleSubmitd}>
+                Continue
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-);
+  );
 }
 
 
