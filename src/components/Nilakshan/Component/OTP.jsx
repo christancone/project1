@@ -54,16 +54,21 @@ const OTP = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/registerForm.php',
+        'http://localhost/backend/satalan/registerForm.php',
         { enteredOtp, email },
         { headers: { 'Content-Type': 'application/json' } }
-      );
 
+      );
+      console.log(email);
       console.log('Response from server:', response.data);
 
       if (response.status === 200 && response.data.message === 'Verification successful') {
-        navigate('/Parent');
+        navigate('/login');
       } else {
+        console.log(response.status==200);
+        console.log(response.data.message === 'Verification successful');
+
+
         toast.error('Invalid OTP. Please try again.');
         setTimeout(() => {
           window.location.reload();

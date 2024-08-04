@@ -45,13 +45,13 @@ const Parent = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/login.php',
+        'http://localhost/backend/satalan/login.php',
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );
 
       if (response.data.message === 'Login successful') {
-        navigate('/Home', { state: { email } });
+        navigate('/', { state: { email } });
       } else {
         NotificationManager.error(response.data.errors);
       }

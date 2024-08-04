@@ -22,7 +22,7 @@ const AttendantTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost/Project1/fetchAttendant.php');
+        const response = await axios.get('http://localhost/backend/Vishagan/fetchAttendant.php');
         setAttendants(response.data);
       } catch (err) {
         console.error('There was an error fetching the data!', err);
@@ -52,7 +52,7 @@ const AttendantTable = () => {
   const handleSaveStatus = async () => {
     try {
       for (const [id, status] of Object.entries(updatedRows)) {
-        await axios.post('http://localhost/Project1/updateAttendance.php', {
+        await axios.post('http://localhost/backend/Vishagan/updateAttendance.php', {
           id: parseInt(id, 10),
           status
         });

@@ -16,7 +16,7 @@ export default function MediaCard() {
   });
 
   useEffect(() => {
-    axios.get("http://localhost/Project1/getDashboardData.php")
+    axios.get("http://localhost/backend/Vishagan/getDashboardData.php")
       .then(response => {
         setData(response.data);
       })

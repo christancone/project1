@@ -9,7 +9,7 @@ export default function BasicBars() {
   const [seriesData, setSeriesData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost/Project1/getMedicalData.php')
+    axios.get('http://localhost/backend/Vishagan/getMedicalData.php')
       .then(response => {
         const fetchedData = response.data;
         

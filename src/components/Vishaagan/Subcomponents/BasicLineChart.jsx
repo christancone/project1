@@ -25,7 +25,7 @@ export default function BasicLineChart() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost/Project1/getMonthData.php')
+    axios.get('http://localhost/backend/Vishagan/getMonthData.php')
       .then(response => {
         console.log('Fetched data:', response.data);  // Debugging log
         const fetchedData = response.data.map(item => ({

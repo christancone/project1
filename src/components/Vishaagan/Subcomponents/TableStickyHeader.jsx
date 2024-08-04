@@ -26,7 +26,7 @@ export default function TableStickyHeader() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost/Project1/getChildrenData.php')
+    axios.get('http://localhost/backend/Vishagan/getChildrenData.php')
         .then(response => {
           const fetchedData = response.data.map(item =>
               createData(item.child_id, item.child_name, item.parent_name, item.address, item.phone_no, item.parent_id)
@@ -37,7 +37,7 @@ export default function TableStickyHeader() {
   }, []);
 
   const handleDelete = (id) => {
-    axios.post('http://localhost/Project1/deleteChild.php', { child_id: id })
+    axios.post('http://localhost/backend/Vishagan/deleteChild.php', { child_id: id })
         .then(response => {
           if (response.data.status === 'success') {
             setRows(rows.filter(row => row.child_id !== id));
@@ -73,7 +73,7 @@ export default function TableStickyHeader() {
   };
 
   const handleUpdate = () => {
-    axios.post('http://localhost/Project1/updateChild.php', {
+    axios.post('http://localhost/backend/Vishagan/updateChild.php', {
       child_id: selectedChild.child_id,
       parent_id: formData.parent_id,
       firstname: formData.firstname,

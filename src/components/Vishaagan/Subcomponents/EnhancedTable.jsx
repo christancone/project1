@@ -6,7 +6,7 @@ export default function EnhancedTable() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost/Project1/getBillingDetails.php')
+    axios.get('http://localhost/backend/Vishagan/getBillingDetails.php')
       .then(response => {
         setData(response.data);
       })
