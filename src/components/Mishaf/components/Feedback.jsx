@@ -10,7 +10,7 @@ const Feedback = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost/tinytoes/fetch_feedback.php')
+    fetch('http://localhost/backend/mishaf/fetch_feedback.php')
       .then(response => response.json())
       .then(data => setFeedbackData(data))
       .catch(error => console.error('Error fetching data:', error));

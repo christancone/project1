@@ -31,7 +31,7 @@ const AdminManagement = () => {
     const [viewChild, setViewChild] = useState({});
 
     useEffect(() => {
-        fetch('http://localhost/tinytoes/fetch_children.php')
+        fetch('http://localhost/backend/mishaf/fetch_children.php')
             .then(response => response.json())
             .then(data => setChildren(data))
             .catch(error => console.error('Error fetching data:', error));
@@ -56,7 +56,7 @@ const AdminManagement = () => {
     };
 
     const handleUpdate = () => {
-        fetch('http://localhost/tinytoes/update_children.php', {
+        fetch('http://localhost/backend/mishaf/update_children.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ const AdminManagement = () => {
     };
 
     const confirmDelete = () => {
-        fetch('http://localhost/tinytoes/delete_children.php', {
+        fetch('http://localhost/backend/mishaf/delete_children.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

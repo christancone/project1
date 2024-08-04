@@ -14,7 +14,7 @@ class Login {
     private $db;
 
     public function __construct() {
-        $this->db = new Database('tiny');
+        $this->db = new Database('tinytoes');
     }
 
     public function loginRequest() {
@@ -55,7 +55,7 @@ class Login {
     private function validateUser($email, $password) {
         try {
             // Use a parameterized query to prevent SQL injection
-            $query = "SELECT password FROM main_user_table WHERE email = ?";
+            $query = "SELECT password FROM users WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
 
             if (!$stmt) {

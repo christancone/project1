@@ -8,7 +8,7 @@ const ExSlides = () => {
   const [counts, setCounts] = useState({ Admin: 0, Parent: 0, Attendant: 0 });
 
   useEffect(() => {
-    fetch('http://localhost/tinytoes/card.php')
+    fetch('http://localhost/backend/mishaf/card.php')
       .then(response => response.json())
       .then(data => setCounts(data))
       .catch(error => console.error('Error fetching counts:', error));

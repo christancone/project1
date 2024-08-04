@@ -110,7 +110,7 @@ class RegisterForm {
         }
         
         // Check in main_user_table table
-        $query = "SELECT COUNT(*) FROM main_user_table WHERE email = ?";
+        $query = "SELECT COUNT(*) FROM users WHERE email = ?";
         $stmt = $this->db->getConnection()->prepare($query);
         
         if ($stmt === false) {

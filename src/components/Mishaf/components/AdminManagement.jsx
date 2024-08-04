@@ -38,7 +38,7 @@ const AdminManagement = () => {
 
   // Fetch admins data on component mount
   useEffect(() => {
-    fetch('http://localhost/tinytoes/fetch_admin.php')
+    fetch('http://localhost/backend/mishaf/fetch_admin.php')
       .then(response => response.json())
       .then(data => setAdmins(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -76,7 +76,7 @@ const AdminManagement = () => {
 
   // Handle admin update
   const handleUpdate = () => {
-    fetch('http://localhost/tinytoes/update_admin.php', {
+    fetch('http://localhost/backend/mishaf/update_admin.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ const AdminManagement = () => {
 
   // Handle adding new admin
   const handleAdd = () => {
-    fetch('http://localhost/tinytoes/add_admin.php', {
+    fetch('http://localhost/backend/mishaf/add_admin.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -125,7 +125,7 @@ const AdminManagement = () => {
 
   // Handle deleting admin
   const handleDelete = (id) => {
-    fetch('http://localhost/tinytoes/delete_admin.php', {
+    fetch('http://localhost/backend/mishaf/delete_admin.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

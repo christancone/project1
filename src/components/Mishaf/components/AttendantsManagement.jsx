@@ -39,7 +39,7 @@ const AdminManagement = () => {
   const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost/tinytoes/fetch_attendant.php')
+    fetch('http://localhost/backend/mishaf/fetch_attendant.php')
       .then(response => response.json())
       .then(data => setAttendants(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -61,7 +61,7 @@ const AdminManagement = () => {
   };
 
   const handleAdd = () => {
-    fetch('http://localhost/tinytoes/add_attendant.php', {
+    fetch('http://localhost/backend/mishaf/add_attendant.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ const AdminManagement = () => {
     .then(response => response.json())
     .then(data => {
       if (data.status === 'success') {
-        fetch('http://localhost/tinytoes/fetch_attendant.php')
+        fetch('http://localhost/backend/mishaf/fetch_attendant.php')
           .then(response => response.json())
           .then(data => setAttendants(data))
           .catch(error => console.error('Error fetching data:', error));
@@ -84,7 +84,7 @@ const AdminManagement = () => {
   };
 
   const handleUpdate = () => {
-    fetch('http://localhost/tinytoes/update_attendant.php', {
+    fetch('http://localhost/backend/mishaf/update_attendant.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ const AdminManagement = () => {
   };
 
   const confirmDelete = () => {
-    fetch('http://localhost/tinytoes/delete_attendant.php', {
+    fetch('http://localhost/backend/mishaf/delete_attendant.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

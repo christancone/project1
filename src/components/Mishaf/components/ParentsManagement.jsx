@@ -35,7 +35,7 @@ const ParentManagement = () => {
   }, []);
 
   const fetchParents = () => {
-    fetch('http://localhost/tinytoes/fetch_parents.php')
+    fetch('http://localhost/backend/mishaf/fetch_parents.php')
       .then(response => response.json())
       .then(data => setParents(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -57,7 +57,7 @@ const ParentManagement = () => {
   };
 
   const handleUpdate = () => {
-    fetch('http://localhost/tinytoes/update_parents.php', {
+    fetch('http://localhost/backend/mishaf/update_parents.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ const ParentManagement = () => {
   };
 
   const confirmDelete = () => {
-    fetch('http://localhost/tinytoes/delete_parents.php', {
+    fetch('http://localhost/backend/mishaf/delete_parents.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

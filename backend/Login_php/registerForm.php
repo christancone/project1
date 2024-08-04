@@ -10,7 +10,7 @@ class RegisterForm {
     private $db;
 
     public function __construct() {
-        $this->db = new Database('tiny');
+        $this->db = new Database('tinytoes');
     }
 
     public function handleRequest() {
@@ -101,7 +101,7 @@ class RegisterForm {
 
             if ($userData) {
                 // Transfer details to the main_user_table
-                $query = "INSERT INTO main_user_table (first_name, last_name, phone_no, address, email, password) 
+                $query = "INSERT INTO users (first_name, last_name, phone_no, address, email, password) 
                           VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $this->db->getConnection()->prepare($query);
                 $stmt->bind_param(
