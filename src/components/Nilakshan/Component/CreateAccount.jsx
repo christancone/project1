@@ -90,8 +90,6 @@ const CreateAccount = () => {
         }
     };
     
-    
-
     return (
         <div className="CreateAccount">
             <div className="CreateAccount1">
@@ -131,7 +129,7 @@ const CreateAccount = () => {
                 </div>
                 <div className="content2">
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>First name</h4>
                             <input
                                 type="text"
@@ -141,7 +139,7 @@ const CreateAccount = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="lastname">
+                        <div className="input-box">
                             <h4>Last name</h4>
                             <input
                                 type="text"
@@ -153,12 +151,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Phone no</h4>
                             <input
                                 type="text"
                                 name="phone_no"
-                                className='input-box'
                                 placeholder='Phone number'
                                 value={formData.phone_no}
                                 onChange={handleChange}
@@ -166,12 +163,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="address">
+                        <div className="input-box">
                             <h4>Address</h4>
                             <input
                                 type="text"
                                 name="address"
-                                className='input-box'
                                 placeholder='Address'
                                 value={formData.address}
                                 onChange={handleChange}
@@ -179,12 +175,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Email</h4>
                             <input
                                 type="text"
                                 name="email"
-                                className='input-box'
                                 placeholder='Email'
                                 value={formData.email}
                                 onChange={handleChange}
@@ -192,12 +187,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Password</h4>
                             <input
                                 type="password"
                                 name="password"
-                                className='input-box'
                                 placeholder='Password'
                                 value={formData.password}
                                 onChange={handleChange}
@@ -205,12 +199,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Confirm Password</h4>
                             <input
                                 type="password"
                                 name="confirmPassword"
-                                className='input-box'
                                 placeholder='Confirm Password'
                                 value={formData.confirmPassword}
                                 onChange={handleChange}

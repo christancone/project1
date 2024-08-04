@@ -66,7 +66,7 @@ const OTP = () => {
         toast.error('Invalid OTP. Please try again.');
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 1000);
       }
     } catch (error) {
       toast.error('An error occurred. Please try again later.');

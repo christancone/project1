@@ -29,26 +29,6 @@ class Database {
     }
 }
 
-// CREATE TABLE temporary_otp (
-//     id INT AUTO_INCREMENT PRIMARY KEY,
-//     email VARCHAR(255) NOT NULL,
-//     otp INT NOT NULL,
-//     password VARCHAR(255) NOT NULL,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// );
-
-// CREATE TABLE temporary_otp (
-//     id INT AUTO_INCREMENT PRIMARY KEY,
-//     first_name VARCHAR(255) NOT NULL,
-//     last_name VARCHAR(255) NOT NULL,
-//     phone_no VARCHAR(20),
-//     address TEXT,
-//     otp INT NOT NULL,
-//     email VARCHAR(255) NOT NULL UNIQUE,
-//     password VARCHAR(255) NOT NULL,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// );
-
 
 // SELECT * FROM temporary_otp;
 
@@ -57,6 +37,31 @@ class Database {
 
 // TRUNCATE TABLE temporary_otp;
 // TRUNCATE TABLE main_user_table;
+
+
+// -- Table for storing user information
+
+// CREATE TABLE temporary_otp (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     first_name VARCHAR(100),
+//     last_name VARCHAR(100),
+//     phone_no VARCHAR(20),
+//     address TEXT,
+//     email VARCHAR(255) UNIQUE,
+//     password VARCHAR(255),
+//     otp INT
+// );
+
+// CREATE TABLE main_user_table (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     email VARCHAR(255) UNIQUE NOT NULL,
+//     password VARCHAR(255) NOT NULL,
+//     first_name VARCHAR(100),
+//     last_name VARCHAR(100),
+//     phone_no VARCHAR(20),
+//     address TEXT,
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// );
 ?>
 
 
