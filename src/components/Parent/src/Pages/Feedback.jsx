@@ -1,0 +1,41 @@
+import React, { useState } from 'react';
+import './Feedback.css';
+
+const Feedback = () => {
+    const [formData, setFormData] = useState({
+        message: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    return (
+        <div className="feedback">
+            <div className="content">
+                <h1>Give Feedback.</h1>
+
+
+                <div className="leave-field">
+                    <label htmlFor="message" className="resumeField">Your Feedback:</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        className='message'
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Leave a note for Your Attendee."
+                    />
+
+                    <button className="leave">Sent</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Feedback;

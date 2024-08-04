@@ -1,0 +1,17 @@
+.bill {
+    padding-left: 20%;
+    color: #6A41AE;
+} 
+
+.bill .content {
+    padding-top: 10%;
+
+    margin-left: 10%;
+
+    width: 80%;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
