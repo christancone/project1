@@ -19,25 +19,24 @@ import {
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 
 const AdminManagement = () => {
+  // State variables
   const [admins, setAdmins] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
   const [newAdmin, setNewAdmin] = useState({
     admin_username: '',
     admin_address: '',
-    child_id: '',
-    attendant_id: '',
+    child_ids: '',
+    attendant_ids: '',
     admin_name: '',
-    child_firstname: '', // Add child's first name
-    child_lastname: '',  // Add child's last name
-    attendant_firstname: '', // Add attendant's first name
-    attendant_lastname: '' // Add attendant's last name
+    email: ''
   });
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [adminToDelete, setAdminToDelete] = useState(null);
 
+  // Fetch admins data on component mount
   useEffect(() => {
     fetch('http://localhost/tinytoes/fetch_admin.php')
       .then(response => response.json())
@@ -45,21 +44,37 @@ const AdminManagement = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
+  // Handle search input change
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleOpen = (admin) => {
-    setNewAdmin(admin);
-    setIsEditing(true);
-    setCurrentId(admin.admin_id);
+  // Open dialog for adding or editing admin
+  const handleOpen = (admin = null) => {
+    if (admin) {
+      setNewAdmin(admin);
+      setIsEditing(true);
+      setCurrentId(admin.admin_id);
+    } else {
+      setNewAdmin({
+        admin_username: '',
+        admin_address: '',
+        child_ids: '',
+        attendant_ids: '',
+        admin_name: '',
+        email: ''
+      });
+      setIsEditing(false);
+    }
     setOpen(true);
   };
 
+  // Close dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Handle admin update
   const handleUpdate = () => {
     fetch('http://localhost/tinytoes/update_admin.php', {
       method: 'POST',
@@ -67,18 +82,18 @@ const AdminManagement = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        ...newAdmin,
         admin_id: currentId,
-        child_firstname: newAdmin.child_firstname, // Add child's first name
-        child_lastname: newAdmin.child_lastname,   // Add child's last name
-        attendant_firstname: newAdmin.attendant_firstname, // Add attendant's first name
-        attendant_lastname: newAdmin.attendant_lastname // Add attendant's last name
+        admin_name: newAdmin.admin_name,
+        admin_username: newAdmin.admin_username,
+        admin_address: newAdmin.admin_address,
+        child_ids: newAdmin.child_ids,
+        attendant_ids: newAdmin.attendant_ids
       })
     })
       .then(response => response.json())
       .then(data => {
         if (data.status === 'success') {
-          setAdmins(admins.map(admin => admin.admin_id === currentId ? newAdmin : admin));
+          setAdmins(admins.map(admin => admin.admin_id === currentId ? { ...admin, ...newAdmin } : admin));
           handleClose();
         } else {
           console.error(data.message);
@@ -87,6 +102,28 @@ const AdminManagement = () => {
       .catch(error => console.error('Error updating admin:', error));
   };
 
+  // Handle adding new admin
+  const handleAdd = () => {
+    fetch('http://localhost/tinytoes/add_admin.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newAdmin)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          setAdmins([...admins, data.admin]);
+          handleClose();
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch(error => console.error('Error adding admin:', error));
+  };
+
+  // Handle deleting admin
   const handleDelete = (id) => {
     fetch('http://localhost/tinytoes/delete_admin.php', {
       method: 'POST',
@@ -107,21 +144,25 @@ const AdminManagement = () => {
       .catch(error => console.error('Error deleting admin:', error));
   };
 
+  // Handle viewing admin details
   const handleViewDetails = (admin) => {
     setNewAdmin(admin);
     setIsEditing(false);
     setOpen(true);
   };
 
+  // Handle delete button click
   const handleDeleteClick = (admin) => {
     setAdminToDelete(admin);
     setDeleteDialogOpen(true);
   };
 
+  // Confirm delete action
   const confirmDelete = () => {
     handleDelete(adminToDelete.admin_id);
   };
 
+  // Filter admins based on search term
   const filteredAdmins = admins.filter(admin =>
     admin.admin_username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     admin.admin_address.toLowerCase().includes(searchTerm.toLowerCase())
@@ -138,6 +179,9 @@ const AdminManagement = () => {
         value={searchTerm}
         onChange={handleSearch}
       />
+      <Button variant="contained" color="primary" onClick={() => handleOpen()} className='mt-3'>
+        Add Admin
+      </Button>
 
       <TableContainer component={Paper} className='mt-3'>
         <Table>
@@ -145,8 +189,8 @@ const AdminManagement = () => {
             <TableRow>
               <TableCell className="bg-gray-200">Username</TableCell>
               <TableCell className="bg-gray-200">Childcare Name</TableCell>
-              <TableCell className="bg-gray-200">Child ID</TableCell>
-              <TableCell className="bg-gray-200">Attendant ID</TableCell>
+              <TableCell className="bg-gray-200">Child IDs</TableCell>
+              <TableCell className="bg-gray-200">Attendant IDs</TableCell>
               <TableCell className="bg-gray-200">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -154,9 +198,9 @@ const AdminManagement = () => {
             {filteredAdmins.map((admin) => (
               <TableRow key={admin.admin_id}>
                 <TableCell>{admin.admin_username}</TableCell>
-                <TableCell>{admin.admin_name}</TableCell> {/* Ensure this is the correct field */}
-                <TableCell>{admin.child_id}</TableCell>
-                <TableCell>{admin.attendant_id}</TableCell>
+                <TableCell>{admin.admin_name}</TableCell>
+                <TableCell>{admin.child_ids}</TableCell>
+                <TableCell>{admin.attendant_ids}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => handleOpen(admin)}>
                     <Edit />
@@ -171,11 +215,10 @@ const AdminManagement = () => {
               </TableRow>
             ))}
           </TableBody>
-
         </Table>
       </TableContainer>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{isEditing ? 'Edit Admin' : 'View Admin Details'}</DialogTitle>
+        <DialogTitle>{isEditing ? 'Edit Admin' : 'Add Admin'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -185,7 +228,7 @@ const AdminManagement = () => {
             fullWidth
             value={newAdmin.admin_username}
             onChange={(e) => setNewAdmin({ ...newAdmin, admin_username: e.target.value })}
-            disabled={!isEditing}
+            disabled={!isEditing && isEditing !== null}
           />
           <TextField
             margin="dense"
@@ -194,7 +237,16 @@ const AdminManagement = () => {
             fullWidth
             value={newAdmin.admin_name}
             onChange={(e) => setNewAdmin({ ...newAdmin, admin_name: e.target.value })}
-            disabled={!isEditing}
+            disabled={!isEditing && isEditing !== null}
+          />
+          <TextField
+            margin="dense"
+            label="Email"
+            type="email"
+            fullWidth
+            value={newAdmin.email}
+            onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+            disabled={!isEditing && isEditing !== null}
           />
           <TextField
             margin="dense"
@@ -203,67 +255,38 @@ const AdminManagement = () => {
             fullWidth
             value={newAdmin.admin_address}
             onChange={(e) => setNewAdmin({ ...newAdmin, admin_address: e.target.value })}
-            disabled={!isEditing}
+            disabled={!isEditing && isEditing !== null}
           />
           <TextField
             margin="dense"
-            label="Child ID"
+            label="Child IDs"
             type="text"
             fullWidth
-            value={newAdmin.child_id}
-            onChange={(e) => setNewAdmin({ ...newAdmin, child_id: e.target.value })}
-            disabled={!isEditing}
+            value={newAdmin.child_ids}
+            onChange={(e) => setNewAdmin({ ...newAdmin, child_ids: e.target.value })}
+            disabled={!isEditing && isEditing !== null}
           />
           <TextField
             margin="dense"
-            label="Attendant ID"
+            label="Attendant IDs"
             type="text"
             fullWidth
-            value={newAdmin.attendant_id}
-            onChange={(e) => setNewAdmin({ ...newAdmin, attendant_id: e.target.value })}
-            disabled={!isEditing}
-          />
-
-          <TextField
-            margin="dense"
-            label="Child's First Name"
-            type="text"
-            fullWidth
-            value={newAdmin.child_firstname}
-            onChange={(e) => setNewAdmin({ ...newAdmin, child_firstname: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Child's Last Name"
-            type="text"
-            fullWidth
-            value={newAdmin.child_lastname}
-            onChange={(e) => setNewAdmin({ ...newAdmin, child_lastname: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Attendant's First Name"
-            type="text"
-            fullWidth
-            value={newAdmin.attendant_firstname}
-            onChange={(e) => setNewAdmin({ ...newAdmin, attendant_firstname: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            label="Attendant's Last Name"
-            type="text"
-            fullWidth
-            value={newAdmin.attendant_lastname}
-            onChange={(e) => setNewAdmin({ ...newAdmin, attendant_lastname: e.target.value })}
+            value={newAdmin.attendant_ids}
+            onChange={(e) => setNewAdmin({ ...newAdmin, attendant_ids: e.target.value })}
+            disabled={!isEditing && isEditing !== null}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             {isEditing ? 'Cancel' : 'Close'}
           </Button>
-          {isEditing && (
+          {isEditing ? (
             <Button onClick={handleUpdate} color="primary">
               Update
+            </Button>
+          ) : (
+            <Button onClick={handleAdd} color="primary">
+              Add
             </Button>
           )}
         </DialogActions>

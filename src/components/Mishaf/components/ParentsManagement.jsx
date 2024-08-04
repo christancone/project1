@@ -22,7 +22,7 @@ const ParentManagement = () => {
   const [parents, setParents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
-  const [newParent, setNewParent] = useState({ first_name: '', last_name: '', email: '', children_id: '', address: '', occupation: '' });
+  const [newParent, setNewParent] = useState({ first_name: '', last_name: '', email: '', children_ids: '', address: '', phone_no: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -132,7 +132,7 @@ const ParentManagement = () => {
               <TableCell className="bg-gray-200">Parent ID</TableCell>
               <TableCell className="bg-gray-200">Name</TableCell>
               <TableCell className="bg-gray-200">Email</TableCell>
-              <TableCell className="bg-gray-200">Children ID</TableCell>
+              <TableCell className="bg-gray-200">Children IDs</TableCell>
               <TableCell className="bg-gray-200">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -142,7 +142,7 @@ const ParentManagement = () => {
                 <TableCell>{parent.parent_id}</TableCell>
                 <TableCell>{parent.name}</TableCell>
                 <TableCell>{parent.email}</TableCell>
-                <TableCell>{parent.children_id}</TableCell>
+                <TableCell>{parent.children_ids}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => handleEdit(parent)}>
                     <Edit />
@@ -189,11 +189,11 @@ const ParentManagement = () => {
           />
           <TextField
             margin="dense"
-            label="Children ID"
+            label="Children IDs"
             type="text"
             fullWidth
-            value={newParent.children_id}
-            onChange={(e) => setNewParent({ ...newParent, children_id: e.target.value })}
+            value={newParent.children_ids}
+            onChange={(e) => setNewParent({ ...newParent, children_ids: e.target.value })}
           />
           <TextField
             margin="dense"
@@ -205,11 +205,11 @@ const ParentManagement = () => {
           />
           <TextField
             margin="dense"
-            label="Occupation"
+            label="Phone Number"
             type="text"
             fullWidth
-            value={newParent.occupation}
-            onChange={(e) => setNewParent({ ...newParent, occupation: e.target.value })}
+            value={newParent.phone_no}
+            onChange={(e) => setNewParent({ ...newParent, phone_no: e.target.value })}
           />
         </DialogContent>
         <DialogActions>
@@ -229,9 +229,9 @@ const ParentManagement = () => {
               <p><strong>Parent ID:</strong> {selectedParent.parent_id}</p>
               <p><strong>Name:</strong> {selectedParent.name}</p>
               <p><strong>Email:</strong> {selectedParent.email}</p>
-              <p><strong>Children ID:</strong> {selectedParent.children_id}</p>
+              <p><strong>Children IDs:</strong> {selectedParent.children_ids}</p>
               <p><strong>Address:</strong> {selectedParent.address}</p>
-              <p><strong>Occupation:</strong> {selectedParent.occupation}</p>
+              <p><strong>Phone Number:</strong> {selectedParent.phone_no}</p>
             </>
           )}
         </DialogContent>

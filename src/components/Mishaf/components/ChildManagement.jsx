@@ -16,7 +16,7 @@ import {
     TextField,
     IconButton
 } from '@mui/material';
-import { Edit, Delete, Visibility, Add } from '@mui/icons-material';
+import { Edit, Delete, Visibility } from '@mui/icons-material';
 
 const AdminManagement = () => {
     const [children, setChildren] = useState([]);
@@ -27,6 +27,8 @@ const AdminManagement = () => {
     const [currentId, setCurrentId] = useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
+    const [viewDialogOpen, setViewDialogOpen] = useState(false);
+    const [viewChild, setViewChild] = useState({});
 
     useEffect(() => {
         fetch('http://localhost/tinytoes/fetch_children.php')
@@ -53,26 +55,6 @@ const AdminManagement = () => {
         setCurrentId(null);
     };
 
-    const handleAdd = () => {
-        fetch('http://localhost/tinytoes/add_children.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newChild)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                setChildren([...children, { ...newChild, id: Date.now() }]); // Temporary ID
-                handleClose();
-            } else {
-                console.error(data.message);
-            }
-        })
-        .catch(error => console.error('Error adding child:', error));
-    };
-
     const handleUpdate = () => {
         fetch('http://localhost/tinytoes/update_children.php', {
             method: 'POST',
@@ -84,7 +66,7 @@ const AdminManagement = () => {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                setChildren(children.map(child => child.id === currentId ? newChild : child));
+                setChildren(children.map(child => child.id === currentId ? { ...newChild, id: currentId } : child));
                 handleClose();
             } else {
                 console.error(data.message);
@@ -119,6 +101,11 @@ const AdminManagement = () => {
         .catch(error => console.error('Error deleting child:', error));
     };
 
+    const handleView = (child) => {
+        setViewChild(child);
+        setViewDialogOpen(true);
+    };
+
     const filteredChildren = children.filter(child =>
         child.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -134,17 +121,14 @@ const AdminManagement = () => {
                 value={searchTerm}
                 onChange={handleSearch}
             />
-            <Button variant="contained" color="primary" onClick={() => handleOpen({})}>
-                <Add /> Add Child
-            </Button>
             <TableContainer component={Paper} className='mt-3'>
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell className="bg-gray-200">Name</TableCell>
-                            <TableCell className="bg-gray-200">Date of Birth</TableCell>
                             <TableCell className="bg-gray-200">Parent ID</TableCell>
                             <TableCell className="bg-gray-200">Attendant ID</TableCell>
+                            <TableCell className="bg-gray-200">Medical Info</TableCell>
                             <TableCell className="bg-gray-200">Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -152,15 +136,18 @@ const AdminManagement = () => {
                         {filteredChildren.map((child) => (
                             <TableRow key={child.id}>
                                 <TableCell>{child.name}</TableCell>
-                                <TableCell>{child.dob}</TableCell>
                                 <TableCell>{child.parent_id}</TableCell>
                                 <TableCell>{child.attendant_id}</TableCell>
+                                <TableCell>{child.medical_info}</TableCell>
                                 <TableCell>
                                     <IconButton color="primary" onClick={() => handleOpen(child)}>
                                         <Edit />
                                     </IconButton>
                                     <IconButton color="secondary" onClick={() => handleDelete(child.id)}>
                                         <Delete />
+                                    </IconButton>
+                                    <IconButton color="default" onClick={() => handleView(child)}>
+                                        <Visibility />
                                     </IconButton>
                                 </TableCell>
                             </TableRow>
@@ -217,15 +204,9 @@ const AdminManagement = () => {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    {isEditing ? (
-                        <Button onClick={handleUpdate} color="primary">
-                            Update
-                        </Button>
-                    ) : (
-                        <Button onClick={handleAdd} color="primary">
-                            Add
-                        </Button>
-                    )}
+                    <Button onClick={handleUpdate} color="primary">
+                        Update
+                    </Button>
                 </DialogActions>
             </Dialog>
             <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
@@ -239,6 +220,21 @@ const AdminManagement = () => {
                     </Button>
                     <Button onClick={confirmDelete} color="secondary">
                         Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={viewDialogOpen} onClose={() => setViewDialogOpen(false)}>
+                <DialogTitle>View Child Details</DialogTitle>
+                <DialogContent>
+                    <p><strong>Name:</strong> {viewChild.name}</p>
+                    <p><strong>Date of Birth:</strong> {viewChild.dob}</p>
+                    <p><strong>Parent Name:</strong> {viewChild.parent_name}</p>
+                    <p><strong>Attendant Name:</strong> {viewChild.attendant_name}</p>
+                    <p><strong>Medical Info:</strong> {viewChild.medical_info}</p>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setViewDialogOpen(false)} color="primary">
+                        Close
                     </Button>
                 </DialogActions>
             </Dialog>
