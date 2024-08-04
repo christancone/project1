@@ -60,3 +60,66 @@
     font-size: 15px;
     font-weight: 200;
 }
+
+
+
+.attendee .content .attendant{
+    display: flex;
+}
+
+
+
+
+
+
+.attendee .content .details2 {
+    padding-top: 40px;
+    padding-right: 30px;
+}
+
+.attendee .content .details2 p {
+    width: 200px;
+    height: fit-content;
+    flex-shrink: 0;
+
+    border-radius: 20px;
+    border: 2px solid #6A41AE;
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.attendee .content .details2 img {
+    width: 183px;
+    height: 208px;
+    flex-shrink: 0;
+
+    padding: 5%;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border-radius: 20px;
+}
+
+.attendee .content .details2 .name {
+    padding-top: 5%;
+    width: 50%;
+}
+
+
+.attendee .content .details2 .name h3{
+    font-size: 18px;
+    font-weight: 600;
+}
+.attendee .content .details2 .name h4{
+    font-size: 15px;
+    font-weight: 300;
+}

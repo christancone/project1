@@ -31,15 +31,16 @@ const Childinfo = () => {
                 </div>
 
                 <div className="content2">
-
                     <div className="image">
                         <p>
                             <img src={r4} alt="Child" />
+                            <div className="name">
                             <h3>Mishaf</h3>
-                            <h4>1 year 2 months</h4>
+                            <h4>13 months</h4>
+                            </div>
                         </p>
                     </div>
-
+    
                     <div className="info">
                         <div className="details">
                             <h3>Name: </h3>
