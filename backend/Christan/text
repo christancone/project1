@@ -1,4 +1,4 @@
-Class: User
+lass: User
 Attributes:
 
 private int id

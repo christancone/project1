@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Paper, Grid, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab, Divider } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 
-// Define styles for the chat components
 const useStyles = {
   chatSection: {
     width: '100%',
@@ -17,39 +16,35 @@ const useStyles = {
   },
 };
 
-const Chat = () => {
+const Chat1 = () => {
   const classes = useStyles;
-  const messageEndRef = useRef(null); // Reference to the end of the message list
+  const messageEndRef = useRef(null);
   const [messages, setMessages] = useState([
     { id: 1, text: "Hey man, What's up ?", sender: 'right', time: '09:30' },
     { id: 2, text: "Hey, I am Good! What about you ?", sender: 'left', time: '09:31' },
-    { id: 3, text: "Cool. Are everything good?", sender: 'right', time: '10:30' },
+    { id: 3, text: "Cool. I am good, let's catch up!", sender: 'right', time: '10:30' },
   ]);
   const [newMessage, setNewMessage] = useState('');
 
-  // Scroll to the bottom of the message list whenever messages change
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
-  // Handle sending a new message
   const handleSendMessage = () => {
-    if (newMessage.trim() === '') return; // Do not send empty messages
+    if (newMessage.trim() === '') return;
 
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const newMessageObj = { id: messages.length + 1, text: newMessage, sender: 'right', time: currentTime };
     setMessages([...messages, newMessageObj]);
-    setNewMessage(''); // Clear the input field
+    setNewMessage('');
   };
 
-  // Handle input change in the message field
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
   };
 
-  // Handle pressing the Enter key to send a message
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSendMessage();
@@ -60,60 +55,47 @@ const Chat = () => {
     <div>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h5" className="header-message">Chats</Typography>
+          <Typography variant="h5" className="header-message">Parents' Chat</Typography>
         </Grid>
       </Grid>
       <Grid container component={Paper} style={classes.chatSection}>
-        <Grid item xs={4} style={classes.borderRight500}>
+        <Grid item xs={3} style={classes.borderRight500}>
           <List>
             <ListItem button key="RemySharp">
               <ListItemIcon>
-                <Avatar alt="Mishaf Hasan" src="#" />
+                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
               </ListItemIcon>
-              <ListItemText primary="Mishaf Hasan" />
+              <ListItemText primary="John Wick" />
             </ListItem>
           </List>
           <Divider />
           <Grid item xs={12} style={{ padding: '10px' }}>
-            <TextField id="outlined-basic-search" label="Search..." variant="outlined" fullWidth />
+            <TextField id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
           </Grid>
           <Divider />
           <List>
-            <ListItem button key="Mishaf Hasan">
+            <ListItem button key="RemySharp">
               <ListItemIcon>
-                <Avatar alt="Mishaf Hasan" src="#" />
+                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
               </ListItemIcon>
-              <ListItemText primary="Mishaf Hasan" />
-              <ListItemText secondary="🟢" align="right" /> {/* Online Status */}
+              <ListItemText primary="Remy Sharp" />
+              <ListItemText secondary="online" align="right" />
             </ListItem>
-            <ListItem button key="Christan Cone">
+            <ListItem button key="Alice">
               <ListItemIcon>
-                <Avatar alt="Christan Cone" src="#" />
+                <Avatar alt="Alice" src="https://material-ui.com/static/images/avatar/3.jpg" />
               </ListItemIcon>
-              <ListItemText primary="Christan Cone" />
-              <ListItemText secondary="🟢" align="right" /> {/* Online Status */}
+              <ListItemText primary="Alice" />
             </ListItem>
-            <ListItem button key="Saralan">
+            <ListItem button key="CindyBaker">
               <ListItemIcon>
-                <Avatar alt="Saralan" src="#" />
+                <Avatar alt="Cindy Baker" src="https://material-ui.com/static/images/avatar/2.jpg" />
               </ListItemIcon>
-              <ListItemText primary="Saralan" />
-            </ListItem>
-            <ListItem button key="Nilakshan">
-              <ListItemIcon>
-                <Avatar alt="Nilakshan" src="#" />
-              </ListItemIcon>
-              <ListItemText primary="Nilakshan" />
-            </ListItem>
-            <ListItem button key="Vishagan">
-              <ListItemIcon>
-                <Avatar alt="Vishagan" src="#" />
-              </ListItemIcon>
-              <ListItemText primary="Vishagan" />
+              <ListItemText primary="Cindy Baker" />
             </ListItem>
           </List>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           <List style={classes.messageArea}>
             {messages.map((message) => (
               <ListItem key={message.id}>
@@ -127,13 +109,13 @@ const Chat = () => {
                 </Grid>
               </ListItem>
             ))}
-            <div ref={messageEndRef} /> {/* Reference to the end of the message list */}
+            <div ref={messageEndRef} />
           </List>
           <Divider />
           <Grid container style={{ padding: '20px' }}>
-            <Grid item xs={10}>
+            <Grid item xs={11}>
               <TextField
-                id="outlined-basic-search"
+                id="outlined-basic-email"
                 label="Type Something"
                 fullWidth
                 value={newMessage}
@@ -141,7 +123,7 @@ const Chat = () => {
                 onKeyPress={handleKeyPress}
               />
             </Grid>
-            <Grid item xs={2} align="right">
+            <Grid item xs={1} align="right">
               <Fab color="primary" aria-label="add" onClick={handleSendMessage}>
                 <SendIcon />
               </Fab>
@@ -153,4 +135,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Chat1;

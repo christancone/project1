@@ -4,6 +4,7 @@ import BasicBars from './BasicBarChart';
 import BasicPieChart from './BasicPieChart';
 import Cards from './Cards';
 import ControlChart from './ControlChart';
+import ExSlides from './ExSlides';
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -13,7 +14,8 @@ const Dashboard = () => {
     <div>
       <Box mb={10}>
         <Box mb={4}>
-          <Cards />
+          {/* <Cards /> */}
+          <ExSlides/>
         </Box>
         <Divider />
         <Box mt={4}>
