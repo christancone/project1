@@ -24,11 +24,13 @@
 .childStatus .content .components {
     display: flex;
     align-items: center;
+    text-align: center;
     color: #6A41AE;
     padding-bottom: 20px;
 }
 
 .childStatus .content .components h3 {
+    font-size: 18px;
     padding-left: 15px;
     padding-top: 10px;
 }

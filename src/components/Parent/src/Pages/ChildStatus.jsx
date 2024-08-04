@@ -18,7 +18,7 @@ const ChildStatus = () => {
 
                 <div className="components">
                     <button
-                        className={`btn ${foodClicked ? 'clicked' : ''}`}
+                        className={`btn ${foodClicked ? 'clicked' : ''}` }
                         onClick={() => setFoodClicked(!foodClicked)}>
                     </button>
                     <h3>Take Food</h3>

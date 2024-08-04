@@ -18,53 +18,67 @@
     display: flex;
 }
 
-.childinfo .content .content2 p {
-    width: 234px;
-    height: 296px;
+
+
+.childinfo .content .image {
+    padding-right: 10px;
+}
+
+.childinfo .content .image p {
+    width: 200px;
+    height: fit-content;
     flex-shrink: 0;
 
     border-radius: 20px;
     border: 2px solid #6A41AE;
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.childinfo .content .image img {
+    width: 183px;
+    height: 208px;
+    flex-shrink: 0;
+
+    padding: 5%;
 
     align-items: center;
     justify-content: center;
 
     text-align: center;
-}
-
-.childinfo .content .content2 img {
-
-
-    width: 183px;
-    height: 208px;
-    flex-shrink: 0;
-
-    padding-top: 5%;
 
     border-radius: 20px;
 }
 
-
-.childinfo .content .content2 p {
-    color: #6A41AE;
-    text-align: center;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+.childinfo .content .image .name {
+    padding-top: 5%;
+    width: 50%;
 }
 
-.childinfo .content .content2 p h4 {
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+
+.childinfo .content .image .name h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.childinfo .content .image .name h4 {
+    font-size: 15px;
+    font-weight: 300;
 }
 
 
 .childinfo .content .content2 .info {
+    width: 80%;
     color: #6A41AE;
     padding-left: 5%;
+    display: flex;
+    flex-direction: column;
 }
 
 .childinfo .content .content2 .info .details {
@@ -74,17 +88,20 @@
 
 .childinfo .content .content2 .info h3 {
     padding-bottom: 8%;
+    font-size: 18px;
 }
 
 .childinfo .content .content2 .info h4 {
     color: #AD88C6;
-    font-size: 18px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 300;
     line-height: normal;
 
     padding-left: 10px;
 }
+
+
 
 
 .childinfo .content .edit {
@@ -113,6 +130,16 @@
     border: none;
     outline: none;
     background: none;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+    white-space: nowrap;
+    /* Prevents wrapping */
+    overflow: hidden;
+    /* Hides overflow */
+    text-overflow: ellipsis;
+    /* Adds '...' if text is too long */
 }
 
 .childinfo .content .edit .upload-container .upload-button {
@@ -155,68 +182,4 @@
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.childinfo .content .image {
-    padding-top: 40px;
-    padding-right: 30px;
-}
-
-.childinfo .content .image p {
-    width: 200px;
-    height: fit-content;
-    flex-shrink: 0;
-
-    border-radius: 20px;
-    border: 2px solid #6A41AE;
-    display: flex;
-    flex-direction: column;
-
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-
-
-}
-
-.childinfo .content .image img {
-    width: 183px;
-    height: 208px;
-    flex-shrink: 0;
-
-    padding: 5%;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    border-radius: 20px;
-}
-
-.childinfo .content .image .name {
-    padding-top: 5%;
-    width: 50%;
-}
-
-
-.childinfo .content .image .name h3{
-    font-size: 18px;
-    font-weight: 600;
-}
-.childinfo .content .image .name h4{
-    font-size: 15px;
-    font-weight: 300;
 }

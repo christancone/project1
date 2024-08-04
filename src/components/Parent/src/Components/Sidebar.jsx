@@ -20,10 +20,11 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className="container">
-                <div className="logo-container">
-                    <img src={lo} alt="" className='logo' />
-                </div>
                 <div className="container1">
+
+                    <div className="logo-container">
+                        <img src={lo} alt="" className='logo' />
+                    </div>
 
                     <div className="field">
                         <img src={image1} alt="" />
@@ -77,7 +78,7 @@ const Sidebar = () => {
 
                     <div className="field">
                         <img src={image7} alt="" className='foot_image' />
-                        <Link to="/dashboard" className="link-style">
+                        <Link to="/details" className="link-style">
                             <h4>Daycare Details</h4>
                         </Link>
 

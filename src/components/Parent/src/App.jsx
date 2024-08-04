@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LeaveNote from './Pages/LeaveNote';
 import Chat from './Pages/Chat';
 import Attendee from './Pages/Attendee';
+import DaycareDetails from './Pages/DaycareDetails';
 
 function Parent() {
   return (
@@ -25,6 +26,7 @@ function Parent() {
               <Route path="/leaveNote" element={<LeaveNote />} />
               <Route path="/childStatus" element={<ChildStatus />} />
               <Route path="/childinfo" element={<Childinfo />} />
+              <Route path="/details" element={<DaycareDetails />} />
               <Route path="/" element={<Navigate to="/dashboard" />} />
             </Routes>
           </div>
