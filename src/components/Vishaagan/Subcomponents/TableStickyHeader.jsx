@@ -84,7 +84,7 @@ export default function TableStickyHeader() {
       .then(response => {
         if (response.data.status === 'success') {
           setRows(rows.map(row => row.child_id === selectedChild.child_id
-            ? { ...row, ...formData, child_name: `${formData.firstname} ${formData.lastname}` }
+            ? { ...row, ...formData, child_name: ${formData.firstname} ${formData.lastname} }
             : row
           ));
           handleClose();

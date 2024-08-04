@@ -39,7 +39,7 @@ const Plus = () => {
     try {
       const response = await axios.post('http://localhost/Project1/addChild.php', formData);
       if (response.data.status === 'success') {
-        setSnackbar({ open: true, message: 'Child details added successfully', severity: 'success' });
+        setSnackbar({ open: true, message: response.data.message, severity: 'success' });
       } else {
         setSnackbar({ open: true, message: response.data.message, severity: 'error' });
       }
@@ -62,22 +62,22 @@ const Plus = () => {
         onClose={handleClose}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
-        sx={{
-          backdropFilter: 'blur(5px)',
-        }}
+        sx={{ backdropFilter: 'blur(5px)' }}
       >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 400,
-          bgcolor: 'background.paper',
-          border: '2px solid #000',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: 2,
-        }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
           <Typography id="modal-title" variant="h6" component="h2">
             Add Child Information
           </Typography>
@@ -125,9 +125,7 @@ const Plus = () => {
               label="Date of Birth"
               type="date"
               variant="outlined"
-              InputLabelProps={{
-                shrink: true,
-              }}
+              InputLabelProps={{ shrink: true }}
               value={formData.dob}
               onChange={handleFormChange}
             />
@@ -151,9 +149,9 @@ const Plus = () => {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))}
       >
-        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity}>
+        <Alert onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} severity={snackbar.severity}>
           {snackbar.message}
         </Alert>
       </Snackbar>
