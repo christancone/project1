@@ -6,7 +6,7 @@ const Inquiry = () => {
   return (
     <div style={{ backgroundColor: '#f4f6f8', height: '100%' }}>
       <EnhancedTable/>
-      <Plus/>
+
     </div>
   )
 }

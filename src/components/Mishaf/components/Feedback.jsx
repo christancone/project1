@@ -4,6 +4,7 @@ import StarIcon from '@mui/icons-material/Star';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import 'tailwindcss/tailwind.css';
 
+// Sample feedback data
 const feedbackData = [
   { id: 1, parent: 'John Doe', feedback: 'Great school!', rating: 5 },
   { id: 2, parent: 'Jane Smith', feedback: 'Needs improvement in sports.', rating: 3 },
@@ -30,23 +31,30 @@ const feedbackData = [
 ];
 
 const Feedback = () => {
+  // State for search term
   const [searchTerm, setSearchTerm] = useState('');
+  // State for filter rating
   const [filterRating, setFilterRating] = useState('');
+  // State for anchor element of the filter menu
   const [anchorEl, setAnchorEl] = useState(null);
 
+  // Handle filter button click
   const handleFilterClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Handle closing of filter menu
   const handleFilterClose = () => {
     setAnchorEl(null);
   };
 
+  // Handle filter change
   const handleFilterChange = (event) => {
     setFilterRating(event.target.value);
     handleFilterClose();
   };
 
+  // Filter feedback based on search term and rating
   const filteredFeedback = feedbackData.filter(item => {
     return (
       (filterRating === '' || item.rating === parseInt(filterRating)) &&
@@ -58,6 +66,7 @@ const Feedback = () => {
     <div className="p-4">
       <Container className='text-4xl mb-5'>Reviews</Container>
       <div className="flex justify-between mb-4">
+        {/* Search input field */}
         <TextField
           label="Search..."
           variant="outlined"
@@ -65,9 +74,11 @@ const Feedback = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mr-4"
         />
+        {/* Filter button */}
         <IconButton onClick={handleFilterClick}>
           <FilterAltIcon />
         </IconButton>
+        {/* Filter menu */}
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -82,12 +93,14 @@ const Feedback = () => {
         </Menu>
       </div>
       <div className="grid grid-cols-1 gap-4">
+        {/* Display filtered feedback */}
         {filteredFeedback.map(item => (
           <Card key={item.id} className="shadow-md">
             <CardContent>
               <Typography variant="h6">{item.parent}</Typography>
               <Typography variant="body2">{item.feedback}</Typography>
               <div>
+                {/* Display star icons based on rating */}
                 {[...Array(item.rating)].map((_, index) => (
                   <StarIcon key={index} color="primary" />
                 ))}
