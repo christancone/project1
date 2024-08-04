@@ -1,5 +1,4 @@
-
-.navbar {
+.navbarr {
     padding: 0px;
     display: flex;
     align-items: center;
@@ -10,24 +9,28 @@
     position:fixed;
     background-color: #fff;
 }
-.navbar .links {
+
+
+
+
+.navbarr .links {
     margin-left: auto;
     margin-right: 75px;
     
 }
 
-.navbar a {
+.navbarr a {
     color: #9290C3;
     margin-right: 75px;
     text-decoration: none;
     padding: 1px 6px;
 }
 
-.navbar a:hover{
+.navbarr a:hover{
     color: #6A41AE;
 }
 
-.navbar .logo{
+.navbarr .logo{
     width: 100px;
     margin-left: 75px;
     cursor: pointer;
@@ -38,7 +41,7 @@
 
 
 /*button */
-.navbar .links .button {
+.navbarr .links .button {
     background: #6A41AE;
     border-radius: 6px;
     border: 2px solid transparent;
@@ -54,7 +57,7 @@
     padding: 10px 20px;
   }
   
-  .navbar .links .button:hover {
+  .navbarr .links .button:hover {
     color: #6A41AE;
     background-color: #fafafa;
     border: 2px solid #6A41AE;

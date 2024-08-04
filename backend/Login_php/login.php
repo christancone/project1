@@ -14,7 +14,7 @@ class Login {
     private $db;
 
     public function __construct() {
-        $this->db = new Database('tint_toy');
+        $this->db = new Database('tiny');
     }
 
     public function loginRequest() {

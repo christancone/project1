@@ -13,6 +13,7 @@ import CircularWithValueLabel from './CircularWithValueLabel'; // Import the loa
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const OTP = () => {
   const navigate = useNavigate();
   const [otp1, setOtp1] = useState('');
@@ -79,7 +80,7 @@ const OTP = () => {
   return (
     <div className="otp">
       <div className="otp1">
-        <h2>Srilanka</h2>
+        <h2>Srilanka Daycares</h2>
         <p>
           In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
         </p>
@@ -105,8 +106,13 @@ const OTP = () => {
         </Marquee>
       </div>
 
+
+
+
       <div className="otp2">
         <h3>Verification code</h3>
+
+
         <div className="otpCode">
           <input
             type="text"
@@ -151,8 +157,7 @@ const OTP = () => {
         </button>
 
         <div className="resend-container">
-          <p className="resend">Resend</p>
-          <p className="menu">Go to menu</p>
+          <a href="../CreateAccount" className='resenddd'>Go to menu</a>
         </div>
       </div>
 

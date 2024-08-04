@@ -130,7 +130,7 @@ const CreateAccount = () => {
                     </div>
                 </div>
                 <div className="content2">
-                    <div className="row">
+                    <div className="row1">
                         <div className="name">
                             <h4>First name</h4>
                             <input
@@ -141,7 +141,7 @@ const CreateAccount = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="lastname">
+                        <div className="name">
                             <h4>Last name</h4>
                             <input
                                 type="text"
@@ -166,7 +166,7 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="address">
+                        <div className="name">
                             <h4>Address</h4>
                             <input
                                 type="text"

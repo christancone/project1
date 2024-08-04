@@ -111,9 +111,13 @@ const Parent = () => {
           <p>or</p>
           <hr />
         </div>
+
+
         <button className='sign-button'>
-          <img src={image3} alt="Google" /> Continue with Google
+          <img src={image3} alt="Google" /> 
+          <p>Continue with Google</p>
         </button>
+        
         <button className='sign-button'>
           <img src={image2} alt="Apple" /> Continue with Apple
         </button>
