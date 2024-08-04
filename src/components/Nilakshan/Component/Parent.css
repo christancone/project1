@@ -124,3 +124,14 @@
 
     margin-bottom: 10px;
 }
+.error-message {
+    color: white;
+    background-color: red;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+
+  

@@ -29,34 +29,34 @@ class Database {
     }
 }
 
-//only my testing purpose
+// CREATE TABLE temporary_otp (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     email VARCHAR(255) NOT NULL,
+//     otp INT NOT NULL,
+//     password VARCHAR(255) NOT NULL,
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// );
 
-/*try{
-    $db = new Database('tint_toy');
-    $connection = $db->getConnection();
-    if($connection){
-        echo "databasse sucessful connected";
-    }else 
-    {
-        echo "not database connected";
-    }
-}catch(Exception $e){
-    echo $e->getMessage();
-}*/
+// CREATE TABLE temporary_otp (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     first_name VARCHAR(255) NOT NULL,
+//     last_name VARCHAR(255) NOT NULL,
+//     phone_no VARCHAR(20),
+//     address TEXT,
+//     otp INT NOT NULL,
+//     email VARCHAR(255) NOT NULL UNIQUE,
+//     password VARCHAR(255) NOT NULL,
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// );
 
 
+// SELECT * FROM temporary_otp;
 
+// DESCRIBE temporary_otp;
+// SELECT * FROM main_user_table;
 
-
-
-
-/*CREATE TABLE otp_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    otp INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-*/
+// TRUNCATE TABLE temporary_otp;
+// TRUNCATE TABLE main_user_table;
 ?>
 
 

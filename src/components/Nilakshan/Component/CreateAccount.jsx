@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CreateAccount.css';
-import SyncLoader from 'react-spinners/SyncLoader';
+import Marquee from "react-fast-marquee";
 import mar3 from '../assets/Group1.png';
 import mar4 from '../assets/Group2.png';
 import mar5 from '../assets/Group3.png';
 import mar6 from '../assets/Group4.png';
 import mar7 from '../assets/Group5.png';
 import mar8 from '../assets/Group6.png';
-import Marquee from "react-fast-marquee";
+import CircularWithValueLabel from './CircularWithValueLabel'; // Import CircularWithValueLabel
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css'; // Import notification styles
 
 const CreateAccount = () => {
     const navigate = useNavigate();
@@ -25,6 +27,7 @@ const CreateAccount = () => {
 
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -34,40 +37,60 @@ const CreateAccount = () => {
     };
 
     const handleClick = async () => {
-        try {
-            // Check if passwords match
-            if (formData.password !== formData.confirmPassword) {
-                alert('Passwords do not match');
-                return;
+        setLoading(true);
+    
+        // Validate form fields
+        const newErrors = {};
+        if (!formData.firstname) newErrors.firstname = 'First name is required.';
+        if (!formData.lastname) newErrors.lastname = 'Last name is required.';
+        if (!formData.phone_no) newErrors.phone_no = 'Phone number is required.';
+        if (!formData.address) newErrors.address = 'Address is required.';
+        if (!formData.email) newErrors.email = 'Email is required.';
+        if (!formData.password) newErrors.password = 'Password is required.';
+        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match.';
+    
+        if (Object.keys(newErrors).length > 0) {
+            for (const [field, message] of Object.entries(newErrors)) {
+                NotificationManager.error(message, field);
             }
-            setLoading(true);
-            // Send form data to PHP script
+            setLoading(false);
+            return;
+        }
+    
+        try {
             const response = await axios.post('http://localhost:3000/project1/backend/Login_php/Otp.php', formData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-
-            // Log the entire response
-            console.log('Response:', response.data);
-
+    
             if (response.data.errors) {
-                // Handle validation errors
-                setErrors(response.data.errors);
-                alert('There are errors in the form');
+                if (typeof response.data.errors === 'string') {
+                    NotificationManager.error(response.data.errors);
+                } else {
+                    for (const [key, message] of Object.entries(response.data.errors)) {
+                        NotificationManager.error(message, key);
+                    }
+                }
             } else {
-                // Handle success
-          
-                console.log('Response:', response.data);
-            navigate('/otp',{ state: { email: formData.email } });// Navigate to OTP page
+                // Notify the user of successful OTP sending
+                NotificationManager.success('OTP has been sent successfully!');
+    
+                // Wait a short time before navigating to ensure the notification is displayed
+                setTimeout(() => {
+                    navigate('/otp', { state: { email: formData.email } });
+                }, 1500); // Adjust delay as needed
+    
             }
         } catch (error) {
             console.error('Error submitting form:', error);
-        }
-        finally{
+            NotificationManager.error('An error occurred. Please try again.');
+        } finally {
             setLoading(false);
         }
     };
+    
+    
 
     return (
         <div className="CreateAccount">
@@ -194,9 +217,13 @@ const CreateAccount = () => {
                             />
                         </div>
                     </div>
-                    <button className="button" onClick={handleClick}>Create Account</button>
+                    <button className="button" onClick={handleClick}>
+                        {loading ? <CircularWithValueLabel /> : 'Create Account'}
+                    </button>
                 </div>
             </div>
+
+            <NotificationContainer /> 
         </div>
     );
 };

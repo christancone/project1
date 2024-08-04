@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 include 'mailotpsend.php';
 require 'dbtest.php';
@@ -46,6 +46,11 @@ class RegisterForm {
             if (empty($password)) $errors['password'] = 'Password is required.';
             if ($password !== $confirmPassword) $errors['confirmPassword'] = 'Passwords do not match.';
 
+            // Check if email already exists
+            if ($this->emailExists($email)) {
+                $errors['email'] = 'Email already exists. Please use a different email.';
+            }
+
             if (!empty($errors)) {
                 echo json_encode(['errors' => $errors]);
                 return;
@@ -71,13 +76,62 @@ class RegisterForm {
             }
         } else {
             error_log('Invalid request method');
-            echo json_encode(['message' => 'Invalid request method']);
+            echo json_encode(['errors' => 'Invalid request method']);
         }
     }
 
     public function generateOTP() {
         return rand(1000, 9999);
     }
+
+    private function emailExists($email) {
+        // Check in temporary_otp table
+        $query = "SELECT COUNT(*) FROM temporary_otp WHERE email = ?";
+        $stmt = $this->db->getConnection()->prepare($query);
+        
+        if ($stmt === false) {
+            error_log('Failed to prepare statement for temporary_otp: ' . $this->db->getConnection()->error);
+            echo json_encode(['errors' => 'Failed to prepare statement for temporary_otp']);
+            return false;
+        }
+        
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($countTemp);
+        $stmt->fetch();
+        $stmt->close();
+        
+        // // Debug output for temporary_otp table
+        // error_log('Count in temporary_otp: ' . $countTemp);
+        
+        // If found in temporary_otp, return true
+        if ($countTemp > 0) {
+            return true;
+        }
+        
+        // Check in main_user_table table
+        $query = "SELECT COUNT(*) FROM main_user_table WHERE email = ?";
+        $stmt = $this->db->getConnection()->prepare($query);
+        
+        if ($stmt === false) {
+            error_log('Failed to prepare statement for main_user_table: ' . $this->db->getConnection()->error);
+            echo json_encode(['errors' => 'Failed to prepare statement for main_user_table']);
+            return false;
+        }
+        
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->bind_result($countMain);
+        $stmt->fetch();
+        $stmt->close();
+        
+        // Debug output for main_user_table
+        // error_log('Count in main_user_table: ' . $countMain);
+        
+        // Return true if found in 2  table
+        return $countTemp > 0 || $countMain > 0;
+    }
+    
 
     private function storeTemporaryData($firstName, $lastName, $phoneNumber, $address, $email, $hashedPassword, $otp) {
         $query = "INSERT INTO temporary_otp (first_name, last_name, phone_no, address, email, password, otp) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -89,7 +143,18 @@ class RegisterForm {
             return;
         }
 
-        $result = $stmt->execute([$firstName, $lastName, $phoneNumber, $address, $email, $hashedPassword, $otp]);
+        $stmt->bind_param(
+            "sssssss",
+            $firstName,
+            $lastName,
+            $phoneNumber,
+            $address,
+            $email,
+            $hashedPassword,
+            $otp
+        );
+
+        $result = $stmt->execute();
         if (!$result) {
             error_log('Failed to execute statement: ' . $stmt->error);
             echo json_encode(['errors' => 'Failed to execute statement']);
