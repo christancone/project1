@@ -1,0 +1,14 @@
+.btn {
+    border: 2px solid #6A41AE;
+    border-radius: 1px;
+    padding: 20px;
+    background-color: white; /* Default color */
+    color: #6A41AE; /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn.clicked {
+    background-color: green; /* Color when clicked */
+    color: white; /* Text color when clicked */
+  }

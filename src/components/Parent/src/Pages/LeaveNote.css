@@ -1,0 +1,71 @@
+.leaveNote {
+    width: 80%;
+    margin-left: 20%;
+
+}
+
+.leaveNote .content {
+    padding-top: 10%;
+}
+
+.leaveNote .content .leave-field {
+  display:block;
+}
+
+.leaveNote .content .leave-field label{
+  color: #9290C3;
+}
+
+.leaveNote .content .leave-field .message {
+    margin-top: 10px;
+    height: 400px;
+    border-radius: 15px;
+    border: 1px solid #6A41AE;
+  }
+
+  .leaveNote .content .leave-field textarea {
+    width: 100%;
+    border-bottom: 1px solid #6A41AE;
+    font-size: 15px;
+    color: #6A41AE;
+    padding: 10px 20px;
+}
+
+.leaveNote .content .leave-field textarea::placeholder {
+    color: #6A41AE;
+    opacity: 0.4;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+.leaveNote .content .leave-field button {
+    margin-top: 10px;
+    
+    align-items: center;
+    justify-content: center;
+    
+    width: 241px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background:#6A41AE;
+    color: #FFF;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: background-color 0.3s, color 0.3s;
+    border: #6A41AE;
+  }
+  
+
+.leaveNote .content .leave-field button:hover {
+    color: #6A41AE;
+    background-color: #fafafa;
+    border: 1px solid #6A41AE;
+  }
+  
