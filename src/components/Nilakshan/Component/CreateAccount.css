@@ -1,0 +1,217 @@
+.CreateAccount {
+    padding-top: 150px;
+    padding-bottom: 200px;
+    display: flex;
+    max-width: 1500px;
+    justify-content: center;
+    margin: auto;
+}
+
+.CreateAccount .CreateAccount1 {
+    max-width: 800px;
+    padding-right: 50px;
+}
+
+.CreateAccount img {
+    max-width: 200px;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+
+.CreateAccount .CreateAccount2{
+    margin-bottom: 20px;
+}
+
+
+.CreateAccount .CreateAccount2 .content1{
+    margin-bottom: 20px;
+}
+
+.CreateAccount .CreateAccount2 .content1 h4 {
+    color: #AD88C6;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.CreateAccount .CreateAccount2 .content1 h2 {
+    color: #6A41AE;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.CreateAccount .CreateAccount2 .content1 .sec1 {
+    display: flex;
+}
+
+.CreateAccount .CreateAccount2 .content1 .sec1 p {
+    color: #6A41AE;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.CreateAccount .CreateAccount2 .content1 .sec1 .Login {
+    color: #AD88C6;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding-left: 5px;
+}
+
+.CreateAccount .CreateAccount2 {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    border-radius: 6px;
+    border: 2px solid #6A41AE;
+    padding: 40px;
+}
+
+.CreateAccount .or {
+    padding-top: 20px;
+    display: flex;
+}
+
+.CreateAccount .CreateAccount2 .or hr {
+    width: 100px;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border: none;
+    /* Removes the default border */
+    border-top: 0px solid #6A41AE;
+    /* Adds a new colored border */
+    color: #6A41AE;
+    /* Sets the color of the horizontal rule */
+    background-color: #6A41AE;
+    /* Sets the background color */
+    height: 2px;
+}
+
+
+.CreateAccount .CreateAccount2 br {
+    width: 200px;
+}
+
+.CreateAccount .CreateAccount2 img {
+    width: 20px;
+}
+
+.CreateAccount .CreateAccount2 .sign-button {
+    background: #fafafa;
+    border-radius: 6px;
+    color: #6A41AE;
+    border: 2px solid #6A41AE;
+    cursor: pointer;
+    display: flex;
+
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    padding: 5px 20px;
+    margin-top: 10px;
+
+    font-size: 15px;
+
+    transition: all 0.3s;
+}
+
+.CreateAccount .CreateAccount2 .sign-button img {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 20px;
+}
+
+.CreateAccount .CreateAccount2 .sign-button:hover {
+    color: #fafafa;
+    background-color: #6A41AE;
+}
+
+.CreateAccount3 {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+
+.CreateAccount3 p {
+    font-size: 15px;
+    padding-right: 2px;
+    padding-top: 10px;
+}
+
+.CreateAccount3 .signup {
+    color: #6A41AE;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.img-marquee img {
+    height: 200px;
+}
+
+
+
+.CreateAccount .CreateAccount2 #subscribe {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.CreateAccount .CreateAccount2 .content2 .row {
+    display: flex;
+}
+
+.CreateAccount .CreateAccount2 .content2 .row .input-box {
+    padding: 10px;
+    border: 1px solid #6A41AE;
+    border-radius: 5px;
+
+    width: 610px;
+    margin: auto;
+    padding: 20px;
+
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+
+
+.CreateAccount .CreateAccount2 .content2 .button {
+    background: #6A41AE;
+    border-radius: 6px;
+    border: 2px solid transparent;
+
+    box-shadow: 8px 8px 20px 0px #9290C3;
+
+    line-height: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+
+    font-size: 15px;
+
+    padding: 15px 305px;
+}
+
+
+.CreateAccount .CreateAccount2 .content2 .button:hover {
+    color: #6A41AE;
+    background-color: #fafafa;
+    border: 2px solid #6A41AE;
+}

@@ -25,7 +25,6 @@ const Login = () => {
 
         <div className="login-container">
             <div className="content1">
-              
               <div className="head">
                 <img src={img1} alt="" />
                 <h3>Daycare</h3>
@@ -65,10 +64,11 @@ const Login = () => {
             
             <div className="sign">
               <div className="buttons">
-                  <h2>Sign up</h2>
+                  <h2>Login or Sign up</h2>
                     <button className='button' onClick={buttonClick}>as Parent</button>
                     <button className='button'>as Attendant</button>
                     <button className='button'>as Daycare Admin</button>
+                    <button className='button'>as Service Provider</button>
               </div>
             </div>
         </div>
