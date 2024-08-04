@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 require_once 'DBConnector.php';
 
 class ChildrenFetcher
@@ -26,8 +28,30 @@ class ChildrenFetcher
 
         return $children;
     }
+
+    public function fetchChildrenIdsAndFirstNames()
+    {
+        $db = new DBConnector();
+        $con = $db->getConnection();
+
+        $sql = "SELECT c.id as childID, c.firstname as childFirstName FROM Children c";
+
+        $result = $con->query($sql);
+
+        $children = [];
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $children[] = $row;
+            }
+        }
+
+        $db->closeConnection($con);
+
+        return $children;
+    }
 }
 
 $fetcher = new ChildrenFetcher();
-echo json_encode($fetcher->fetchChildren());
+echo json_encode($fetcher->fetchChildrenIdsAndFirstNames());
 ?>
