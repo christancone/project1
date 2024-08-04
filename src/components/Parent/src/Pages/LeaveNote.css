@@ -6,9 +6,14 @@
 
 .leaveNote .content {
     padding-top: 10%;
-    margin-left: 10%;
-    width: 80%;
-    color:#6A41AE;
+}
+
+.leaveNote .content .field {
+  display:block;
+
+  text-align: left;
+  justify-content: left;
+  align-items: left;
 }
 
 

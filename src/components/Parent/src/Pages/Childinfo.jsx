@@ -31,7 +31,7 @@ const Childinfo = () => {
                 </div>
 
                 <div className="content2">
-                    
+
                     <div className="image">
                         <p>
                             <img src={r4} alt="Child" />
@@ -99,8 +99,8 @@ const Childinfo = () => {
                 <div className="para">
                     <h3>Note: </h3>
                     <p>
-                    My Baby has allergies to peanuts and dairy but requires no regular medications. She manages mild asthma under the care of Dr. Michael Smith. Emma's health is carefully monitored, and she follows a specific diet to avoid allergens. 
-                    Regular check-ups with Dr. Smith ensure her conditions are well-managed, ensuring her overall well-being and safety.
+                        My Baby has allergies to peanuts and dairy but requires no regular medications. She manages mild asthma under the care of Dr. Michael Smith. Emma's health is carefully monitored, and she follows a specific diet to avoid allergens.
+                        Regular check-ups with Dr. Smith ensure her conditions are well-managed, ensuring her overall well-being and safety.
                     </p>
                 </div>
 

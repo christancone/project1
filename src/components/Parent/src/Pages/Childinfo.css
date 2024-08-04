@@ -33,16 +33,13 @@
 }
 
 .childinfo .content .content2 img {
+
+
     width: 183px;
     height: 208px;
     flex-shrink: 0;
 
     padding-top: 5%;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
 
     border-radius: 20px;
 }

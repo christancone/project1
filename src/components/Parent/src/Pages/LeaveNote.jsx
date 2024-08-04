@@ -2,12 +2,6 @@ import React, { useState } from 'react';
 import './LeaveNote.css';
 
 const LeaveNote = () => {
-    const handleFileUpload = (e, field) => {
-        e.preventDefault();
-        const fileInput = document.getElementById(field);
-        fileInput.click();
-      };
-
     const [formData, setFormData] = useState({
         message: ''
     });
