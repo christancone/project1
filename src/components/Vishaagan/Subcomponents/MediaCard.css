@@ -1,0 +1,63 @@
+/* Container for the cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the cards horizontally */
+    gap: 20px; /* Space between the cards */
+    padding: 20px; /* Padding around the container */
+  }
+  
+  /* Styles for individual cards */
+  .media-card {
+    width: 300px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    background-color: #ffffff; /* Default white background for all cards */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for subtle depth */
+    color: #333333; /* Darker text color for contrast */
+    transition: transform 0.3s ease; /* Smooth transform on hover */
+  }
+  
+  /* Add hover effect */
+  .media-card:hover {
+    transform: scale(1.05); /* Slightly enlarge card on hover */
+  }
+  
+  /* Adjust card colors */
+  .media-card:nth-of-type(1) {
+    background-color: #f7c6c7; /* Light Coral */
+  }
+  
+  .media-card:nth-of-type(2) {
+    background-color: #b3cde0; /* Powder Blue */
+  }
+  
+  .media-card:nth-of-type(3) {
+    background-color: #d0f0c0; /* Pale Mint */
+  }
+  
+  /* Align icon and text */
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+  }
+  
+  .card-content .MuiTypography-body2 {
+    font-size: 50px;
+    margin-top: 10px; /* Space between icon and text */
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .card-container {
+      flex-direction: column; /* Stack cards vertically on smaller screens */
+      align-items: center; /* Center cards horizontally */
+    }
+  }
+  

@@ -18,11 +18,12 @@ function App() {
 //        <ResponsiveDrawer/>
       
 
-      {/*< Mishaf /> */}
-      {/*<Admin/>*/}
+      {/* < Mishaf /> */}
+      <Admin/>
 
 
 <Parent/>
+
 
 
 
