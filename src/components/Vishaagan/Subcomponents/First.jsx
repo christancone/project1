@@ -4,7 +4,7 @@ import MediaCard from './MediaCard';
 import MenuAppBar from './MenuAppBar';
 import BasicLineChart from './BasicLineChart';
 import BasicBars from './BasicBars';
-import BasicBars1 from './BasicBars1';
+
 
 const First = () => {
   return (
