@@ -10,11 +10,18 @@
     text-align: center;
 }
 
-.update h3 {
+
+.update .update-content h3 {
     font-size: 40px;
+    font-weight: 600;
 }
 
-.image img{
+.update .image img{
     max-width: 1200px;
     padding: 20px 0 0 0 ;
+}
+
+.update .update-content h4{
+    font-size: 15px;
+    color: #AD88C6;
 }

@@ -11,13 +11,11 @@ const Home = () => {
   return (
     <>
     <div className="home">
-      
       <div className="home-content">
           <h2>Tiny Toes</h2>
           <p>An online platform facilitating childcare and nursing services, connecting families with qualified caregivers and healthcare professionals. </p>
         </div>
         <img src={image1} alt="image1" className='image1'/>
-        
     </div>
 
     <div className="about-content">

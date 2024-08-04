@@ -7,15 +7,16 @@
 }
 
 
-.faq h3{
+.faq .faq-contain h3{
     font-size: 40px;
+    font-weight: 800;
 }
 .faq h4{
     color: #9290C3;
     font-weight: 400;
 }
 
-.faq-contain {
+.faq .faq-contain {
     text-align: center;
     max-width: 1200px;
     margin: auto;
@@ -37,7 +38,13 @@
     
 }
 
+.faq .faq-contain1 h5{
+    font-weight: 600;
+}
 
+.faq .faq-contain1 p{
+    color: #9290C3;
+}
 
 
 .faq p {

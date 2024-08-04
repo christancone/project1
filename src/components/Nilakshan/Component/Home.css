@@ -8,7 +8,9 @@
 
 .home .home-content h2{
     font-size: 75px;
+    font-weight: 800;
 }
+
 .home-content {
     max-width: 600px;
 }
