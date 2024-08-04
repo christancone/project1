@@ -28,8 +28,8 @@ import Children from './Children';
 import Profile from './Profile';
 import Billing from './Billing';
 import Chats from './Chats';
-import Attendant from './Attendant'; 
-import PersonIcon from '@mui/icons-material/Person';
+import Attendance from './Attendance'; // Updated component import
+import EventNoteIcon from '@mui/icons-material/EventNote'; // New icon for Attendance
 
 const drawerWidth = 240;
 
@@ -37,7 +37,7 @@ const items = [
   { text: 'Dashboard', icon: <DashboardRoundedIcon />, path: '/' },
   { text: 'Children', icon: <ChildCareIcon />, path: '/children' },
   { text: 'Chat', icon: <ChatIcon />, path: '/chat' },
-  { text: 'Attendant', icon: <PersonIcon />, path: '/attendant' },
+  { text: 'Attendance', icon: <EventNoteIcon />, path: '/attendance' }, // Updated item
   { text: 'Billing', icon: <ReceiptIcon />, path: '/billing' },
 ];
 
@@ -154,7 +154,7 @@ function ResponsiveDrawer(props) {
             <Route path="/" element={<Dashboard />} />
             <Route path="/children" element={<Children />} />
             <Route path="/chat" element={<Chats />} />
-            <Route path="/attendant" element={<Attendant />} /> {/* Use the Attendant component */}
+            <Route path="/attendance" element={<Attendance />} /> {/* Updated route */}
             <Route path="/billing" element={<Billing />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
