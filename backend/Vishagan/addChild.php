@@ -1,11 +1,8 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
 include 'DbConnector.php';
 
-class AddAttendant {
+class AddChild {
     private $conn;
 
     public function __construct() {
@@ -13,35 +10,68 @@ class AddAttendant {
         $this->conn = $db->getConnection();
     }
 
-    public function addAttendant($data) {
-        $username = $data['attendant_username'];
-        $firstname = $data['firstname'];
-        $lastname = $data['lastname'];
-        $gender = $data['gender'];
-        $phonenumber = $data['phonenumber'];
-        $birthday = $data['birthday'];
-        $email = $data['email'];
+    public function addChild($data) {
+        $parentUsername = $data['parent_username'];
+        $attendantName = $data['attendant_name'];
+        $childFirstname = $data['child_firstname'];
+        $childLastname = $data['child_lastname'];
+        $dob = $data['dob'];
+        $medicalInfo = $data['medical_info'];
 
-        return $this->insertAttendant($username, $firstname, $lastname, $gender, $phonenumber, $birthday, $email);
+        $parentId = $this->validateParent($parentUsername);
+        if (!$parentId) {
+            return ["status" => "error", "message" => "Parent username not found or is not a Parent"];
+        }
+
+        $attendantId = $this->validateAttendant($attendantName);
+        if (!$attendantId) {
+            return ["status" => "error", "message" => "Attendant username not found"];
+        }
+
+        return $this->insertChild($childFirstname, $childLastname, $dob, $parentId, $attendantId, $medicalInfo);
     }
 
-    private function insertAttendant($username, $firstname, $lastname, $gender, $phonenumber, $birthday, $email) {
-        $sql = "INSERT INTO attendants (attendant_username, firstname, lastname, gender, phonenumber, birthday, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private function validateParent($username) {
+        $sql = "SELECT id FROM users WHERE username = ? AND role = 'Parent'";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sssssss", $username, $firstname, $lastname, $gender, $phonenumber, $birthday, $email);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $parent = $result->fetch_assoc();
+        $stmt->close();
+
+        return $parent ? $parent['id'] : false;
+    }
+
+    private function validateAttendant($username) {
+        $sql = "SELECT attendant_id FROM attendants WHERE attendant_username = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $attendant = $result->fetch_assoc();
+        $stmt->close();
+
+        return $attendant ? $attendant['attendant_id'] : false;
+    }
+
+    private function insertChild($firstname, $lastname, $dob, $parentId, $attendantId, $medicalInfo) {
+        $sql = "INSERT INTO children (firstname, lastname, dob, parent_id, attendant_id, medical_info) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sssdds", $firstname, $lastname, $dob, $parentId, $attendantId, $medicalInfo);
 
         if ($stmt->execute()) {
             $stmt->close();
-            return ["status" => "success", "message" => "Attendant added successfully"];
+            return ["status" => "success", "message" => "Child details added successfully"];
         } else {
             $stmt->close();
-            return ["status" => "error", "message" => "Error adding attendant: " . $this->conn->error];
+            return ["status" => "error", "message" => "Error inserting child details: " . $this->conn->error];
         }
     }
 }
 
 $data = json_decode(file_get_contents("php://input"), true);
-$addAttendant = new AddAttendant();
-$response = $addAttendant->addAttendant($data);
+$addChild = new AddChild();
+$response = $addChild->addChild($data);
 echo json_encode($response);
 ?>
