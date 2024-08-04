@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './LeaveNote.css';
+import './Feedback.css';
 
-const LeaveNote = () => {
+const Feedback = () => {
     const [formData, setFormData] = useState({
         message: ''
     });
@@ -15,13 +15,13 @@ const LeaveNote = () => {
     };
 
     return (
-        <div className="leaveNote">
+        <div className="feedback">
             <div className="content">
-                <h1>Leave a note.</h1>
+                <h1>Give Feedback.</h1>
 
 
                 <div className="leave-field">
-                    <label htmlFor="message" className="resumeField">Leave a Note:</label>
+                    <label htmlFor="message" className="resumeField">Your Feedback:</label>
                     <textarea
                         id="message"
                         name="message"
@@ -38,4 +38,4 @@ const LeaveNote = () => {
     );
 };
 
-export default LeaveNote;
+export default Feedback;

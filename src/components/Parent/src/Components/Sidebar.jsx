@@ -91,7 +91,7 @@ const Sidebar = () => {
 
                     <div className="field">
                         <img src={image8} alt="" />
-                        <Link to="/dashboard" className="link-style">
+                        <Link to="/bill" className="link-style">
                             <h4>Billing & Payments</h4>
                         </Link>
 
@@ -99,7 +99,7 @@ const Sidebar = () => {
 
                     <div className="field">
                         <img src={image9} alt="" />
-                        <Link to="/dashboard" className="link-style">
+                        <Link to="/feedback" className="link-style">
                             <h4>Feedback</h4>
                         </Link>
 
@@ -107,7 +107,7 @@ const Sidebar = () => {
 
                     <div className="field">
                         <img src={image10} alt="" />
-                        <Link to="/dashboard" className="link-style">
+                        <Link to="/profile" className="link-style">
                             <h4>Profile</h4>
                         </Link>
 
@@ -115,7 +115,7 @@ const Sidebar = () => {
 
                     <div className="field">
                         <img src={image11} alt="" />
-                        <Link to="/dashboard" className="link-style">
+                        <Link to="/logout-page" className="link-style">
                             <h4>Logout</h4>
                         </Link>
 

@@ -10,6 +10,10 @@ import LeaveNote from './Pages/LeaveNote';
 import Chat from './Pages/Chat';
 import Attendee from './Pages/Attendee';
 import DaycareDetails from './Pages/DaycareDetails';
+import Billing from './Pages/Billing';
+import Feedback from './Pages/Feedback';
+import Profile from './Pages/Profile';
+import { Logout } from '@mui/icons-material';
 
 function Parent() {
   return (
@@ -27,6 +31,11 @@ function Parent() {
               <Route path="/childStatus" element={<ChildStatus />} />
               <Route path="/childinfo" element={<Childinfo />} />
               <Route path="/details" element={<DaycareDetails />} />
+              <Route path="/bill" element={<Billing />} />
+              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/profile" element={<Profile />} />
+
+
               <Route path="/" element={<Navigate to="/dashboard" />} />
             </Routes>
           </div>
