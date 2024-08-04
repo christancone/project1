@@ -30,101 +30,62 @@ const [error, setError] = useState(null);
 const location = useLocation();
 
 
-const email = location.state?.email ||'';
+const { email } = location.state || {};
 
 const handleEvent =  (e)=>{
     const { name, value } = e.target;
-    switch(name){
-        case 'otp1':
-            setOtp1(value);
-            break;
-
+    if (/^\d$/.test(value) || value === '') {
+        switch (name) {
+            case 'otp1':
+                setOtp1(value);
+                break;
             case 'otp2':
-            setOtp2(value);
-            break;
-
+                setOtp2(value);
+                break;
             case 'otp3':
-            setOtp3(value);
-            break;
-
+                setOtp3(value);
+                break;
             case 'otp4':
-            setOtp4(value);
-            break;
+                setOtp4(value);
+                break;
             default:
                 break;
+        }
     }
 }
 
 
-useEffect(()=>{
-    //set value parent.jsx store email take 
-    const storedValue = localStorage.getItem('email');
 
-    axios.post('http://localhost:3000/backend/Login_php/login.php',{
-        data:storedValue
-    }).then(response =>{
-        console.log('Response from server:', response.data);
-    }).catch(error =>{
-        console.error('Erroe sending data: ',error);
-    });
-
-},[])
  
 
 
 
-
-
 const loginButton = async () => {
-    const enteredOtp = `${otp1}${otp2}${otp3}${otp4}`;
+    const otpString = `${otp1}${otp2}${otp3}${otp4}`;
+    const enteredOtp = parseInt(otpString, 10);
     console.log('Entered OTP:', enteredOtp);
-
-    
-
-    setLoading(true); // Start loading
-
+    setLoading(true);
     try {
         const response = await axios.post(
-            'http://localhost:3000/backend/Login_php/otpVerify.php',
-            { enteredOtp ,email},
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
+            'http://localhost:3000/project1/backend/Login_php/registerForm.php',
+            { enteredOtp, email },
+            { headers: { 'Content-Type': 'application/json' } }
         );
 
         console.log('Response from server:', response.data);
 
-        if (response.status === 200) {
-            if (response.data.status === 'success') {
-                navigate('/Login'); // Navigate to the '/Login' route after a successful response
-            } else {
-                setError(response.data.message || 'An unexpected error occurred.');
-                navigate('/OTP'); // Redirect to OTP page
-            }
+        if (response.status === 200 && response.data.message === 'Verification successful') {
+            navigate('/Login');
         } else {
-            console.error('Unexpected response status:', response.status);
-            setError('An unexpected error occurred.');
-            navigate('/OTP'); // Redirect to OTP page
+            setError(response.data.errors || response.data.message || 'An unexpected error occurred.');
         }
     } catch (error) {
-        if (error.response) {
-            console.error('Server Error:', error.response.data);
-            setError('Server Error: ' + (error.response.data.message || 'An error occurred.'));
-        } else if (error.request) {
-            console.error('Network Error:', error.request);
-            setError('Network Error: Please check your connection.');
-        } else {
-            console.error('Error:', error.message);
-            setError('Error: ' + error.message);
-        }
+        setError('An error occurred. Please try again later.');
+        console.error('Error:', error);
     } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
     }
 };
-
-
      
   return (
     <div className="otp">
@@ -200,7 +161,7 @@ const loginButton = async () => {
               <button className="button" onClick={loginButton}>Login</button>
 
               <div className="resend-container">
-                <p className="resend">Resend</p>
+                {/* <p className="resend">Resend</p> */}
                 <p className="menu">Go to menu</p>
               </div>
           </div>
