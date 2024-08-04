@@ -31,4 +31,12 @@ body {
   border: 2px solid #6A41AE;
 }
 
-
+.marquee {
+  z-index: 0;
+}
+#subscribe {
+  width: 280px;
+  padding: 10px;
+  border: 1px solid #6A41AE;
+  border-radius: 5px;
+}

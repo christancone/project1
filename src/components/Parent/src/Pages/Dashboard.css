@@ -1,0 +1,83 @@
+.dashboard {
+    padding-left: 20%;
+} 
+
+.dashboard .content {
+    padding-top: 10%;
+
+    margin-left: 10%;
+
+    width: 80%;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.dashboard .content h1 {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    color: #6A41AE;
+    text-align: center;
+    font-size: 37.2px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    padding-bottom: 3%;
+}
+
+.dashboard .content p{
+
+    color: #9290C3;
+
+    text-align: center;
+
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.dashboard .content .image-container{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.dashboard .content .image-container img{
+    width: 247px;
+    height: 245px;
+    flex-shrink: 0;
+
+    border-radius: 20px;
+}
+.dashboard .content .image-container h3{
+    color: #6A41AE;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-bottom: 5%;
+}
+
+.dashboard .content .image-container .content1 {
+    padding: 5%;
+}
+
+
+.dashboard .content .para {
+    padding-top: 5%;
+
+    color: #9290C3;
+    text-align: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
