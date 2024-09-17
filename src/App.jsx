@@ -15,11 +15,11 @@ function App() {
     <>
 
 
-      <Final />
-      {/*  <ResponsiveDrawer/>*/}
-      
+      {/*<Final />*/}
+        <ResponsiveDrawer/>
+       {/**/}
 
-      {/* < Mishaf />*/}
+       {/*< Mishaf />*/}
       {/*<Admin/>*/}
 
 {/*<User/>*/}
