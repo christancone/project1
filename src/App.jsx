@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Final from './components/Nilakshan/Final';
 import Admin from './components/Vishaagan/App';
 import Parent from './components/Parent/src/App';
+import User from './components/Parent/src/Pages/User';
 function App() {
 
   return (
@@ -15,11 +16,14 @@ function App() {
 
 
       {/*<Final />*/}
-//        <ResponsiveDrawer/>
+{/* //        <ResponsiveDrawer/> */}
       
 
       {/*< Mishaf /> */}
       {/*<Admin/>*/}
+
+{/* <User/> */}
+
 
 
 <Parent/>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import './User.css';
-
 const User = () => {
   const [formData, setFormData] = useState({
     parent_name: '',
@@ -21,17 +20,11 @@ const User = () => {
     message: ''
   });
 
-  const handleFileUpload = (e, field) => {
-    e.preventDefault();
-    const fileInput = document.getElementById(field);
-    fileInput.click();
-  };
-
   const handleChangef = (e) => {
     const { name, files } = e.target;
     setFormData({
       ...formData,
-      [name]: files ? files[0] : null,
+      [name]: files ? files[0] : null, // Handling file input
     });
   };
 
@@ -39,14 +32,52 @@ const User = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value, // Handling text input
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
-    // Here you can handle form submission, like sending data to an API
+    
+    // Validate required fields
+    if (!formData.parent_name || !formData.phone || !formData.child_name || !formData.dob || !formData.gender) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    
+    const formDataToSend = new FormData();
+    
+    // Append text fields
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+  
+    try {
+      const response = await fetch('http://localhost:3000/project1/backend/parents/user.php', {
+        method: 'POST',
+        body: formDataToSend,
+      });
+  
+      const result = await response.json();
+      console.log('Form Data Submitted:', result);
+  
+      if (result.status === 'success') {
+        // Handle success (e.g., show a success message)
+        alert('Data submitted successfully!');
+      } else {
+        // Handle errors from the server
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error('Error submitting form data:', error);
+      alert('An error occurred while submitting the form.');
+    }
+  };
+  
+
+  const handleFileUpload = (e, field) => {
+    e.preventDefault();
+    document.getElementById(field).click(); // Trigger file input
   };
 
   return (
@@ -60,6 +91,7 @@ const User = () => {
         <div className="contact">
           <div className="contact-container">
             <form onSubmit={handleSubmit}>
+              {/* Parent Full Name */}
               <div className="field">
                 <label htmlFor="parent_name">Parent Full Name: </label>
                 <input
@@ -72,6 +104,7 @@ const User = () => {
                 />
               </div>
 
+              {/* Phone */}
               <div className="field">
                 <label htmlFor="phone">Contact No: </label>
                 <input
@@ -84,6 +117,7 @@ const User = () => {
                 />
               </div>
 
+              {/* Child Full Name */}
               <div className="field">
                 <label htmlFor="child_name">Child Full Name:</label>
                 <input
@@ -96,6 +130,7 @@ const User = () => {
                 />
               </div>
 
+              {/* Gender */}
               <div className="field">
                 <label>Child Gender:</label>
                 <label className="radio-container">
@@ -122,18 +157,20 @@ const User = () => {
                 </label>
               </div>
 
+              {/* Date of Birth */}
               <div className="field">
                 <label htmlFor="dob">Date of Birth:</label>
                 <input
                   type="date"
                   id="dob"
                   name="dob"
-                  className='dob'
+                  className="dob"
                   value={formData.dob}
                   onChange={handleChange}
                 />
               </div>
 
+              {/* Emergency Contact Name */}
               <div className="field">
                 <label htmlFor="emergency">Emergency Contact (Name):</label>
                 <input
@@ -146,6 +183,7 @@ const User = () => {
                 />
               </div>
 
+              {/* Emergency Contact Phone */}
               <div className="field">
                 <label htmlFor="emergency_ph">Emergency Contact (Phone Number):</label>
                 <input
@@ -158,6 +196,7 @@ const User = () => {
                 />
               </div>
 
+              {/* Allergies */}
               <div className="field">
                 <label htmlFor="allergies">Allergies:</label>
                 <input
@@ -167,10 +206,11 @@ const User = () => {
                   className="box-field"
                   value={formData.allergies}
                   onChange={handleChange}
-                  placeholder="Give a brief note about your child's allergies condition."
+                  placeholder="Allergies description"
                 />
               </div>
 
+              {/* Medical Conditions */}
               <div className="field">
                 <label htmlFor="medical">Medical Conditions:</label>
                 <input
@@ -180,10 +220,11 @@ const User = () => {
                   className="box-field"
                   value={formData.medical}
                   onChange={handleChange}
-                  placeholder="Give a brief note about your child's medical condition."
+                  placeholder="Medical conditions description"
                 />
               </div>
 
+              {/* Medications */}
               <div className="field">
                 <label htmlFor="medication">Medications:</label>
                 <input
@@ -193,10 +234,12 @@ const User = () => {
                   className="box-field"
                   value={formData.medication}
                   onChange={handleChange}
-                  placeholder="Give medication details."
+                  placeholder="Medication details"
                 />
               </div>
 
+              {/* File Inputs */}
+              {/* Parent NIC */}
               <div className="field">
                 <label htmlFor="parentNIC">Parent's NIC/Passport:</label>
                 <div className="upload-container">
@@ -213,14 +256,17 @@ const User = () => {
                     <input
                       type="text"
                       readOnly
-                      placeholder='PDF/JPG/JPEG/PNG only allowed'
+                      placeholder="PDF/JPG/JPEG/PNG only allowed"
                       value={formData.parentNIC ? formData.parentNIC.name : ''}
                     />
                   </div>
-                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'parentNIC')}>Upload</button>
+                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'parentNIC')}>
+                    Upload
+                  </button>
                 </div>
               </div>
 
+              {/* Birth Certificate */}
               <div className="field">
                 <label htmlFor="birth_certificate">Child Birth Certificate:</label>
                 <div className="upload-container">
@@ -237,14 +283,17 @@ const User = () => {
                     <input
                       type="text"
                       readOnly
-                      placeholder='PDF/JPG/JPEG/PNG only allowed'
+                      placeholder="PDF/JPG/JPEG/PNG only allowed"
                       value={formData.birth_certificate ? formData.birth_certificate.name : ''}
                     />
                   </div>
-                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'birth_certificate')}>Upload</button>
+                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'birth_certificate')}>
+                    Upload
+                  </button>
                 </div>
               </div>
 
+              {/* Child Image */}
               <div className="field">
                 <label htmlFor="child_image">Child Image:</label>
                 <div className="upload-container">
@@ -261,13 +310,23 @@ const User = () => {
                     <input
                       type="text"
                       readOnly
-                      placeholder='PDF/JPG/JPEG/PNG only allowed'
+                      placeholder="PDF/JPG/JPEG/PNG only allowed"
                       value={formData.child_image ? formData.child_image.name : ''}
                     />
                   </div>
-                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'child_image')}>Upload</button>
+                  <button className="upload-button" onClick={(e) => handleFileUpload(e, 'child_image')}>
+                    Upload
+                  </button>
                 </div>
               </div>
+
+
+
+
+
+
+
+
 
               <div className="field">
                 <label htmlFor="medical_report">Child Medical Report:</label>
