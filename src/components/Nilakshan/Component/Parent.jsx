@@ -45,13 +45,16 @@ const Parent = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost/backend/satalan/login.php',
-        { email, password },
-        { headers: { 'Content-Type': 'application/json' } }
+          'http://localhost/backend/satalan/login.php',
+          { email, password },
+          { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
       );
 
       if (response.data.message === 'Login successful') {
-        navigate('/', { state: { email } });
+        // Assuming the role is returned in the response
+        const role = response.data.role;
+        console.log(role);
+        navigate('/', { state: { role } });
       } else {
         NotificationManager.error(response.data.errors);
       }
@@ -67,6 +70,8 @@ const Parent = () => {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className="parent">
@@ -114,10 +119,10 @@ const Parent = () => {
 
 
         <button className='sign-button'>
-          <img src={image3} alt="Google" /> 
+          <img src={image3} alt="Google" />
           <p>Continue with Google</p>
         </button>
-        
+
         <button className='sign-button'>
           <img src={image2} alt="Apple" /> Continue with Apple
         </button>
