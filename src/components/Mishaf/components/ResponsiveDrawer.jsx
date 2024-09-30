@@ -37,6 +37,7 @@ import Profile from './Profile';
 import Chat from './Chat';
 import Feedback from './Feedback';
 import { Tooltip, Menu, MenuItem, Badge } from '@mui/material';
+import axios from 'axios'; // Make sure to import axios
 
 // Define the width of the drawer
 const drawerWidth = 270;
@@ -55,7 +56,7 @@ const items2 = [
     { text: 'Chat', icon: <ChatBubbleRoundedIcon />, path: '/chat' },
     { text: 'Feedback', icon: <RateReviewRoundedIcon />, path: '/feedback' },
     { text: 'Profile', icon: <AccountCircleRoundedIcon />, path: '/profile' },
-    { text: 'Logout', icon: <LogoutRoundedIcon link={Feedback} />, path: '/logout' },
+    { text: 'Logout', icon: <LogoutRoundedIcon />, path: '/logout', action: 'logout' },
 ];
 
 function ResponsiveDrawer(props) {
@@ -77,6 +78,18 @@ function ResponsiveDrawer(props) {
     // Handle menu close event
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    // Logout function
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
+            console.log(response.data.message); // Logout successful
+            // Redirect to homepage
+            window.location.href = '/'; // Redirect to the homepage
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
 
     // Drawer content
@@ -101,7 +114,7 @@ function ResponsiveDrawer(props) {
             <List>
                 {items2.map((item) => (
                     <ListItem key={item.text} disablePadding>
-                        <ListItemButton component={Link} to={item.path}>
+                        <ListItemButton component={item.action === 'logout' ? 'button' : Link} to={item.path} onClick={item.action === 'logout' ? handleLogout : undefined}>
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.text} />
                         </ListItemButton>
@@ -180,7 +193,7 @@ function ResponsiveDrawer(props) {
                                 onClose={handleMenuClose}
                             >
                                 <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>Profile</MenuItem>
-                                <MenuItem component={Link} to="/logout" onClick={handleMenuClose}>Logout</MenuItem>
+                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
                             </Menu>
                         </Box>
                     </Toolbar>
