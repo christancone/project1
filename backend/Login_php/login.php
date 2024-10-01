@@ -4,11 +4,18 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-header("Access-Control-Allow-Origin: *");
+// Set CORS headers
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
 require 'dbtest.php';
+
+// Set session cookie parameters and start the session
+session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => false, 'httponly' => true]); // Adjust as needed
+session_start();
+error_log("login.php session ID: ".session_id());
 
 class Login {
     private $db;
@@ -54,8 +61,8 @@ class Login {
 
     private function validateUser($email, $password) {
         try {
-            // Use a parameterized query to prevent SQL injection
-            $query = "SELECT password FROM users WHERE email = ?";
+            // Modified query to fetch role and email along with password
+            $query = "SELECT email, password, role FROM users WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
 
             if (!$stmt) {
@@ -67,7 +74,19 @@ class Login {
             $result = $stmt->get_result()->fetch_assoc();
 
             if ($result && password_verify($password, $result['password'])) {
-                echo json_encode(['message' => 'Login successful']);
+                error_log("login.php session ID: ".session_id());
+
+                // Successful login: store email and role in the session
+                $_SESSION['email'] = $result['email'];
+                $_SESSION['role'] = $result['role'];
+                error_log("loggedFromLogin.php: ".$_SESSION['role']);
+
+                // Return the login success response with email and role
+                echo json_encode([
+                    'message' => 'Login successful',
+                    'email' => $result['email'],
+                    'role' => $result['role']
+                ]);
             } else {
                 echo json_encode(['errors' => 'Invalid email or password']);
             }
