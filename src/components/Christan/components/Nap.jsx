@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box, Grid, Typography, Snackbar, Alert } from '@mui/material'; // Import necessary MUI components
 import TextFieldOutlined from './TextFieldOutlined';
 import CheckboxList from './CheckboxList.jsx';
 import IconLabelButtons from './IconLabelButtons.jsx';
@@ -74,24 +75,45 @@ function Nap() {
   };
 
   return (
-      <div style={{ backgroundColor: '#f4f6f8', height: '100%' }}>
-        <TextFieldOutlined
-            fromTime={fromTime}
-            toTime={toTime}
-            notes={notes}
-            handleFromTimeChange={setFromTime}
-            handleToTimeChange={setToTime}
-            handleNotesChange={setNotes}
-        />
-        <CheckboxList
-            checked={checked}
-            handleToggle={handleToggle}
-            children={children}
-            error={error}
-        />
-        {submissionError && <div style={{ color: 'red' }}>{submissionError}</div>} {/* Display submission error */}
-        <IconLabelButtons onClick={handleSubmit} />
-      </div>
+      <Box
+          sx={{
+            backgroundColor: '#f4f6f8',
+            height: '100%',
+            p: 2,
+            borderRadius: 1,
+            boxShadow: 2,
+            maxWidth: '100%',
+            margin: 'auto', // Center the component
+          }}
+      >
+        <Typography variant="h5" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
+          Nap Management
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={12} lg={12}>
+            <TextFieldOutlined
+                fromTime={fromTime}
+                toTime={toTime}
+                notes={notes}
+                handleFromTimeChange={setFromTime}
+                handleToTimeChange={setToTime}
+                handleNotesChange={setNotes}
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <CheckboxList
+                checked={checked}
+                handleToggle={handleToggle}
+                children={children}
+                error={error}
+            />
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            {submissionError && <div style={{ color: 'red' }}>{submissionError}</div>} {/* Display submission error */}
+            <IconLabelButtons onClick={handleSubmit} />
+          </Grid>
+        </Grid>
+      </Box>
   );
 }
 

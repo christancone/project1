@@ -7,8 +7,6 @@ import {
   CardContent,
   Divider,
   Grid,
-  Menu,
-  MenuItem,
   TextField,
   Typography,
   Dialog,
@@ -16,17 +14,13 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import SaveIcon from '@mui/icons-material/Save';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import Profile3 from '../assets/pfp.jpg';
 import axios from 'axios';
 
-const GeneralInfoForm = ({ isEditing, userData, handleChange }) => {
+const GeneralInfoForm = ({ isEditing, userData, handleChange, onEditToggle }) => {
   return (
       <Card sx={{ mb: 2, boxShadow: 3, height: '100%' }}>
         <CardContent>
@@ -77,6 +71,15 @@ const GeneralInfoForm = ({ isEditing, userData, handleChange }) => {
               />
             </Grid>
           </Grid>
+          <Button
+              variant="contained"
+              color="primary"
+              startIcon={isEditing ? <SaveIcon /> : <EditIcon />}
+              onClick={onEditToggle}
+              sx={{ mt: 2 }} // Add some top margin
+          >
+            {isEditing ? 'Save' : 'Edit'}
+          </Button>
         </CardContent>
       </Card>
   );
@@ -133,7 +136,6 @@ const ProfilePage = () => {
     phone_no: '',
   });
   const [username, setUsername] = useState('johndoe123');
-  const [status, setStatus] = useState('Active');
   const [profilePhoto, setProfilePhoto] = useState(Profile3);
   const [isEditing, setIsEditing] = useState(false);
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
@@ -180,19 +182,6 @@ const ProfilePage = () => {
     }
   };
 
-  const handleStatusMenuClick = (event) => {
-    setStatusAnchorEl(event.currentTarget);
-  };
-
-  const handleStatusMenuClose = () => {
-    setStatusAnchorEl(null);
-  };
-
-  const handleStatusChange = (newStatus) => {
-    setStatus(newStatus);
-    setStatusAnchorEl(null);
-  };
-
   const handleChoosePhoto = () => {
     // Implement your choose photo logic here
     alert('Choose photo clicked');
@@ -222,8 +211,11 @@ const ProfilePage = () => {
     }
   };
 
-  const handleEdit = () => {
-    setIsEditing(true); // Enable editing mode
+  const handleEditToggle = () => {
+    if (isEditing) {
+      handleSave(); // Save changes if already editing
+    }
+    setIsEditing((prev) => !prev); // Toggle editing state
   };
 
   const handleChange = (field, value) => {
@@ -288,23 +280,8 @@ const ProfilePage = () => {
                 isEditing={isEditing}
                 userData={userData}
                 handleChange={handleChange}
+                onEditToggle={handleEditToggle} // Pass the toggle function
             />
-            <Button
-                variant="contained"
-                color="primary"
-                startIcon={isEditing ? <SaveIcon /> : <EditIcon />}
-                onClick={isEditing ? handleSave : handleEdit}
-            >
-              {isEditing ? 'Save' : 'Edit'}
-            </Button>
-            <Menu
-                anchorEl={statusAnchorEl}
-                open={Boolean(statusAnchorEl)}
-                onClose={handleStatusMenuClose}
-            >
-              <MenuItem onClick={() => handleStatusChange('Active')}>Active</MenuItem>
-              <MenuItem onClick={() => handleStatusChange('Inactive')}>Inactive</MenuItem>
-            </Menu>
           </Grid>
         </Grid>
 
@@ -341,12 +318,8 @@ const ProfilePage = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handlePasswordDialogClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handlePasswordChange} color="primary">
-              Change
-            </Button>
+            <Button onClick={handlePasswordDialogClose} color="primary">Cancel</Button>
+            <Button onClick={handlePasswordChange} color="primary">Change</Button>
           </DialogActions>
         </Dialog>
       </Box>
