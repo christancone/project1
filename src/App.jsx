@@ -18,7 +18,7 @@ function App() {
         const fetchUserRole = async () => {
             try {
                 // Add withCredentials to include cookies in the request
-                const response = await axios.get('http://localhost/backend/Christan/getUserRole.php', {
+                const response = await axios.get('http://localhost/Christan/getUserRole.php', {
                     withCredentials: true
                 });
                 const userRole = response.data.role;
