@@ -1,21 +1,23 @@
 <?php
+
 header('Content-Type: application/json');
 
 // Allow requests from any origin (for development purposes)
 header('Access-Control-Allow-Origin: *');
 // Allow specific methods (e.g., GET, POST)
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: POST');
 // Allow specific headers
 header('Access-Control-Allow-Headers: Content-Type');
 
 require_once 'DBConnector.php'; // Include your DBConnector class file
-
+use Christan\Children;
+use DBConnector;
 // Create an instance of DBConnector
 $dbConnector = new DBConnector();
 $con = $dbConnector->getConnection();
 
 // Check if POST request
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get POST data
     $data = json_decode(file_get_contents('php://input'), true);
 
@@ -31,18 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    // Convert ISO 8601 time to MySQL TIME format (HH:MM:SS)
-    $fromTime = date('H:i:s', strtotime($fromTime));
-    $toTime = date('H:i:s', strtotime($toTime));
-
     // Prepare SQL statement to insert data into dining table
-    $sql = "INSERT INTO dining (childID, food, totime, fromtime) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO dining (childID, food, fromtime, totime) VALUES (?, ?, ?, ?)";
     $stmt = $con->prepare($sql);
 
     // Loop through each child ID and insert a record
     foreach ($children as $childID) {
         // Bind parameters
-        $stmt->bind_param('isss', $childID, $notes, $toTime, $fromTime);
+        $stmt->bind_param('isss', $childID, $notes, $fromTime, $toTime);
 
         // Execute statement
         if (!$stmt->execute()) {
@@ -63,4 +61,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Close the database connection
 $dbConnector->closeConnection($con);
-?>
+

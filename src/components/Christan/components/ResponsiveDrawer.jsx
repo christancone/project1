@@ -53,7 +53,8 @@ function ResponsiveDrawer(props) {
             const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
             console.log(response.data.message); // Logout successful
             // Redirect to login or another page
-            window.location.href = '/login'; // Redirect to the login page
+            window.location.href = '/';
+            window.location.reload();
         } catch (error) {
             console.error('Logout failed:', error);
         }

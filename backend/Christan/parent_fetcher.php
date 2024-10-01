@@ -1,42 +1,16 @@
 <?php
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
 
-require_once 'DBConnector.php';
 
-class ParentFetcher
-{
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new DBConnector();
-    }
-
-    public function fetchParentDetails($parentId)
-    {
-        $con = $this->db->getConnection();
-
-        $sql = "SELECT * FROM Users WHERE id = ?";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param('i', $parentId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $parentDetails = [];
-
-        if ($result->num_rows > 0) {
-            $parentDetails = $result->fetch_assoc();
-        }
-
-        $stmt->close();
-        $this->db->closeConnection($con);
-
-        return $parentDetails;
-    }
-}
+include "Parents.php";
+use Christan\Parents;
 
 // Usage
 $parentId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$fetcher = new ParentFetcher();
-echo json_encode($fetcher->fetchParentDetails($parentId));
+$parent = new Parents();
+echo json_encode($parent->fetchParentDetailsById($parentId));
 
 

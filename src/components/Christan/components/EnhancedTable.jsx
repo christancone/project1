@@ -74,7 +74,7 @@ export default function EnhancedTable() {
     const [parentDetails, setParentDetails] = useState({});
 
     useEffect(() => {
-        fetch('http://localhost/Christan/children_fetcher.php') // Update this path
+        fetch('http://localhost/backend/Christan/children_fetcher.php') // Update this path
             .then(response => response.json())
             .then(data => setRows(data))
             .catch(error => console.error('Error fetching data:', error));
@@ -94,7 +94,7 @@ export default function EnhancedTable() {
     };
 
     const handleViewClick = (parentId) => {
-        fetch(`http://localhost/Christan/parent_fetcher.php?id=${parentId}`) // Update this path
+        fetch(`http://localhost/backend/Christan/parent_fetcher.php?id=${parentId}`) // Update this path
             .then(response => response.json())
             .then(data => {
                 setParentDetails(data);

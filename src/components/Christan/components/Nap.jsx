@@ -11,14 +11,20 @@ function Nap() {
   const [checked, setChecked] = useState([]);
   const [children, setChildren] = useState([]);
   const [error, setError] = useState(null);
+  const [submissionError, setSubmissionError] = useState(null); // State for submission error
 
   useEffect(() => {
     const fetchChildren = async () => {
       try {
-        const response = await axios.get('http://localhost/Christan/child_fetcher_dining.php');
-        setChildren(response.data);
+        const response = await axios.get('http://localhost/backend/Christan/fetch_children_list.php');
+        if (response.data.status === 'success') {
+          setChildren(response.data.children); // Set the array of children
+        } else {
+          setError('Error fetching child data: ' + response.data.message);
+        }
       } catch (error) {
         setError('Error fetching child data.');
+        console.error('Fetch error:', error);
       }
     };
 
@@ -38,10 +44,15 @@ function Nap() {
     setChecked(newChecked);
   };
 
+  // Function to format time in HH:mm:ss
+  const formatTime = (time) => {
+    return time ? new Date(time).toTimeString().split(' ')[0] : null;
+  };
+
   const handleSubmit = async () => {
     const dataToSend = {
-      fromTime,
-      toTime,
+      fromTime: formatTime(fromTime), // Send only time in HH:mm:ss format
+      toTime: formatTime(toTime), // Send only time in HH:mm:ss format
       notes,
       children: checked,
     };
@@ -49,10 +60,16 @@ function Nap() {
     console.log('Data to be sent:', JSON.stringify(dataToSend, null, 2));
 
     try {
-      await axios.post('http://localhost/Christan/process_nap.php', dataToSend);
-      console.log('Data submitted successfully');
+      const response = await axios.post('http://localhost/backend/Christan/process_nap.php', dataToSend);
+      if (response.data.status === 'success') {
+        console.log('Data submitted successfully');
+        setSubmissionError(null); // Clear any previous submission errors
+      } else {
+        throw new Error(response.data.message || 'Unknown error occurred'); // Throw an error if response is not success
+      }
     } catch (error) {
       console.error('Error submitting data:', error);
+      setSubmissionError('Submission error: ' + (error.response?.data?.message || error.message)); // Update submission error state
     }
   };
 
@@ -72,6 +89,7 @@ function Nap() {
             children={children}
             error={error}
         />
+        {submissionError && <div style={{ color: 'red' }}>{submissionError}</div>} {/* Display submission error */}
         <IconLabelButtons onClick={handleSubmit} />
       </div>
   );

@@ -1,63 +1,40 @@
 <?php
-require_once 'DBConnector.php';
-
 header('Content-Type: application/json');
-// Allow requests from any origin (for development purposes)
 header('Access-Control-Allow-Origin: *');
-// Allow specific methods (e.g., GET, POST)
-header('Access-Control-Allow-Methods: GET, POST');
-// Allow specific headers
+header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+require_once 'DBConnector.php'; // Include your DBConnector class file
+require_once 'Children.php'; // Include your Children class file
+use Christan\Children;
+
+$childrenModel = new Children();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get POST data
     $data = json_decode(file_get_contents('php://input'), true);
 
-    // Debug: Check received data
-    error_log('Received data: ' . print_r($data, true));
+    $fromTime = isset($data['fromTime']) ? $data['fromTime'] : '';
+    $toTime = isset($data['toTime']) ? $data['toTime'] : '';
+    $notes = isset($data['notes']) ? $data['notes'] : '';
+    $children = isset($data['children']) ? $data['children'] : [];
 
-    // Extract the data from the request
-    $fromTime = $data['fromTime'];
-    $toTime = $data['toTime'];
-    $notes = $data['notes'];
-    $children = $data['children'];
-
-    // Initialize DB connection
-    $db = new DBConnector();
-    $conn = $db->getConnection();
-
-    // Prepare the SQL statement for inserting nap records
-    $stmt = $conn->prepare("INSERT INTO nap (childid, from_time, to_time, notes) VALUES (?, ?, ?, ?)");
-
-    if ($stmt === false) {
-        error_log('Failed to prepare statement: ' . $conn->error);
-        echo json_encode(['status' => 'error', 'message' => 'Failed to prepare statement']);
-        exit;
+    // Validate input data
+    if (empty($fromTime) || empty($toTime) || empty($notes) || empty($children)) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid input data. Ensure all fields are filled.']);
+        exit();
     }
 
-    // Convert the time to the desired format
-    $fromTimeConverted = (new DateTime($fromTime))->format('Y-m-d H:i:s');
-    $toTimeConverted = (new DateTime($toTime))->format('Y-m-d H:i:s');
+    // Try to insert nap record
+    try {
+        $response = $childrenModel->insertNapRecord($fromTime, $toTime, $notes, $children);
+        echo json_encode($response);
+    } catch (Exception $e) {
+        // Log the error details for debugging
+        error_log('Error in process_nap.php: ' . $e->getMessage());
 
-    // Debug: Check converted times
-    error_log('Converted fromTime: ' . $fromTimeConverted);
-    error_log('Converted toTime: ' . $toTimeConverted);
-
-    // Bind parameters and execute the statement for each selected child
-    $stmt->bind_param('isss', $childID, $fromTimeConverted, $toTimeConverted, $notes);
-
-    foreach ($children as $childID) {
-        if (!$stmt->execute()) {
-            error_log('Failed to execute statement: ' . $stmt->error);
-        } else {
-            error_log('Record inserted for childID: ' . $childID);
-        }
+        echo json_encode(['status' => 'error', 'message' => 'Exception occurred: ' . $e->getMessage()]);
     }
-
-    $stmt->close();
-    $conn->close();
-
-    echo json_encode(['status' => 'success', 'message' => 'Nap records added successfully']);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
-?>

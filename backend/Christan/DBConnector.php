@@ -1,12 +1,4 @@
 <?php
-header('Content-Type: application/json');
-
-// Allow requests from any origin (for development purposes)
-header('Access-Control-Allow-Origin: *');
-// Allow specific methods (e.g., GET, POST)
-header('Access-Control-Allow-Methods: GET, POST');
-// Allow specific headers
-header('Access-Control-Allow-Headers: Content-Type');
 
 class DBConnector
 {

@@ -15,8 +15,14 @@ function Dining() {
     useEffect(() => {
         const fetchChildren = async () => {
             try {
-                const response = await axios.get('http://localhost/Christan/child_fetcher_dining.php');
-                setChildren(response.data);
+                const response = await axios.get('http://localhost/backend/Christan/fetch_children_list.php');
+
+                // Assuming your response looks like { "status": "success", "children": [...] }
+                if (response.data.status === 'success') {
+                    setChildren(response.data.children); // Set the children array
+                } else {
+                    setError('No children found.');
+                }
             } catch (error) {
                 setError('Error fetching child data.');
             }
@@ -49,7 +55,7 @@ function Dining() {
         console.log('Data to be sent:', JSON.stringify(dataToSend, null, 2));
 
         try {
-            await axios.post('http://localhost/Christan/process_dining.php', dataToSend);
+            await axios.post('http://localhost/backend/Christan/process_dining.php', dataToSend);
             console.log('Data submitted successfully');
         } catch (error) {
             console.error('Error submitting data:', error);
@@ -69,7 +75,7 @@ function Dining() {
             <CheckboxList
                 checked={checked}
                 handleToggle={handleToggle}
-                children={children}
+                children={children} // Pass children array correctly
                 error={error}
             />
             <IconLabelButtons onClick={handleSubmit} />
