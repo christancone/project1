@@ -12,6 +12,8 @@ function Dining() {
     const [checked, setChecked] = useState([]);
     const [children, setChildren] = useState([]);
     const [error, setError] = useState(null);
+    const [submissionError, setSubmissionError] = useState(null); // State for submission error
+    const [openSnackbar, setOpenSnackbar] = useState(false); // State for Snackbar visibility
 
     useEffect(() => {
         const fetchChildren = async () => {
@@ -55,17 +57,29 @@ function Dining() {
         console.log('Data to be sent:', JSON.stringify(dataToSend, null, 2));
 
         try {
-            await axios.post('http://localhost/backend/Christan/process_dining.php', dataToSend);
-            console.log('Data submitted successfully');
-            // Clear form after successful submission if needed
-            setFromTime(null);
-            setToTime(null);
-            setNotes('');
-            setChecked([]);
+            const response = await axios.post('http://localhost/backend/Christan/process_dining.php', dataToSend);
+            if (response.data.status === 'success') {
+                console.log('Data submitted successfully');
+
+                // Clear form after successful submission
+                setFromTime(null);
+                setToTime(null);
+                setNotes('');
+                setChecked([]);
+
+                // Show success Snackbar
+                setOpenSnackbar(true);
+            } else {
+                throw new Error(response.data.message || 'Unknown error occurred');
+            }
         } catch (error) {
             console.error('Error submitting data:', error);
-            setError('Failed to submit data. Please try again.');
+            setSubmissionError('Failed to submit data. Please try again.');
         }
+    };
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
     };
 
     return (
@@ -84,7 +98,6 @@ function Dining() {
                 Dining Management
             </Typography>
             <Grid container spacing={2}>
-                {/* Full width for larger screens */}
                 <Grid item xs={12} md={12} lg={12}>
                     <TextFieldOutlined
                         fromTime={fromTime}
@@ -107,11 +120,19 @@ function Dining() {
                     <IconLabelButtons onClick={handleSubmit} />
                 </Grid>
             </Grid>
+
+            {/* Snackbar for success message */}
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                    Dining records submitted successfully!
+                </Alert>
+            </Snackbar>
+
             {/* Snackbar for error messages */}
-            {error && (
-                <Snackbar open={true} autoHideDuration={6000} onClose={() => setError(null)}>
-                    <Alert onClose={() => setError(null)} severity="error" sx={{ width: '100%' }}>
-                        {error}
+            {submissionError && (
+                <Snackbar open={true} autoHideDuration={6000} onClose={() => setSubmissionError(null)}>
+                    <Alert onClose={() => setSubmissionError(null)} severity="error" sx={{ width: '100%' }}>
+                        {submissionError}
                     </Alert>
                 </Snackbar>
             )}

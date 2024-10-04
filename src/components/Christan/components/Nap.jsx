@@ -13,6 +13,7 @@ function Nap() {
   const [children, setChildren] = useState([]);
   const [error, setError] = useState(null);
   const [submissionError, setSubmissionError] = useState(null); // State for submission error
+  const [openSnackbar, setOpenSnackbar] = useState(false); // State for Snackbar visibility
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -65,6 +66,15 @@ function Nap() {
       if (response.data.status === 'success') {
         console.log('Data submitted successfully');
         setSubmissionError(null); // Clear any previous submission errors
+
+        // Clear all fields
+        setFromTime(null);
+        setToTime(null);
+        setNotes('');
+        setChecked([]);
+
+        // Show success Snackbar
+        setOpenSnackbar(true);
       } else {
         throw new Error(response.data.message || 'Unknown error occurred'); // Throw an error if response is not success
       }
@@ -72,6 +82,10 @@ function Nap() {
       console.error('Error submitting data:', error);
       setSubmissionError('Submission error: ' + (error.response?.data?.message || error.message)); // Update submission error state
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -113,6 +127,13 @@ function Nap() {
             <IconLabelButtons onClick={handleSubmit} />
           </Grid>
         </Grid>
+
+        {/* Snackbar for success message */}
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+            Nap records submitted successfully!
+          </Alert>
+        </Snackbar>
       </Box>
   );
 }

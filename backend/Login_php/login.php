@@ -4,18 +4,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Set CORS headers
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
 require 'dbtest.php';
 
 // Set session cookie parameters and start the session
-session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => false, 'httponly' => true]); // Adjust as needed
+session_set_cookie_params(0, "/");
 session_start();
-error_log("login.php session ID: ".session_id());
 
 class Login {
     private $db;
@@ -74,12 +71,10 @@ class Login {
             $result = $stmt->get_result()->fetch_assoc();
 
             if ($result && password_verify($password, $result['password'])) {
-                error_log("login.php session ID: ".session_id());
-
                 // Successful login: store email and role in the session
                 $_SESSION['email'] = $result['email'];
                 $_SESSION['role'] = $result['role'];
-                error_log("loggedFromLogin.php: ".$_SESSION['role']);
+                error_log($_SESSION['role']);
 
                 // Return the login success response with email and role
                 echo json_encode([

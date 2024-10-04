@@ -20,6 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CopyAllIcon from '@mui/icons-material/CopyAll'; // Import the Copy icon
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -107,8 +108,18 @@ export default function EnhancedTable() {
         setOpenDialog(false);
     };
 
-    const emptyRows = Math.max(0, (1 + page) * rowsPerPage - rows.length);
+    const handleCopyUsername = () => {
+        const username = parentDetails.username || '';
+        navigator.clipboard.writeText(username)
+            .then(() => {
+                alert('Username copied to clipboard!');
+            })
+            .catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+    };
 
+    const emptyRows = Math.max(0, (1 + page) * rowsPerPage - rows.length);
     const visibleRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
@@ -223,6 +234,23 @@ export default function EnhancedTable() {
                             readOnly: true,
                         }}
                     />
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <TextField
+                            margin="dense"
+                            label="Username"
+                            fullWidth
+                            variant="outlined"
+                            value={parentDetails.username || ''} // Add username field
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                        <Tooltip title="Copy Username">
+                            <IconButton onClick={handleCopyUsername} size="small">
+                                <CopyAllIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} color="primary">
