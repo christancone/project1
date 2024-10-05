@@ -86,7 +86,7 @@ class RegisterForm {
 
     private function emailExists($email) {
         // Check in temporary_otp table
-        $query = "SELECT COUNT(*) FROM temporary_otp WHERE email = ?";
+        $query = "SELECT COUNT(*) FROM temporary_otps WHERE email = ?";
         $stmt = $this->db->getConnection()->prepare($query);
         
         if ($stmt === false) {
@@ -110,7 +110,7 @@ class RegisterForm {
         }
         
         // Check in main_user_table table
-        $query = "SELECT COUNT(*) FROM main_user_table WHERE email = ?";
+        $query = "SELECT COUNT(*) FROM users WHERE email = ?";
         $stmt = $this->db->getConnection()->prepare($query);
         
         if ($stmt === false) {
@@ -134,7 +134,7 @@ class RegisterForm {
     
 
     private function storeTemporaryData($firstName, $lastName, $phoneNumber, $address, $email, $hashedPassword, $otp) {
-        $query = "INSERT INTO temporary_otp (first_name, last_name, phone_no, address, email, password, otp) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO temporary_otps (first_name, last_name, phone_no, address, email, password, otp) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->getConnection()->prepare($query);
 
         if ($stmt === false) {

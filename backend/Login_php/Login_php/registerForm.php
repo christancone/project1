@@ -47,7 +47,7 @@ class RegisterForm {
                     echo json_encode([
                         'errors' => 'Invalid OTP',
                         'email' => $email,
-                        
+                        'otp' => $enteredOtp,
                     ]);
                 }
             } else {
@@ -61,7 +61,7 @@ class RegisterForm {
     public function verifyOTP($email, $enteredOtp) {
         try {
             // Use a parameterized query to prevent SQL injection
-            $query = "SELECT otp FROM temporary_otp WHERE email = ?";
+            $query = "SELECT otp FROM temporary_otps WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
 
             if (!$stmt) {
@@ -92,37 +92,49 @@ class RegisterForm {
     
     private function transferToMainDatabase($email) {
         try {
-            // Fetch user details from temporary_otp table
-            $query = "SELECT first_name, last_name, phone_no, address, password FROM temporary_otp WHERE email = ?";
+            // Fetch user details from temporary_otps table
+            $query = "SELECT first_name, last_name, phone_no, address, password FROM temporary_otps WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Prepare failed for fetching user data: " . $this->db->getConnection()->error);
+            }
+            
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $userData = $stmt->get_result()->fetch_assoc();
-
+    
             if ($userData) {
-                // Transfer details to the main_user_table
-                $query = "INSERT INTO main_user_table (first_name, last_name, phone_no, address, email, password) 
+                // Transfer details to the users table
+                $query = "INSERT INTO users (firstname, lastname, phone_no, address, email, password) 
                           VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $this->db->getConnection()->prepare($query);
+                if (!$stmt) {
+                    throw new Exception("Prepare failed for inserting user data: " . $this->db->getConnection()->error);
+                }
+                
                 $stmt->bind_param(
                     "ssssss",
-                    $userData['first_name'],
-                    $userData['last_name'],
+                    $userData['first_name'],  // Match with temporary_otps
+                    $userData['last_name'],    // Match with temporary_otps
                     $userData['phone_no'],
                     $userData['address'],
                     $email,
                     $userData['password']
                 );
                 $stmt->execute();
-
+    
                 // Check if insert was successful
                 if ($stmt->affected_rows === 0) {
                     throw new Exception('Failed to insert user data into the main database');
                 }
-
+    
                 // Delete the OTP record
-                $query = "DELETE FROM temporary_otp WHERE email = ?";
+                $query = "DELETE FROM temporary_otps WHERE email = ?";
                 $stmt = $this->db->getConnection()->prepare($query);
+                if (!$stmt) {
+                    throw new Exception("Prepare failed for deleting OTP record: " . $this->db->getConnection()->error);
+                }
+    
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
                 
@@ -134,9 +146,11 @@ class RegisterForm {
             }
         } catch (Exception $e) {
             error_log('Database error: ' . $e->getMessage());
-            throw new Exception('Failed to transfer data to the main database');
+            throw new Exception('Failed to transfer data to the main database: ' . $e->getMessage());
         }
     }
+    
+    
 }
 
 $form = new RegisterForm();

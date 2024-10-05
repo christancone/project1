@@ -15,7 +15,7 @@ function App() {
     <>
 
 
-      {/*<Final />*/}
+      <Final />
 {/* //        <ResponsiveDrawer/> */}
       
 
@@ -26,7 +26,7 @@ function App() {
 
 
 
-<Parent/>
+{/* <Parent/> */}
 
 
 

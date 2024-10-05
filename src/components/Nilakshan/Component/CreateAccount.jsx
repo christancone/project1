@@ -58,7 +58,7 @@ const CreateAccount = () => {
         }
     
         try {
-            const response = await axios.post('http://localhost:3000/project1/backend/Login_php/Otp.php', formData, {
+            const response = await axios.post('http://localhost:3000/project1/backend/Login_php/Login_php/Otp.php', formData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

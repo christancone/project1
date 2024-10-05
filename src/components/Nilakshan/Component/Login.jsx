@@ -68,7 +68,7 @@ const Login = () => {
                     <button className='button' onClick={buttonClick}>as Parent</button>
                     <button className='button'>as Attendant</button>
                     <button className='button'>as Daycare Admin</button>
-                    <button className='button'>as Service Provider</button>
+                 
               </div>
             </div>
         </div>

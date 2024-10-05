@@ -50,10 +50,10 @@ const OTP = () => {
     const enteredOtp = parseInt(otpString, 10);
     console.log('Entered OTP:', enteredOtp);
     setLoading(true);
-
+    console.log(email);
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/registerForm.php',
+        'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
         { enteredOtp, email },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -65,7 +65,7 @@ const OTP = () => {
       } else {
         toast.error('Invalid OTP. Please try again.');
         setTimeout(() => {
-          window.location.reload();
+          // window.location.reload();
         }, 1000);
       }
     } catch (error) {
