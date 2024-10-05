@@ -11,6 +11,7 @@ const ChildStatus = () => {
 
     return (
         <div className="childStatus">
+            
             <div className="content">
                 <div className="head">
                     <h1>Child Status</h1>
@@ -24,13 +25,13 @@ const ChildStatus = () => {
                     <h3>Take Food</h3>
                 </div>
 
-                <div className="components">
+                {/* <div className="components">
                     <button
                         className={`btn ${medsClicked ? 'clicked' : ''}`}
                         onClick={() => setMedsClicked(!medsClicked)}>
                     </button>
                     <h3>Take Medicines</h3>
-                </div>
+                </div> */}
 
                 <div className="components">
                     <button
@@ -40,7 +41,7 @@ const ChildStatus = () => {
                     <h3>Child Sleeping</h3>
                 </div>
 
-                <div className="components">
+                {/* <div className="components">
                     <button
                         className={`btn ${washroomClicked ? 'clicked' : ''}`}
                         onClick={() => setWashroomClicked(!washroomClicked)}>
@@ -54,7 +55,7 @@ const ChildStatus = () => {
                         onClick={() => setDiaperClicked(!diaperClicked)}>
                     </button>
                     <h3>Diaper Change</h3>
-                </div>
+                </div> */}
                 <div className="footer">
                     <h3>(You Can get real time update via this Check-box)</h3>
                 </div>

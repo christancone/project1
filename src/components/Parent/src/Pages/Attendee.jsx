@@ -27,7 +27,7 @@ const Attendee = () => {
                         </div>
                     </p>
                 </div>
-
+{/* 
                 <div className="attendant">
                     <div className="details2">
                         <p>
@@ -81,67 +81,8 @@ const Attendee = () => {
                     </div>
 
 
-                </div>
-
-
-
-
-
-
-
-
-                <div className="attendant">
-                    <div className="details2">
-                        <p>
-                            <img src={a5} alt="attendee" />
-                            <div className="name">
-                                <h3>Mishaf</h3>
-                                <h4>Attendant</h4>
-                            </div>
-                        </p>
-                    </div>
-
-
-                    <div className="details2">
-                        <p>
-                            <img src={a3} alt="attendee" />
-                            <div className="name">
-                                <h3>Mishaf</h3>
-                                <h4>Attendant</h4>
-                            </div>
-                        </p>
-                    </div>
-
-                    <div className="details2">
-                        <p>
-                            <img src={a2} alt="attendee" />
-                            <div className="name">
-                                <h3>Mishaf</h3>
-                                <h4>Attendant</h4>
-                            </div>
-                        </p>
-                    </div>
-
-                    <div className="details2">
-                        <p>
-                            <img src={a4} alt="attendee" />
-                            <div className="name">
-                                <h3>Mishaf</h3>
-                                <h4>Attendant</h4>
-                            </div>
-                        </p>
-                    </div>
-
-                    <div className="details2">
-                        <p>
-                            <img src={a2} alt="attendee" />
-                            <div className="name">
-                                <h3>Mishaf</h3>
-                                <h4>Attendant</h4>
-                            </div>
-                        </p>
-                    </div>
-                </div>
+                </div> */
+                }
 
             </div>
         </div>
