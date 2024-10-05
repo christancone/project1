@@ -35,6 +35,7 @@ class RegisterForm {
             $lastName = isset($input['lastname']) ? htmlspecialchars($input['lastname']) : '';
             $phoneNumber = isset($input['phone_no']) ? htmlspecialchars($input['phone_no']) : '';
             $address = isset($input['address']) ? htmlspecialchars($input['address']) : '';
+            
 
             // Validate input
             $errors = [];

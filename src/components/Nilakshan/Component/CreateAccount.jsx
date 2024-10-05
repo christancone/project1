@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation  } from 'react-router-dom';
 import './CreateAccount.css';
 import Marquee from "react-fast-marquee";
 import mar3 from '../assets/Group1.png';
@@ -15,6 +15,8 @@ import 'react-notifications/lib/notifications.css'; // Import notification style
 
 const CreateAccount = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const role = location?.state?.role || ''; 
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -22,7 +24,8 @@ const CreateAccount = () => {
         address: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        role: role,
     });
 
     const [errors, setErrors] = useState({});
@@ -56,7 +59,7 @@ const CreateAccount = () => {
             setLoading(false);
             return;
         }
-    
+
         try {
             const response = await axios.post('http://localhost:3000/project1/backend/Login_php/Login_php/Otp.php', formData, {
                 headers: {
@@ -78,7 +81,7 @@ const CreateAccount = () => {
     
                 // Wait a short time before navigating to ensure the notification is displayed
                 setTimeout(() => {
-                    navigate('/otp', { state: { email: formData.email } });
+                    navigate('/otp', { state: { email: formData.email, role: formData.role } });
                 }, 1500); // Adjust delay as needed
     
             }

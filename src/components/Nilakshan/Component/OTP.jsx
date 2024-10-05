@@ -22,7 +22,7 @@ const OTP = () => {
   const [loading, setLoading] = useState(false); // Change initial state to false
   const location = useLocation();
   const { email } = location.state || {};
-
+  const role = location?.state?.role || ''; 
   const handleEvent = (e) => {
     const { name, value } = e.target;
     if (/^\d$/.test(value) || value === '') {
@@ -51,10 +51,11 @@ const OTP = () => {
     console.log('Entered OTP:', enteredOtp);
     setLoading(true);
     console.log(email);
+    console.log(role);
     try {
       const response = await axios.post(
         'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
-        { enteredOtp, email },
+        { enteredOtp, email,role },
         { headers: { 'Content-Type': 'application/json' } }
       );
 

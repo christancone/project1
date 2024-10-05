@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-
+import { useLocation } from 'react-router-dom';
 // Import images
 import mar3 from '../assets/Group1.png';
 import mar4 from '../assets/Group2.png';
@@ -22,7 +22,8 @@ const Parent = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const role = location?.state?.role || ''; 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -32,7 +33,8 @@ const Parent = () => {
   };
 
   const handleRegister = () => {
-    navigate('/CreateAccount');
+
+    navigate('/CreateAccount', { state: { role } });
   };
 
   const otpButton = async () => {
@@ -51,7 +53,9 @@ const Parent = () => {
       );
 
       if (response.data.message === 'Login successful') {
-        navigate('/Home', { state: { email } });
+        NotificationManager.success('Login successful!', 'Success', 3000);
+        navigate('/Parent', { state: { email } });
+
       } else {
         NotificationManager.error(response.data.errors);
       }

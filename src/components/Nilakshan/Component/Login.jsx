@@ -10,8 +10,9 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
 
   const navigate = useNavigate();
-    const buttonClick = () => {
-      navigate('/parent')
+    const buttonClick = (role) => {
+      console.log(role);
+      navigate('/parent', { state: { role } });
     };
 
   return (
@@ -65,9 +66,10 @@ const Login = () => {
             <div className="sign">
               <div className="buttons">
                   <h2>Login or Sign up</h2>
-                    <button className='button' onClick={buttonClick}>as Parent</button>
-                    <button className='button'>as Attendant</button>
-                    <button className='button'>as Daycare Admin</button>
+                  <button className='button' onClick={() => buttonClick('Parent')}>as Parent</button>
+      <button className='button' onClick={() => buttonClick('Attendant')}>as Attendant</button>
+      <button className='button' onClick={() => buttonClick('Daycare Admin')}>as Daycare Admin</button>
+      <button className='button' onClick={() => buttonClick('ServiceProvider')}>ServiceProvider</button>
                  
               </div>
             </div>
