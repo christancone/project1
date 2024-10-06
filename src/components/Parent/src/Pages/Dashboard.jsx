@@ -9,39 +9,83 @@ import r3 from '../assets/r3.png';
 
 const Dashboard = () => {
     <Navbar />
-  return (
-    <div className="dashboard">
-        <div className="content">
-            <h1>Dear Parents,</h1>
-            <p>
-            We are delighted to welcome you to our Child Care Management Online Platform. Here, you can easily access important information about your child's activities, progress, and overall well-being. Our goal is to ensure you stay connected and informed every step of the way.
-            </p>
-            <div className="image-container">
-                <div className="content1">
-                    <h3>Real-Time Updates</h3>
-                    <img src={r1} alt="" />
-                </div>
-
-                <div className="content1">
-                    <h3>Real-Time Updates</h3>
-                    <img src={r2} alt="" />
-                </div>
-
-                <div className="content1">
-                    <h3>Real-Time Updates</h3>
-                    <img src={r3} alt="" />
-                </div>
+    return (
+        <div className="dashboard">
+            <div className="content">
+                <h1>Hi, Parent</h1>
+                <h2>Your Childs, total history appear here</h2>
             </div>
 
-            <div className="para">
-                <p>
-                Access detailed information about your daycare, including attendee details and medical conditions, securely. 
-                Stay informed and connected with our platform, ensuring your child's well-being and safety at all times.
-                </p>
+            <div className="tables">
+                <div className="food">
+                    <table>
+                        <tr>
+                            <th>Take Food</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td className='bold'>Breakfast</td>
+                            <td className='bold'>Lunch</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>30 Sep 2024</td>
+                            <td className='green'>Complete</td>
+                            <td className='green'>Complete</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>1 Oct 2024</td>
+                            <td className='green'>Complete</td>
+                            <td className='green'>Complete</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>2 Oct 2024</td>
+                            <td className='green'>Complete</td>
+                            <td className='green'>Complete</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>3 Oct 2024</td>
+                            <td className='green'>Complete</td>
+                            <td className='green'>Complete</td>
+                        </tr>
+                    </table>
+                </div>
+
+
+                <div className="food">
+                    <table>
+                        <tr>
+                            <th>Take nap</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td className='bold'>Total nap time</td>
+                            <td className='bold'></td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>30 Sep 2024</td>
+                            <td className='green'>01 hr</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>1 Oct 2024</td>
+                            <td className='green'>01 hr 30 mins</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>2 Oct 2024</td>
+                            <td className='green'>02 hrs</td>
+                        </tr>
+                        <tr>
+                            <td className='bold'>3 Oct 2024</td>
+                            <td className='green'>03 hrs</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Dashboard;
