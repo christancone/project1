@@ -10,7 +10,7 @@ class RegisterForm {
     private $db;
 
     public function __construct() {
-        $this->db = new Database('tint_toy');
+        $this->db = new Database('tinytoes');
     }
 
     public function handleRequest() {
@@ -67,7 +67,7 @@ class RegisterForm {
     public function verifyOTP($email, $enteredOtp) {
         try {
             // Use a parameterized query to prevent SQL injection
-            $query = "SELECT otp FROM temporary_otps WHERE email = ?";
+            $query = "SELECT otp FROM temporary_otp WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
 
             if (!$stmt) {
@@ -108,7 +108,7 @@ class RegisterForm {
             }
 
             // Proceed with the data transfer if email is unique
-            $query = "SELECT first_name, last_name, phone_no, address, password FROM temporary_otps WHERE email = ?";
+            $query = "SELECT first_name, last_name, phone_no, address, password FROM temporary_otp WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
             $stmt->bind_param("s", $email);
             $stmt->execute();
@@ -136,7 +136,7 @@ class RegisterForm {
                 }
 
                 // Delete the OTP record after successful transfer
-                $deleteQuery = "DELETE FROM temporary_otps WHERE email = ?";
+                $deleteQuery = "DELETE FROM temporary_otp WHERE email = ?";
                 $stmt = $this->db->getConnection()->prepare($deleteQuery);
                 $stmt->bind_param("s", $email);
                 $stmt->execute();

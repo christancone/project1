@@ -54,7 +54,7 @@ const OTP = () => {
     console.log(role);
     try {
       const response = await axios.post(
-          'http://localhost/backend/Login_php/registerForm.php',
+          'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
           { enteredOtp, email,role },
           { headers: { 'Content-Type': 'application/json' } }
       );

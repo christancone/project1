@@ -4,9 +4,9 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
-require 'C:\Users\rajak\Desktop\TinyToes\project1\backend\PHPMailer\src/Exception.php';
-require 'C:\Users\rajak\Desktop\TinyToes\project1\backend\PHPMailer\src/PHPMailer.php';
-require 'C:\Users\rajak\Desktop\TinyToes\project1\backend\PHPMailer\src/SMTP.php';
+require 'C:\xampp\htdocs\tinytoes\project1\backend\PHPMailer\PHPMailer\src/Exception.php';
+require 'C:\xampp\htdocs\tinytoes\project1\backend\PHPMailer\PHPMailer\src/PHPMailer.php';
+require 'C:\xampp\htdocs\tinytoes\project1\backend\PHPMailer\PHPMailer\src/SMTP.php';
 
 function sendEmail($email, $otp) {
     $mail = new PHPMailer(true);

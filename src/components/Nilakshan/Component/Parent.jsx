@@ -47,14 +47,18 @@ const Parent = () => {
 
     try {
       const response = await axios.post(
-          'http://localhost/backend/Login_php/login.php',
+          'http://localhost:3000/project1/backend/Login_php/Login_php/login.php',
           { email, password },
           { headers: { 'Content-Type': 'application/json' } }
       );
 
       if (response.data.message === 'Login successful') {
         NotificationManager.success('Login successful!', 'Success', 3000);
-        navigate('/Parent', { state: { email } });
+        console.log('Response from server:', response.data);
+        const userRole =  response.data.role;
+       console.log(userRole);
+        
+        navigate('/', { state: { email ,userRole: userRole} });
 
       } else {
         NotificationManager.error(response.data.errors);
