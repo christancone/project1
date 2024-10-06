@@ -1,18 +1,32 @@
 .childinfo {
     width: 80%;
     padding-left: 20%;
+    padding-top: 100px;
+}
+
+.childinfo .content1 {
+    color: #6A41AE;
+    font-size: 30px;
+    font-weight: bold;
+    color: #AD88C6;
+    padding-bottom: 2%;
+    padding-left: 10%;
 }
 
 .childinfo .content {
-    padding-top: 10%;
+    margin-bottom: 20px;
     margin-left: 10%;
     width: 80%;
+    padding: auto;
+
+    border: 2px solid #AD88C6;
+    border-radius: 16px;
+    border-collapse: separate; /* Make sure cells are not collapsed to see the border radius */
+    border-spacing: 0; /* Optional, you can adjust spacing if needed */
+    overflow: hidden; 
 }
 
-.childinfo .content .content1 {
-    color: #6A41AE;
-    padding-bottom: 2%;
-}
+
 
 .childinfo .content .content2 {
     display: flex;
@@ -57,7 +71,7 @@
 }
 
 .childinfo .content .image .name {
-    padding-top: 5%;
+    padding-bottom: 5%;
     width: 50%;
 }
 
@@ -161,6 +175,23 @@
 
 
 .childinfo .content .para {
+    padding-top: 20px;
+}
+
+
+.childinfo .content .para h3{
+    color: #AD88C6;
+}
+
+.childinfo .content .para p{
+    font-size: 14px;
+    padding-top: 4px;
+    color: red;
+}
+
+
+
+/* .childinfo .content .para {
     color: #6A41AE;
     padding-top: 10%;
 }
@@ -182,4 +213,4 @@
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-}
+} */
