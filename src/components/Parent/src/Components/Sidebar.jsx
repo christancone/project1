@@ -40,13 +40,13 @@ const Sidebar = () => {
                         </Link>
                     </div>
 
-                    <div className="field">
+                    {/* <div className="field">
                         <img src={image3} alt="" />
                         <Link to="/childStatus" className="link-style">
                             <h4>Child Status</h4>
                         </Link>
 
-                    </div>
+                    </div> */}
 
                     <div className="field">
                         <img src={image4} alt="" />
