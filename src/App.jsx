@@ -76,6 +76,7 @@ function App() {
     return (
         <>
             {/* Render the component based on the switch-case logic */}
+
             {renderComponent()}
         </>
     );

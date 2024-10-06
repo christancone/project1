@@ -1,17 +1,20 @@
 <?php
+
+// Set the required headers
 header('Content-Type: application/json');
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+include 'Users.php';
+use Christan\Users;
 
-// Allow requests from any origin (for development purposes)
-header('Access-Control-Allow-Origin: *');
-// Allow specific methods (e.g., GET, POST)
-header('Access-Control-Allow-Methods: POST');
-// Allow specific headers
-header('Access-Control-Allow-Headers: Content-Type');
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
-// Include the DBConnector class
-require_once 'DBConnector.php';
-
-// Get JSON input
+// Retrieve POST data
 $data = json_decode(file_get_contents("php://input"), true);
 
 $id = $data['id'] ?? null;
@@ -22,25 +25,10 @@ $phone_no = $data['phone_no'] ?? null;
 $username = $data['username'] ?? null;
 
 if (!$id || !$firstname || !$lastname || !$email || !$phone_no || !$username) {
+    http_response_code(400);
     echo json_encode(['error' => 'Missing required fields']);
     exit();
 }
 
-// Create an instance of DBConnector
-$db = new DBConnector();
-$conn = $db->getConnection();
-
-// Prepare and execute update query
-$sql = "UPDATE users SET firstname = ?, lastname = ?, email = ?, phone_no = ?, username = ? WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssssi", $firstname, $lastname, $email, $phone_no, $username, $id);
-
-if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
-} else {
-    echo json_encode(['success' => false, 'error' => $stmt->error]);
-}
-
-// Close the database connection
-$db->closeConnection($conn);
-?>
+$users = new Users();
+$users->updateUser($id, $firstname, $lastname, $email, $phone_no, $username);

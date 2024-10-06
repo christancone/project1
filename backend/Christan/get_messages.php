@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *"); // Allow all origins, change to specific domain if needed
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 // Handle preflight request for CORS
@@ -10,41 +10,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include 'DBConnector.php';
+include 'Messages.php'; // Include the Messages class
+use Christan\Messages;
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Extract sender_id and receiver_id from the request
 $senderId = $data['sender_id'] ?? null;
 $receiverId = $data['receiver_id'] ?? null;
 
-if (!$senderId || !$receiverId) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Invalid sender_id or receiver_id']);
-    exit();
-}
+// Instantiate the Messages class
+$messagesModel = new Messages();
 
-$db = new DBConnector();
-$connection = $db->getConnection();
+// Fetch messages using the fetchMessages method
+$response = $messagesModel->fetchMessages($senderId, $receiverId);
 
-$query = "SELECT sender_id, receiver_id, message, timestamp FROM message WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)";
-$stmt = $connection->prepare($query);
-
-if ($stmt) {
-    $stmt->bind_param("iiii", $senderId, $receiverId, $receiverId, $senderId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $messages = [];
-    while ($row = $result->fetch_assoc()) {
-        $messages[] = $row;
-    }
-
-    echo json_encode($messages);
-    $stmt->close();
-} else {
-    http_response_code(500);
-    echo json_encode(["error" => "Database error: " . $connection->error]);
-}
-
-$db->closeConnection($connection);
+// Output the response
+echo $response;
 ?>
