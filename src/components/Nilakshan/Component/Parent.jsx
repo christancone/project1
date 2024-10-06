@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-
+import { useLocation } from 'react-router-dom';
 // Import images
 import mar3 from '../assets/Group1.png';
 import mar4 from '../assets/Group2.png';
@@ -22,7 +22,8 @@ const Parent = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const role = location?.state?.role || '';
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -32,7 +33,8 @@ const Parent = () => {
   };
 
   const handleRegister = () => {
-    navigate('/CreateAccount');
+
+    navigate('/CreateAccount', { state: { role } });
   };
 
   const otpButton = async () => {
@@ -45,16 +47,15 @@ const Parent = () => {
 
     try {
       const response = await axios.post(
-          'http://localhost/backend/satalan/login.php',
+          'http://localhost/backend/Login_php/login.php',
           { email, password },
-          { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
+          { headers: { 'Content-Type': 'application/json' } }
       );
 
       if (response.data.message === 'Login successful') {
-        // Assuming the role is returned in the response
-        const role = response.data.role;
-        console.log(role);
-        navigate('/', { state: { role } });
+        NotificationManager.success('Login successful!', 'Success', 3000);
+        navigate('/Parent', { state: { email } });
+
       } else {
         NotificationManager.error(response.data.errors);
       }
@@ -71,68 +72,62 @@ const Parent = () => {
     }
   };
 
-
-
   return (
-    <div className="parent">
-      <div className="parent1">
-        <h2>Daycares in Sri Lanka</h2>
-        <p>
-          In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
-        </p>
-        <Marquee className='marquee' pauseOnHover>
-          <div className="img-marquee"><img src={mar3} alt="" /></div>
-          <div className="img-marquee"><img src={mar4} alt="" /></div>
-          <div className="img-marquee"><img src={mar5} alt="" /></div>
-          <div className="img-marquee"><img src={mar6} alt="" /></div>
-          <div className="img-marquee"><img src={mar7} alt="" /></div>
-          <div className="img-marquee"><img src={mar8} alt="" /></div>
-        </Marquee>
-      </div>
-
-      <div className="parent2">
-        <h3>Your email or Phone number</h3>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleEmailChange}
-          placeholder='Email'
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-          placeholder='Password'
-        />
-        <button className="button" onClick={otpButton}>
-          {loading ? <CircularProgress size={30} /> : 'Login'}
-        </button>
-        <div className="or">
-          <hr />
-          <p>or</p>
-          <hr />
+      <div className="parent">
+        <div className="parent1">
+          <h2>Daycares in Sri Lanka</h2>
+          <p>
+            In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
+          </p>
+          <Marquee className='marquee' pauseOnHover>
+            <div className="img-marquee"><img src={mar3} alt="" /></div>
+            <div className="img-marquee"><img src={mar4} alt="" /></div>
+            <div className="img-marquee"><img src={mar5} alt="" /></div>
+            <div className="img-marquee"><img src={mar6} alt="" /></div>
+            <div className="img-marquee"><img src={mar7} alt="" /></div>
+            <div className="img-marquee"><img src={mar8} alt="" /></div>
+          </Marquee>
         </div>
 
-
-        <button className='sign-button'>
-          <img src={image3} alt="Google" />
-          <p>Continue with Google</p>
-        </button>
-
-        <button className='sign-button'>
-          <img src={image2} alt="Apple" /> Continue with Apple
-        </button>
-        <div className="parent3">
-          <p>Don't have an account?</p>
-          <p className="signup" onClick={handleRegister}>Sign up</p>
+        <div className="parent2">
+          <h3>Your email or Phone number</h3>
+          <label htmlFor="email">Email:</label>
+          <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder='Email'
+          />
+          <label htmlFor="password">Password:</label>
+          <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder='Password'
+          />
+          <button className="button" onClick={otpButton}>
+            {loading ? <CircularProgress size={30} /> : 'Login'}
+          </button>
+          <div className="or">
+            <hr />
+            <p>or</p>
+            <hr />
+          </div>
+          <button className='sign-button'>
+            <img src={image3} alt="Google" /> Continue with Google
+          </button>
+          <button className='sign-button'>
+            <img src={image2} alt="Apple" /> Continue with Apple
+          </button>
+          <div className="parent3">
+            <p>Don't have an account?</p>
+            <p className="signup" onClick={handleRegister}>Sign up</p>
+          </div>
         </div>
+        <NotificationContainer />
       </div>
-      <NotificationContainer />
-    </div>
   );
 };
 
