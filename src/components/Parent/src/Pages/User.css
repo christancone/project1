@@ -12,6 +12,14 @@
     text-align: center;
 }
 
+.user .container1 .logo{
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+  display: inline;
+}
+
 
 .user img{
     width: 98px;
@@ -320,11 +328,4 @@
   height: 60px;
   border-radius: 15px;
   border: 1px solid #6A41AE;
-}
-
-
-.container2 .contact .contact-container .continue_button{
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }

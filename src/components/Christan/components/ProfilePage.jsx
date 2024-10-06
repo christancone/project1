@@ -4,12 +4,9 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   Divider,
   Grid,
-  Menu,
-  MenuItem,
   TextField,
   Typography,
   Dialog,
@@ -17,16 +14,13 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import SaveIcon from '@mui/icons-material/Save';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import Profile3 from '../assets/pfp.jpg';
+import axios from 'axios';
 
-const GeneralInfoForm = ({ isEditing, userData, handleChange }) => {
+const GeneralInfoForm = ({ isEditing, userData, handleChange, onEditToggle }) => {
   return (
       <Card sx={{ mb: 2, boxShadow: 3, height: '100%' }}>
         <CardContent>
@@ -77,6 +71,15 @@ const GeneralInfoForm = ({ isEditing, userData, handleChange }) => {
               />
             </Grid>
           </Grid>
+          <Button
+              variant="contained"
+              color="primary"
+              startIcon={isEditing ? <SaveIcon /> : <EditIcon />}
+              onClick={onEditToggle}
+              sx={{ mt: 2 }} // Add some top margin
+          >
+            {isEditing ? 'Save' : 'Edit'}
+          </Button>
         </CardContent>
       </Card>
   );
@@ -133,50 +136,50 @@ const ProfilePage = () => {
     phone_no: '',
   });
   const [username, setUsername] = useState('johndoe123');
-  const [status, setStatus] = useState('Active');
   const [profilePhoto, setProfilePhoto] = useState(Profile3);
   const [isEditing, setIsEditing] = useState(false);
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [userId, setUserId] = useState(null); // State to store user ID
 
   useEffect(() => {
-    // Fetch user data on component mount
-    fetchUserData();
+    fetchSessionData(); // Fetch session data on component mount
   }, []);
 
-  const fetchUserData = async () => {
+  const fetchSessionData = async () => {
     try {
-      const response = await fetch('http://localhost/Christan/get_user.php?id=4'); // Correct URL with protocol
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setUserData({
-        firstname: data.firstname,
-        lastname: data.lastname,
-        email: data.email,
-        phone_no: data.phone_no,
+      const response = await axios.get('http://localhost/backend/Christan/get_session_datas.php', {
+        withCredentials: true, // Include credentials with the request
       });
-      setUsername(data.username);
-      setProfilePhoto(data.profile_photo || Profile3);
+      if (response.data.status === 'success') {
+        setUserId(response.data.data.id); // Set the user ID from session data
+        fetchUserData(response.data.data.id); // Fetch user data using the user ID
+      } else {
+        console.error('Error fetching session data:', response.data.message);
+      }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching session data:', error);
     }
   };
 
-  const handleStatusMenuClick = (event) => {
-    setStatusAnchorEl(event.currentTarget);
-  };
-
-  const handleStatusMenuClose = () => {
-    setStatusAnchorEl(null);
-  };
-
-  const handleStatusChange = (newStatus) => {
-    setStatus(newStatus);
-    setStatusAnchorEl(null);
+  const fetchUserData = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost/backend/Christan/get_user.php?id=${id}`, {
+        withCredentials: true, // Include credentials with the request
+      });
+      setUserData({
+        firstname: response.data.firstname,
+        lastname: response.data.lastname,
+        email: response.data.email,
+        phone_no: response.data.phone_no,
+      });
+      setUsername(response.data.username);
+      setProfilePhoto(response.data.profile_photo || Profile3);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
 
   const handleChoosePhoto = () => {
@@ -186,25 +189,18 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch('http://localhost/Christan/update_user.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: 4, // Change this dynamically based on session
-          firstname: userData.firstname,
-          lastname: userData.lastname,
-          email: userData.email,
-          phone_no: userData.phone_no,
-          username: username,
-        }),
+      const response = await axios.post('http://localhost/backend/Christan/update_user.php', {
+        id: userId, // Use dynamic user ID
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        email: userData.email,
+        phone_no: userData.phone_no,
+        username: username,
+      }, {
+        withCredentials: true, // Include credentials with the request
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
-      if (result.success) {
+
+      if (response.data.status === "success") {
         alert('User data updated successfully');
       } else {
         alert('Failed to update user data');
@@ -215,8 +211,11 @@ const ProfilePage = () => {
     }
   };
 
-  const handleEdit = () => {
-    setIsEditing(true); // Enable editing mode
+  const handleEditToggle = () => {
+    if (isEditing) {
+      handleSave(); // Save changes if already editing
+    }
+    setIsEditing((prev) => !prev); // Toggle editing state
   };
 
   const handleChange = (field, value) => {
@@ -243,78 +242,30 @@ const ProfilePage = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost/Christan/change_password.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: 4, // Change this dynamically based on session
-          currentPassword,
-          newPassword,
-        }),
+      const response = await axios.post('http://localhost/backend/Christan/change_password.php', {
+        id: userId, // Use dynamic user ID
+        currentPassword,
+        newPassword,
+      }, {
+        withCredentials: true, // Include credentials with the request
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
-      if (result.success) {
+
+      if (response.data.status === "success") {
         alert('Password changed successfully');
       } else {
         alert('Failed to change password');
       }
-      handlePasswordDialogClose();
     } catch (error) {
       console.error('Error changing password:', error);
+    } finally {
+      handlePasswordDialogClose();
     }
   };
 
   return (
-      <Box sx={{ p: 3, bgcolor: '#f4f6f8' }}>
-        <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: 3,
-            }}
-        >
-          <Box>
-            <Button
-                variant="contained"
-                color={status === 'Active' ? 'success' : 'error'}
-                startIcon={status === 'Active' ? <CheckCircleIcon /> : <CancelIcon />}
-                onClick={handleStatusMenuClick}
-                sx={{ boxShadow: 2 }}
-            >
-              {status}
-              <ExpandMoreIcon className="ms-1" />
-            </Button>
-            <Menu
-                anchorEl={statusAnchorEl}
-                open={Boolean(statusAnchorEl)}
-                onClose={handleStatusMenuClose}
-            >
-              <MenuItem onClick={() => handleStatusChange('Active')}>
-                <CheckCircleIcon className="me-2" color="success" /> Active
-              </MenuItem>
-              <MenuItem onClick={() => handleStatusChange('Offline')}>
-                <CancelIcon className="me-2" color="error" /> Offline
-              </MenuItem>
-            </Menu>
-          </Box>
-          <Button
-              variant="contained"
-              startIcon={isEditing ? <SaveIcon /> : <EditIcon />}
-              onClick={isEditing ? handleSave : handleEdit}
-              sx={{ boxShadow: 2 }}
-          >
-            {isEditing ? 'Save' : 'Edit'}
-          </Button>
-        </Box>
-
-        <Grid container spacing={3} sx={{ height: '100%' }}>
-          <Grid item xs={12} sm={4}>
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
             <ProfileCardWidget
                 username={username}
                 setUsername={setUsername}
@@ -324,11 +275,12 @@ const ProfilePage = () => {
                 handleChangePassword={handleChangePassword}
             />
           </Grid>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} md={8}>
             <GeneralInfoForm
                 isEditing={isEditing}
                 userData={userData}
                 handleChange={handleChange}
+                onEditToggle={handleEditToggle} // Pass the toggle function
             />
           </Grid>
         </Grid>
@@ -366,12 +318,8 @@ const ProfilePage = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handlePasswordDialogClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handlePasswordChange} color="primary">
-              Change Password
-            </Button>
+            <Button onClick={handlePasswordDialogClose} color="primary">Cancel</Button>
+            <Button onClick={handlePasswordChange} color="primary">Change</Button>
           </DialogActions>
         </Dialog>
       </Box>

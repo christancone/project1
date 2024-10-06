@@ -16,7 +16,7 @@ import 'react-notifications/lib/notifications.css'; // Import notification style
 const CreateAccount = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const role = location?.state?.role || ''; 
+    const role = location?.state?.role || '';
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -41,7 +41,7 @@ const CreateAccount = () => {
 
     const handleClick = async () => {
         setLoading(true);
-    
+
         // Validate form fields
         const newErrors = {};
         if (!formData.firstname) newErrors.firstname = 'First name is required.';
@@ -51,7 +51,7 @@ const CreateAccount = () => {
         if (!formData.email) newErrors.email = 'Email is required.';
         if (!formData.password) newErrors.password = 'Password is required.';
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match.';
-    
+
         if (Object.keys(newErrors).length > 0) {
             for (const [field, message] of Object.entries(newErrors)) {
                 NotificationManager.error(message, field);
@@ -66,7 +66,7 @@ const CreateAccount = () => {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             if (response.data.errors) {
                 if (typeof response.data.errors === 'string') {
                     NotificationManager.error(response.data.errors);
@@ -78,12 +78,12 @@ const CreateAccount = () => {
             } else {
                 // Notify the user of successful OTP sending
                 NotificationManager.success('OTP has been sent successfully!');
-    
+
                 // Wait a short time before navigating to ensure the notification is displayed
                 setTimeout(() => {
                     navigate('/otp', { state: { email: formData.email, role: formData.role } });
                 }, 1500); // Adjust delay as needed
-    
+
             }
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -92,7 +92,6 @@ const CreateAccount = () => {
             setLoading(false);
         }
     };
-    
     return (
         <div className="CreateAccount">
             <div className="CreateAccount1">
@@ -219,7 +218,7 @@ const CreateAccount = () => {
                 </div>
             </div>
 
-            <NotificationContainer /> 
+            <NotificationContainer />
         </div>
     );
 };

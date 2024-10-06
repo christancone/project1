@@ -1,57 +1,71 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import ChildCareTwoToneIcon from '@mui/icons-material/ChildCareTwoTone';
+import SickIcon from '@mui/icons-material/Sick';
+import BadgeIcon from '@mui/icons-material/Badge';
+import './MediaCard.css';
+import axios from 'axios';
 
 export default function MediaCard() {
+  const [data, setData] = useState({
+    totalKids: 0,
+    sickKids: 0,
+    totalAttendants: 0,
+  });
+
+  useEffect(() => {
+    axios.get("http://localhost/backend/Vishagan/getDashboardData.php")
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error fetching the data!", error);
+      });
+  }, []);
+
   return (
-    <div className='container'>
-        <div className='box'>
-    <Card sx={{ maxWidth: 345,textAlign:'center',bgcolor:'lightblue' }}>
-       
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          No Of Kids Added
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{textAlign:'center'}} >
-          <ChildCareTwoToneIcon fontSize='large'/><span style={{fontSize:'50px',marginLeft:'30px'}}>10</span>
-        </Typography>
-      </CardContent>
-       
-    </Card>
-    </div>
-    <div className='box'>
-    <Card sx={{ maxWidth: 345,textAlign:'center',bgcolor:'pink' }}>
-       
-       <CardContent>
-         <Typography gutterBottom variant="h5" component="div">
-           No Of Kids Added
-         </Typography>
-         <Typography variant="body2" color="text.secondary" sx={{textAlign:'center'}} >
-           <ChildCareTwoToneIcon fontSize='large'/><span style={{fontSize:'50px',marginLeft:'30px'}}>10</span>
-         </Typography>
-       </CardContent>
-        
-     </Card>
-    </div>
-    <div className='box'>
-    <Card sx={{ maxWidth: 345,textAlign:'center',bgcolor:'lightgreen' }}>
-       
-       <CardContent>
-         <Typography gutterBottom variant="h5" component="div">
-           No Of Kids Added
-         </Typography>
-         <Typography variant="body2" color="text.secondary" sx={{textAlign:'center'}} >
-           <ChildCareTwoToneIcon fontSize='large'/><span style={{fontSize:'50px',marginLeft:'30px'}}>10</span>
-         </Typography>
-       </CardContent>
-        
-     </Card>
-    </div>
+    <div className='card-container'>
+      <Card className='media-card'>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            No Of Kids Added
+          </Typography>
+          <div className='card-content'>
+            <ChildCareTwoToneIcon fontSize='large' />
+            <Typography variant="body2" color="text.secondary">
+              {data.totalKids}
+            </Typography>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className='media-card'>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            No Of Sick Kids Added
+          </Typography>
+          <div className='card-content'>
+            <SickIcon fontSize='large' />
+            <Typography variant="body2" color="text.secondary">
+              {data.sickKids}
+            </Typography>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className='media-card'>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            No Of Attendants Added
+          </Typography>
+          <div className='card-content'>
+            <BadgeIcon fontSize='large' />
+            <Typography variant="body2" color="text.secondary">
+              {data.totalAttendants}
+            </Typography>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

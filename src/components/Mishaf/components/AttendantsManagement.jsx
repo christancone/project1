@@ -1,125 +1,144 @@
-import React, { useState } from 'react';
-import { 
-  Container, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Paper, 
-  Button, 
-  Dialog, 
-  DialogActions, 
-  DialogContent, 
-  DialogTitle, 
-  TextField, 
-  IconButton 
+import React, { useEffect, useState } from 'react';
+import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  IconButton
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
-// Initial data for the attendants
-const initialData = [
-  { id: 1, name: 'Arun Kumar', attendantId: 'A001', children: ['C001', 'C002'], childcareId: 'CC001' },
-  { id: 2, name: 'Ayesha Begum', attendantId: 'A002', children: ['C003'], childcareId: 'CC002' },
-  { id: 3, name: 'Nimal Perera', attendantId: 'A003', children: ['C004', 'C005', 'C006'], childcareId: 'CC003' },
-  { id: 4, name: 'Sundar Raj', attendantId: 'A004', children: ['C007'], childcareId: 'CC004' },
-  { id: 5, name: 'Farhan Ali', attendantId: 'A005', children: ['C023'], childcareId: 'CC005' },
-  { id: 6, name: 'Lakshmi Devi', attendantId: 'A006', children: ['C008', 'C009'], childcareId: 'CC006' },
-  { id: 7, name: 'Mohammed Khan', attendantId: 'A007', children: ['C010'], childcareId: 'CC007' },
-  { id: 8, name: 'Samanthi Silva', attendantId: 'A008', children: ['C011', 'C012'], childcareId: 'CC008' },
-  { id: 9, name: 'Ravi Chandran', attendantId: 'A009', children: ['C013'], childcareId: 'CC009' },
-  { id: 10, name: 'Fathima Noor', attendantId: 'A010', children: ['C014', 'C015'], childcareId: 'CC010' },
-  { id: 11, name: 'Kumari Jayasinghe', attendantId: 'A011', children: ['C016', 'C017'], childcareId: 'CC011' },
-  { id: 12, name: 'Vijay Kumar', attendantId: 'A012', children: ['C018'], childcareId: 'CC012' },
-  { id: 13, name: 'Shanthi Nair', attendantId: 'A013', children: ['C019', 'C020'], childcareId: 'CC013' },
-  { id: 14, name: 'Ruwan Fernando', attendantId: 'A014', children: ['C021'], childcareId: 'CC014' },
-  { id: 15, name: 'Aisha Malik', attendantId: 'A015', children: ['C022', 'C023'], childcareId: 'CC015' },
-];
-
-const AttendantsManagement = () => {
-  // State for managing the list of attendants
-  const [attendants, setAttendants] = useState(initialData);
-
-  // State for handling the search functionality
+const AdminManagement = () => {
+  const [attendants, setAttendants] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
-  // State for managing the dialog visibility
   const [open, setOpen] = useState(false);
-
-  // State for handling the form data for adding/editing an attendant
-  const [newAttendant, setNewAttendant] = useState({ name: '', attendantId: '', children: '', childcareId: '' });
-
-  // State for tracking if the form is in edit mode
+  const [newAttendant, setNewAttendant] = useState({ 
+    attendant_username: '', 
+    firstname: '', 
+    lastname: '', 
+    gender: '', 
+    phonenumber: '', 
+    birthday: '', 
+    email: '', 
+    child_id: '', 
+    admin_id: '' 
+  });
   const [isEditing, setIsEditing] = useState(false);
-
-  // State for storing the ID of the attendant being edited
   const [currentId, setCurrentId] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
-  // Handle search input change
+  useEffect(() => {
+    fetch('http://localhost/backend/mishaf/fetch_attendant.php')
+      .then(response => response.json())
+      .then(data => setAttendants(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  // Open the dialog for adding a new attendant
-  const handleOpen = () => {
-    setNewAttendant({ name: '', attendantId: '', children: '', childcareId: '' });
-    setIsEditing(false);
+  const handleOpen = (attendant) => {
+    setNewAttendant(attendant);
+    setIsEditing(true);
+    setCurrentId(attendant.attendant_id);
     setOpen(true);
   };
 
-  // Close the dialog
   const handleClose = () => {
     setOpen(false);
   };
 
-  // Add a new attendant to the list
   const handleAdd = () => {
-    const newAttendantWithId = {
-      ...newAttendant,
-      id: attendants.length + 1,
-      children: newAttendant.children.split(',')
-    };
-    setAttendants([...attendants, newAttendantWithId]);
-    handleClose();
+    fetch('http://localhost/backend/mishaf/add_attendant.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newAttendant)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        fetch('http://localhost/backend/mishaf/fetch_attendant.php')
+          .then(response => response.json())
+          .then(data => setAttendants(data))
+          .catch(error => console.error('Error fetching data:', error));
+        handleClose();
+      } else {
+        console.error(data.message);
+      }
+    })
+    .catch(error => console.error('Error adding attendant:', error));
   };
 
-  // Open the dialog for editing an existing attendant
-  const handleEdit = (attendant) => {
-    setNewAttendant({ ...attendant, children: attendant.children.join(', ') });
-    setIsEditing(true);
-    setCurrentId(attendant.id);
-    setOpen(true);
-  };
-
-  // Update an existing attendant in the list
   const handleUpdate = () => {
-    const updatedAttendants = attendants.map(attendant =>
-      attendant.id === currentId
-        ? { ...newAttendant, id: currentId, children: newAttendant.children.split(',') }
-        : attendant
-    );
-    setAttendants(updatedAttendants);
-    handleClose();
+    fetch('http://localhost/backend/mishaf/update_attendant.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ...newAttendant, attendant_id: currentId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        setAttendants(attendants.map(attendant => 
+          attendant.attendant_id === currentId ? newAttendant : attendant
+        ));
+        handleClose();
+      } else {
+        console.error(data.message);
+      }
+    })
+    .catch(error => console.error('Error updating attendant:', error));
   };
 
-  // Delete an attendant from the list
   const handleDelete = (id) => {
-    const remainingAttendants = attendants.filter(attendant => attendant.id !== id);
-    setAttendants(remainingAttendants);
+    setDeleteId(id);
+    setDeleteDialogOpen(true);
   };
 
-  // Filter attendants based on the search term
+  const confirmDelete = () => {
+    fetch('http://localhost/backend/mishaf/delete_attendant.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ attendant_id: deleteId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        setAttendants(attendants.filter(attendant => attendant.attendant_id !== deleteId));
+        setDeleteDialogOpen(false);
+      } else {
+        console.error(data.message);
+      }
+    })
+    .catch(error => console.error('Error deleting attendant:', error));
+  };
+
   const filteredAttendants = attendants.filter(attendant =>
-    attendant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    attendant.attendantId.toLowerCase().includes(searchTerm.toLowerCase())
+    attendant.attendant_username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    attendant.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    attendant.lastname.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <Container>
       <div className='text-4xl mb-5'>Attendants Management</div>
-      
-      {/* Search Field */}
       <TextField 
         label="Search Attendants" 
         variant="outlined" 
@@ -128,36 +147,38 @@ const AttendantsManagement = () => {
         value={searchTerm} 
         onChange={handleSearch} 
       />
-      
-      {/* Add Attendant Button */}
-      <Button variant="contained" color="primary" onClick={handleOpen}>
+      <Button variant="contained" color="primary" onClick={() => { setNewAttendant({ attendant_username: '', firstname: '', lastname: '', gender: '', phonenumber: '', birthday: '', email: '', child_id: '', admin_id: '' }); setIsEditing(false); setOpen(true); }}>
         Add Attendant
       </Button>
-      
-      {/* Attendants Table */}
       <TableContainer component={Paper} className='mt-3'>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="bg-gray-200">Name</TableCell>
-              <TableCell className="bg-gray-200">Attendant ID</TableCell>
-              <TableCell className="bg-gray-200">Children IDs</TableCell>
-              <TableCell className="bg-gray-200">Childcare ID</TableCell>
+              <TableCell className="bg-gray-200">Username</TableCell>
+              <TableCell className="bg-gray-200">First Name</TableCell>
+              <TableCell className="bg-gray-200">Last Name</TableCell>
+              <TableCell className="bg-gray-200">Gender</TableCell>
+              <TableCell className="bg-gray-200">Phone Number</TableCell>
+              <TableCell className="bg-gray-200">Birthday</TableCell>
+              <TableCell className="bg-gray-200">Email</TableCell>
               <TableCell className="bg-gray-200">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredAttendants.map((attendant) => (
-              <TableRow key={attendant.id}>
-                <TableCell>{attendant.name}</TableCell>
-                <TableCell>{attendant.attendantId}</TableCell>
-                <TableCell>{attendant.children.join(', ')}</TableCell>
-                <TableCell>{attendant.childcareId}</TableCell>
+              <TableRow key={attendant.attendant_id}>
+                <TableCell>{attendant.attendant_username}</TableCell>
+                <TableCell>{attendant.firstname}</TableCell>
+                <TableCell>{attendant.lastname}</TableCell>
+                <TableCell>{attendant.gender}</TableCell>
+                <TableCell>{attendant.phonenumber}</TableCell>
+                <TableCell>{attendant.birthday}</TableCell>
+                <TableCell>{attendant.email}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleEdit(attendant)}>
+                  <IconButton color="primary" onClick={() => handleOpen(attendant)}>
                     <Edit />
                   </IconButton>
-                  <IconButton color="secondary" onClick={() => handleDelete(attendant.id)}>
+                  <IconButton color="secondary" onClick={() => handleDelete(attendant.attendant_id)}>
                     <Delete />
                   </IconButton>
                 </TableCell>
@@ -166,43 +187,82 @@ const AttendantsManagement = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      
-      {/* Add/Edit Attendant Dialog */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{isEditing ? 'Edit Attendant' : 'Add New Attendant'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label="Name"
+            label="Username"
             type="text"
             fullWidth
-            value={newAttendant.name}
-            onChange={(e) => setNewAttendant({ ...newAttendant, name: e.target.value })}
+            value={newAttendant.attendant_username}
+            onChange={(e) => setNewAttendant({ ...newAttendant, attendant_username: e.target.value })}
           />
           <TextField
             margin="dense"
-            label="Attendant ID"
+            label="First Name"
             type="text"
             fullWidth
-            value={newAttendant.attendantId}
-            onChange={(e) => setNewAttendant({ ...newAttendant, attendantId: e.target.value })}
+            value={newAttendant.firstname}
+            onChange={(e) => setNewAttendant({ ...newAttendant, firstname: e.target.value })}
           />
           <TextField
             margin="dense"
-            label="Children IDs (comma separated)"
+            label="Last Name"
             type="text"
             fullWidth
-            value={newAttendant.children}
-            onChange={(e) => setNewAttendant({ ...newAttendant, children: e.target.value })}
+            value={newAttendant.lastname}
+            onChange={(e) => setNewAttendant({ ...newAttendant, lastname: e.target.value })}
           />
           <TextField
             margin="dense"
-            label="Childcare ID"
+            label="Gender"
             type="text"
             fullWidth
-            value={newAttendant.childcareId}
-            onChange={(e) => setNewAttendant({ ...newAttendant, childcareId: e.target.value })}
+            value={newAttendant.gender}
+            onChange={(e) => setNewAttendant({ ...newAttendant, gender: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Phone Number"
+            type="text"
+            fullWidth
+            value={newAttendant.phonenumber}
+            onChange={(e) => setNewAttendant({ ...newAttendant, phonenumber: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Birthday"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            value={newAttendant.birthday}
+            onChange={(e) => setNewAttendant({ ...newAttendant, birthday: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Email"
+            type="email"
+            fullWidth
+            value={newAttendant.email}
+            onChange={(e) => setNewAttendant({ ...newAttendant, email: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Child ID"
+            type="text"
+            fullWidth
+            value={newAttendant.child_id}
+            onChange={(e) => setNewAttendant({ ...newAttendant, child_id: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Admin ID"
+            type="text"
+            fullWidth
+            value={newAttendant.admin_id}
+            onChange={(e) => setNewAttendant({ ...newAttendant, admin_id: e.target.value })}
           />
         </DialogContent>
         <DialogActions>
@@ -214,8 +274,22 @@ const AttendantsManagement = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this attendant?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={confirmDelete} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
 
-export default AttendantsManagement;
+export default AdminManagement;

@@ -12,7 +12,10 @@
     max-width: 800px;
     padding-right: 100px;
 }
-
+.otp .otp1 h2{
+    font-size: 60px;
+    font-weight: 800;
+}
 .otp img {
     max-width: 200px;
     padding-right: 10px;
@@ -142,30 +145,27 @@
     height: 200px;
 }
 
-
-
-/*button */
-.otp .otp2 .button {
-    background: #6A41AE;
-    border-radius: 6px;
-    border: 2px solid transparent;
-  
-    box-shadow: 8px 8px 20px 0px #9290C3;
-  
-    line-height: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: white;
-  
+.otp .otp2 .otpCode input{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
     font-size: 15px;
-    padding: 10px 20px;
-  }
-  
-  .otp .otp2 .button:hover {
-    color: #6A41AE;
-    background-color: #fafafa;
-    border: 2px solid #6A41AE;
-  }
-  
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
 
+}
+
+.otp .otp2 .resend-container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin-top: 20px;
+}
+
+.otp .otp2 .resend-container a {
+    color: #6A41AE;
+    text-decoration: underline;
+    cursor: pointer;
+}
 

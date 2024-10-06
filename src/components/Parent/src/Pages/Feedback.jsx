@@ -17,7 +17,7 @@ const Feedback = () => {
     return (
         <div className="feedback">
             <div className="content">
-                <h1>Give Feedback.</h1>
+                {/* <h1>Give Feedback.</h1> */}
 
 
                 <div className="leave-field">

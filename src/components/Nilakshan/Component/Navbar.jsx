@@ -12,15 +12,15 @@ const Navbar = () => {
       navigate('/login')
     };
 
-  const navigate1 = useNavigate();
-    const button1 = () => {
-      navigate('/home')
-    };
+  // const navigate1 = useNavigate();
+  //   const button1 = () => {
+  //     navigate('/home')
+  //   };
 
   return (
     <>
-    <div className="navbar">
-        <img src={logo} alt="logo" className='logo' onClick={button1}/>
+    <div className="navbarr">
+        <img src={logo} alt="logo" className='logo'/>
           <div className="links">
             
               <Link to = "/">Home</Link>

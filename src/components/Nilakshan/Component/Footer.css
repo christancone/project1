@@ -2,7 +2,7 @@
     padding: 0 0 1px 0;;
 }
 
-.foot {
+.footer .foot {
     padding: 0px 0 100px 0;
     display: flex;
     align-items: center;
@@ -10,21 +10,19 @@
     margin: 0 auto;
 }
 
-.footer .logo img{
+.footer .foot .logo img{
     width: 100px;
     margin-left: 75px;
 }
 
-.footer .content1{
+.footer .foot .content1{
     max-width: 200px;
     margin: auto;
 }
 
-.footer p{
-    padding: 10px 0 0 0;
-}
 
-.footer .subscribe{
+
+.footer .foot .subscribe{
     max-width: 400px;
     margin: auto;
     padding: 20px;
@@ -32,17 +30,16 @@
 
 
 
-input::placeholder {
+.footer .foot input::placeholder {
   color: #6A41AE; /* Color of the placeholder text */
   opacity: 0.5; /* Ensures the color is fully applied (optional) */
 }
 
-.footer .subscribe .box {
+.footer .foot .subscribe .boxxx {
     display: flex;
-    margin: auto;
 }
 
-.footer .subscribe .box #subscribe {
+.footer .foot .subscribe .boxxx #subscribe {
     width: 280px;
     padding: 10px;
     border: 1px solid #6A41AE;
@@ -50,8 +47,9 @@ input::placeholder {
   }
 
   
-.footer .subscribe .box .button{
-    margin: auto;
+.footer .foot .subscribe .boxxx .button{
+    margin-left: 10px;
+
 }
 
 .footer .right hr{
@@ -68,7 +66,7 @@ input::placeholder {
 }
 
 .footer .right .arrange {
-    font-size: 12px;
+    font-size: 15px;
     color: #6A41AE;
     max-width: 1500px;
     display: flex;
@@ -80,20 +78,18 @@ input::placeholder {
     padding: 0 100px 0 0;
 }
 
-.footer .right .arrange .type img {
-    padding: 0 20px;
+.footer .right .arrange img {
     justify-content: baseline;
 }
 
-.icon-container {
+.footer .right .arrange .icon-containerrrrr {
     display: flex;
     align-items: center; /* Aligns items vertically in the center */
     justify-content: flex-end; /* Adjusts spacing between items */
     margin-left: auto;
   }
   
-.icon {
+  .footer .right .arrange .icon-containerrrrr .iconnnn {
     margin: 5px; /* Adds some space around each icon */
     padding: 0 0 0 20px;
-    width: 30px;
 }

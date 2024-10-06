@@ -23,7 +23,7 @@ const Parent = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const role = location?.state?.role || ''; 
+  const role = location?.state?.role || '';
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -47,9 +47,9 @@ const Parent = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/Login_php/login.php',
-        { email, password },
-        { headers: { 'Content-Type': 'application/json' } }
+          'http://localhost/backend/Login_php/login.php',
+          { email, password },
+          { headers: { 'Content-Type': 'application/json' } }
       );
 
       if (response.data.message === 'Login successful') {
@@ -73,61 +73,61 @@ const Parent = () => {
   };
 
   return (
-    <div className="parent">
-      <div className="parent1">
-        <h2>Daycares in Sri Lanka</h2>
-        <p>
-          In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
-        </p>
-        <Marquee className='marquee' pauseOnHover>
-          <div className="img-marquee"><img src={mar3} alt="" /></div>
-          <div className="img-marquee"><img src={mar4} alt="" /></div>
-          <div className="img-marquee"><img src={mar5} alt="" /></div>
-          <div className="img-marquee"><img src={mar6} alt="" /></div>
-          <div className="img-marquee"><img src={mar7} alt="" /></div>
-          <div className="img-marquee"><img src={mar8} alt="" /></div>
-        </Marquee>
-      </div>
+      <div className="parent">
+        <div className="parent1">
+          <h2>Daycares in Sri Lanka</h2>
+          <p>
+            In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
+          </p>
+          <Marquee className='marquee' pauseOnHover>
+            <div className="img-marquee"><img src={mar3} alt="" /></div>
+            <div className="img-marquee"><img src={mar4} alt="" /></div>
+            <div className="img-marquee"><img src={mar5} alt="" /></div>
+            <div className="img-marquee"><img src={mar6} alt="" /></div>
+            <div className="img-marquee"><img src={mar7} alt="" /></div>
+            <div className="img-marquee"><img src={mar8} alt="" /></div>
+          </Marquee>
+        </div>
 
-      <div className="parent2">
-        <h3>Your email or Phone number</h3>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleEmailChange}
-          placeholder='Email'
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-          placeholder='Password'
-        />
-        <button className="button" onClick={otpButton}>
-          {loading ? <CircularProgress size={30} /> : 'Login'}
-        </button>
-        <div className="or">
-          <hr />
-          <p>or</p>
-          <hr />
+        <div className="parent2">
+          <h3>Your email or Phone number</h3>
+          <label htmlFor="email">Email:</label>
+          <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder='Email'
+          />
+          <label htmlFor="password">Password:</label>
+          <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder='Password'
+          />
+          <button className="button" onClick={otpButton}>
+            {loading ? <CircularProgress size={30} /> : 'Login'}
+          </button>
+          <div className="or">
+            <hr />
+            <p>or</p>
+            <hr />
+          </div>
+          <button className='sign-button'>
+            <img src={image3} alt="Google" /> Continue with Google
+          </button>
+          <button className='sign-button'>
+            <img src={image2} alt="Apple" /> Continue with Apple
+          </button>
+          <div className="parent3">
+            <p>Don't have an account?</p>
+            <p className="signup" onClick={handleRegister}>Sign up</p>
+          </div>
         </div>
-        <button className='sign-button'>
-          <img src={image3} alt="Google" /> Continue with Google
-        </button>
-        <button className='sign-button'>
-          <img src={image2} alt="Apple" /> Continue with Apple
-        </button>
-        <div className="parent3">
-          <p>Don't have an account?</p>
-          <p className="signup" onClick={handleRegister}>Sign up</p>
-        </div>
+        <NotificationContainer />
       </div>
-      <NotificationContainer />
-    </div>
   );
 };
 

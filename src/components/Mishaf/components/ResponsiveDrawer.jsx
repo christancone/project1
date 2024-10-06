@@ -37,218 +37,231 @@ import Profile from './Profile';
 import Chat from './Chat';
 import Feedback from './Feedback';
 import { Tooltip, Menu, MenuItem, Badge } from '@mui/material';
+import axios from 'axios'; // Make sure to import axios
 
 // Define the width of the drawer
 const drawerWidth = 270;
 
 // Define the items for the main navigation
 const items = [
-  { text: 'Dashboard', icon: <DashboardRoundedIcon />, path: '/' },
-  { text: 'Admin Management', icon: <ChildFriendlyRoundedIcon />, path: '/adminManagement' },
-  { text: 'Attendants Management', icon: <Face4Icon />, path: '/attendantsManagement' },
-  { text: 'Child Management', icon: <ChildCareRoundedIcon />, path: '/ChildManagement' },
-  { text: 'Parent Management', icon: <EscalatorWarningRoundedIcon />, path: '/parentsManagement' }
+    { text: 'Dashboard', icon: <DashboardRoundedIcon />, path: '/' },
+    { text: 'Admin Management', icon: <ChildFriendlyRoundedIcon />, path: '/adminManagement' },
+    { text: 'Attendants Management', icon: <Face4Icon />, path: '/attendantsManagement' },
+    { text: 'Child Management', icon: <ChildCareRoundedIcon />, path: '/ChildManagement' },
+    { text: 'Parent Management', icon: <EscalatorWarningRoundedIcon />, path: '/parentsManagement' }
 ];
 
 // Define the items for the secondary navigation
 const items2 = [
-  { text: 'Chat', icon: <ChatBubbleRoundedIcon />, path: '/chat' },
-  { text: 'Feedback', icon: <RateReviewRoundedIcon />, path: '/feedback' },
-  { text: 'Profile', icon: <AccountCircleRoundedIcon />, path: '/profile' },
-  { text: 'Logout', icon: <LogoutRoundedIcon link={Feedback} />, path: '/logout' },
+    { text: 'Chat', icon: <ChatBubbleRoundedIcon />, path: '/chat' },
+    { text: 'Feedback', icon: <RateReviewRoundedIcon />, path: '/feedback' },
+    { text: 'Profile', icon: <AccountCircleRoundedIcon />, path: '/profile' },
+    { text: 'Logout', icon: <LogoutRoundedIcon />, path: '/logout', action: 'logout' },
 ];
 
 function ResponsiveDrawer(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  // const [notificationCount, setNotificationCount] = useState(5); // Example notification count
+    const { window } = props;
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    // const [notificationCount, setNotificationCount] = useState(5); // Example notification count
 
-  // Toggle the drawer open/close state
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    // Toggle the drawer open/close state
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
-  // Handle menu click event
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    // Handle menu click event
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-  // Handle menu close event
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+    // Handle menu close event
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
-  // Drawer content
-  const drawer = (
-    <div>
-      <Toolbar>
-        <img style={{ width: '25%', height: '25%' }} src={lo} alt="Logo" />
-        <img src={logo} alt="Logo" />
-      </Toolbar>
-      <Divider />
-      <List>
-        {items.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton component={Link} to={item.path}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {items2.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton component={Link} to={item.path}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
+    // Logout function
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
+            console.log(response.data.message); // Logout successful
+            // Redirect to homepage
+            window.location.href = '/'; // Redirect to the homepage
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
 
-  // Container for the drawer
-  const container = window !== undefined ? () => window().document.body : undefined;
+    // Drawer content
+    const drawer = (
+        <div>
+            <Toolbar>
+                <img style={{ width: '25%', height: '25%' }} src={lo} alt="Logo" />
+                <img src={logo} alt="Logo" />
+            </Toolbar>
+            <Divider />
+            <List>
+                {items.map((item) => (
+                    <ListItem key={item.text} disablePadding>
+                        <ListItemButton component={Link} to={item.path}>
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
+            <List>
+                {items2.map((item) => (
+                    <ListItem key={item.text} disablePadding>
+                        <ListItemButton component={item.action === 'logout' ? 'button' : Link} to={item.path} onClick={item.action === 'logout' ? handleLogout : undefined}>
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </div>
+    );
 
-  return (
-    <Router>
-  {/* Main container for the layout */}
-  <Box sx={{ display: 'flex' }}>
-    <CssBaseline />
-    
-    {/* AppBar at the top of the page */}
-    <AppBar
-      position="fixed"
-      sx={{
-        width: { sm: `calc(100% - ${drawerWidth}px)` }, // Adjust width based on drawer width
-        ml: { sm: `${drawerWidth}px` }, // Adjust margin-left based on drawer width
-        bgcolor: "#6A41AE" // Background color of the AppBar
-      }}
-    >
-      <Toolbar>
-        {/* IconButton to open the drawer on mobile */}
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: 'none' } }} // Hide on small screens
-        >
-          <Tooltip title="Menu">
-            <MenuIcon />
-          </Tooltip>
-        </IconButton>
-        
-        {/* Title of the application */}
-        <Typography variant="h6" noWrap component="div">
-          Tiny Toes Management
-        </Typography>
+    // Container for the drawer
+    const container = window !== undefined ? () => window().document.body : undefined;
 
-        {/* Icons on the right side of the AppBar */}
-        <Box sx={{ ml: 'auto', color: 'white' }}>
-          {/* Notifications Icon */}
-          {/* <Tooltip title="Notifications">
+    return (
+        <Router>
+            {/* Main container for the layout */}
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+
+                {/* AppBar at the top of the page */}
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        width: { sm: `calc(100% - ${drawerWidth}px)` }, // Adjust width based on drawer width
+                        ml: { sm: `${drawerWidth}px` }, // Adjust margin-left based on drawer width
+                        bgcolor: "#6A41AE" // Background color of the AppBar
+                    }}
+                >
+                    <Toolbar>
+                        {/* IconButton to open the drawer on mobile */}
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { sm: 'none' } }} // Hide on small screens
+                        >
+                            <Tooltip title="Menu">
+                                <MenuIcon />
+                            </Tooltip>
+                        </IconButton>
+
+                        {/* Title of the application */}
+                        <Typography variant="h6" noWrap component="div">
+                            Tiny Toes Management
+                        </Typography>
+
+                        {/* Icons on the right side of the AppBar */}
+                        <Box sx={{ ml: 'auto', color: 'white' }}>
+                            {/* Notifications Icon */}
+                            {/* <Tooltip title="Notifications">
             <IconButton component={Link} to="/chat">
               <Badge badgeContent={notificationCount} color="error">
                 <NotificationsOutlinedIcon />
               </Badge>
             </IconButton>
           </Tooltip> */}
-          
-          {/* Settings Icon */}
-          <Tooltip title="Settings">
-            <IconButton component={Link} to="/profile">
-              <SettingsOutlinedIcon />
-            </IconButton>
-          </Tooltip>
-          
-          {/* Profile Icon */}
-          <Tooltip title="Profile">
-            <IconButton onClick={handleMenuClick}>
-              <PersonOutlineOutlinedIcon />
-            </IconButton>
-          </Tooltip>
-          
-          {/* Profile Menu */}
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem component={Link} to="/logout" onClick={handleMenuClose}>Logout</MenuItem>
-          </Menu>
-        </Box>
-      </Toolbar>
-    </AppBar>
-    
-    {/* Navigation Drawer */}
-    <Box
-      component="nav"
-      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
-    >
-      {/* Temporary Drawer for mobile */}
-      <Drawer
-        container={container}
-        variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-        sx={{
-          display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-        }}
-      >
-        {drawer}
-      </Drawer>
-      
-      {/* Permanent Drawer for desktop */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-        }}
-        open
-      >
-        {drawer}
-      </Drawer>
-    </Box>
-    
-    {/* Main content area */}
-    <Box
-      component="main"
-      sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-    >
-      <Toolbar />
-      <Routes>
-        {/* Define routes for different components */}
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/adminManagement" element={<AdminManagement />} />
-        <Route path="/attendantsManagement" element={<AttendantsManagement />} />
-        <Route path="/childManagement" element={<ChildManagement />} />
-        <Route path="/parentsManagement" element={<ParentsManagement />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </Box>
-  </Box>
-</Router>
-  );
+
+                            {/* Settings Icon */}
+                            <Tooltip title="Settings">
+                                <IconButton component={Link} to="/profile">
+                                    <SettingsOutlinedIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            {/* Profile Icon */}
+                            <Tooltip title="Profile">
+                                <IconButton onClick={handleMenuClick}>
+                                    <PersonOutlineOutlinedIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            {/* Profile Menu */}
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleMenuClose}
+                            >
+                                <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>Profile</MenuItem>
+                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            </Menu>
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+
+                {/* Navigation Drawer */}
+                <Box
+                    component="nav"
+                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                    aria-label="mailbox folders"
+                >
+                    {/* Temporary Drawer for mobile */}
+                    <Drawer
+                        container={container}
+                        variant="temporary"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                    >
+                        {drawer}
+                    </Drawer>
+
+                    {/* Permanent Drawer for desktop */}
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+
+                {/* Main content area */}
+                <Box
+                    component="main"
+                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+                >
+                    <Toolbar />
+                    <Routes>
+                        {/* Define routes for different components */}
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/adminManagement" element={<AdminManagement />} />
+                        <Route path="/attendantsManagement" element={<AttendantsManagement />} />
+                        <Route path="/childManagement" element={<ChildManagement />} />
+                        <Route path="/parentsManagement" element={<ParentsManagement />} />
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/feedback" element={<Feedback />} />
+                        <Route path="/profile" element={<Profile />} />
+                    </Routes>
+                </Box>
+            </Box>
+        </Router>
+    );
 }
 
 // Define the prop types for the ResponsiveDrawer component
 ResponsiveDrawer.propTypes = {
-  // The 'window' prop is expected to be a function
-  window: PropTypes.func,
+    // The 'window' prop is expected to be a function
+    window: PropTypes.func,
 };
 
 export default ResponsiveDrawer;

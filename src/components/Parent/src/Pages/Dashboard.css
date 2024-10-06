@@ -4,24 +4,12 @@
 
 .dashboard .content {
     padding-top: 10%;
-
     margin-left: 10%;
-
     width: 80%;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
 }
 
 .dashboard .content h1 {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-
     color: #6A41AE;
-    text-align: center;
     font-size: 37.2px;
     font-style: normal;
     font-weight: 700;
@@ -29,6 +17,61 @@
 
     padding-bottom: 3%;
 }
+
+.dashboard .content h2 {
+    color: #9290C3;
+    font-size: 30 px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    padding-bottom: 3%;
+}
+
+.dashboard .tables{
+    display: flex;
+    padding: auto;
+}
+
+.dashboard .food{
+    margin-left: 10%;
+}
+.dashboard .food table {
+    border: 1px solid #6A41AE;
+    border-radius: 16px;
+    border-collapse: separate; /* Make sure cells are not collapsed to see the border radius */
+    border-spacing: 0; /* Optional, you can adjust spacing if needed */
+    overflow: hidden; 
+}
+.dashboard .food table{
+    padding: 10px 20px;
+}
+.dashboard .food td{
+    padding: 10px 20px 10px 0; 
+}
+
+.dashboard .food .bold{
+    color: #6A41AE;
+    font-weight: bold;
+}
+
+.dashboard .food .green{
+    color: green;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .dashboard .content p{
 

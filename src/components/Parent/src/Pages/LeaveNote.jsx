@@ -17,7 +17,7 @@ const LeaveNote = () => {
     return (
         <div className="leaveNote">
             <div className="content">
-                <h1>Leave a note.</h1>
+                {/* <h1>Leave a note.</h1> */}
 
 
                 <div className="leave-field">

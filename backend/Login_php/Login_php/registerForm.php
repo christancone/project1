@@ -102,11 +102,11 @@ class RegisterForm {
             $checkStmt->bind_result($count);
             $checkStmt->fetch();
             $checkStmt->close();
-    
+
             if ($count > 0) {
                 throw new Exception('Email already exists in the main database');
             }
-    
+
             // Proceed with the data transfer if email is unique
             $query = "SELECT first_name, last_name, phone_no, address, password FROM temporary_otps WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
@@ -130,17 +130,16 @@ class RegisterForm {
                     $role // Now correctly passing the role
                 );
                 $stmt->execute();
-    
+
                 if ($stmt->affected_rows === 0) {
                     throw new Exception('Failed to insert user data into the main database');
                 }
-    
+
                 // Delete the OTP record after successful transfer
                 $deleteQuery = "DELETE FROM temporary_otps WHERE email = ?";
                 $stmt = $this->db->getConnection()->prepare($deleteQuery);
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
-    
                 if ($stmt->affected_rows === 0) {
                     throw new Exception('Failed to delete OTP record');
                 }

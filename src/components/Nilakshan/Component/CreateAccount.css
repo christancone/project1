@@ -12,6 +12,19 @@
     padding-right: 50px;
 }
 
+.CreateAccount .CreateAccount1 h2{
+    font-weight: 800;
+    font-size: 60px;
+}
+
+.CreateAccount .CreateAccount1 p{
+    color: #9290C3;
+}
+
+.CreateAccount .CreateAccount1 h4{
+    font-weight: 600;
+}
+
 .CreateAccount img {
     max-width: 200px;
     padding-right: 10px;
@@ -74,6 +87,8 @@
     border: 2px solid #6A41AE;
     padding: 40px;
 }
+
+
 
 .CreateAccount .or {
     padding-top: 20px;
@@ -173,11 +188,36 @@
     margin-right: 10px;
 }
 
-.CreateAccount .CreateAccount2 .content2 .row {
+
+.CreateAccount .CreateAccount2 .content2 .row1{
     display: flex;
 }
+.CreateAccount .CreateAccount2 .content2 .row1 input{
+    padding: 10px;
+    border: 1px solid #6A41AE;
+    border-radius: 5px;
 
-.CreateAccount .CreateAccount2 .content2 .row .input-box {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+
+
+.CreateAccount .CreateAccount2 .content2 .row .name h4{
+    font-size: 15px;
+}
+
+.CreateAccount .CreateAccount2 .content2 .row1 .name h4{
+    font-size: 15px;
+}
+
+
+
+.CreateAccount .CreateAccount2 .content2 .row .input-box{
     padding: 10px;
     border: 1px solid #6A41AE;
     border-radius: 5px;
@@ -193,20 +233,9 @@
 
 
 .CreateAccount .CreateAccount2 .content2 .button {
-    background: #6A41AE;
-    border-radius: 6px;
-    border: 2px solid transparent;
-
-    box-shadow: 8px 8px 20px 0px #9290C3;
-
-    line-height: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: white;
-
-    font-size: 15px;
-
-    padding: 15px 305px;
+    width: fit-content;
+    padding: 20px 245px;
+    font-weight: 600;
 }
 
 

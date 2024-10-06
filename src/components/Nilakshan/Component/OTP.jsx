@@ -22,7 +22,7 @@ const OTP = () => {
   const [loading, setLoading] = useState(false); // Change initial state to false
   const location = useLocation();
   const { email } = location.state || {};
-  const role = location?.state?.role || ''; 
+  const role = location?.state?.role || '';
   const handleEvent = (e) => {
     const { name, value } = e.target;
     if (/^\d$/.test(value) || value === '') {
@@ -54,9 +54,9 @@ const OTP = () => {
     console.log(role);
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
-        { enteredOtp, email,role },
-        { headers: { 'Content-Type': 'application/json' } }
+          'http://localhost/backend/Login_php/registerForm.php',
+          { enteredOtp, email,role },
+          { headers: { 'Content-Type': 'application/json' } }
       );
 
       console.log('Response from server:', response.data);
@@ -78,87 +78,87 @@ const OTP = () => {
   };
 
   return (
-    <div className="otp">
-      <div className="otp1">
-        <h2>Srilanka</h2>
-        <p>
-          In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
-        </p>
-        <Marquee className="marquee" pauseOnHover>
-          <div className="img-marquee">
-            <img src={mar3} alt="marquee image 1" />
-          </div>
-          <div className="img-marquee">
-            <img src={mar4} alt="marquee image 2" />
-          </div>
-          <div className="img-marquee">
-            <img src={mar5} alt="marquee image 3" />
-          </div>
-          <div className="img-marquee">
-            <img src={mar6} alt="marquee image 4" />
-          </div>
-          <div className="img-marquee">
-            <img src={mar7} alt="marquee image 5" />
-          </div>
-          <div className="img-marquee">
-            <img src={mar8} alt="marquee image 6" />
-          </div>
-        </Marquee>
-      </div>
-
-      <div className="otp2">
-        <h3>Verification code</h3>
-        <div className="otpCode">
-          <input
-            type="text"
-            name="otp1"
-            className="subscribe"
-            maxLength={1}
-            value={otp1}
-            onChange={handleEvent}
-            required
-          />
-          <input
-            type="text"
-            name="otp2"
-            className="subscribe"
-            maxLength={1}
-            value={otp2}
-            onChange={handleEvent}
-            required
-          />
-          <input
-            type="text"
-            name="otp3"
-            className="subscribe"
-            maxLength={1}
-            value={otp3}
-            onChange={handleEvent}
-            required
-          />
-          <input
-            type="text"
-            name="otp4"
-            className="subscribe"
-            maxLength={1}
-            value={otp4}
-            onChange={handleEvent}
-            required
-          />
+      <div className="otp">
+        <div className="otp1">
+          <h2>Srilanka</h2>
+          <p>
+            In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
+          </p>
+          <Marquee className="marquee" pauseOnHover>
+            <div className="img-marquee">
+              <img src={mar3} alt="marquee image 1" />
+            </div>
+            <div className="img-marquee">
+              <img src={mar4} alt="marquee image 2" />
+            </div>
+            <div className="img-marquee">
+              <img src={mar5} alt="marquee image 3" />
+            </div>
+            <div className="img-marquee">
+              <img src={mar6} alt="marquee image 4" />
+            </div>
+            <div className="img-marquee">
+              <img src={mar7} alt="marquee image 5" />
+            </div>
+            <div className="img-marquee">
+              <img src={mar8} alt="marquee image 6" />
+            </div>
+          </Marquee>
         </div>
 
-        <button className="button" onClick={loginButton}>
-          {loading ? <CircularWithValueLabel /> : 'Login'}
-        </button>
+        <div className="otp2">
+          <h3>Verification code</h3>
+          <div className="otpCode">
+            <input
+                type="text"
+                name="otp1"
+                className="subscribe"
+                maxLength={1}
+                value={otp1}
+                onChange={handleEvent}
+                required
+            />
+            <input
+                type="text"
+                name="otp2"
+                className="subscribe"
+                maxLength={1}
+                value={otp2}
+                onChange={handleEvent}
+                required
+            />
+            <input
+                type="text"
+                name="otp3"
+                className="subscribe"
+                maxLength={1}
+                value={otp3}
+                onChange={handleEvent}
+                required
+            />
+            <input
+                type="text"
+                name="otp4"
+                className="subscribe"
+                maxLength={1}
+                value={otp4}
+                onChange={handleEvent}
+                required
+            />
+          </div>
 
-        <div className="resend-container">
-          <p className="resend">Resend</p>
-          <p className="menu">Go to menu</p>
+          <button className="button" onClick={loginButton}>
+            {loading ? <CircularWithValueLabel /> : 'Login'}
+          </button>
+
+          <div className="resend-container">
+            <p className="resend">Resend</p>
+            <p className="menu">Go to menu</p>
+          </div>
         </div>
-      </div>
 
-      <ToastContainer />
-    </div>
+        <ToastContainer />
+      </div>
   );
 };
 
