@@ -1,9 +1,10 @@
 import React from 'react'
 import AttendantTable from '../Subcomponents/AttendantTable'
+import AttendanceTable from "../Subcomponents/AttendanceTable.jsx";
 const Attendance = () => {
   return (
     <div>
-      <AttendantTable/>
+      <AttendanceTable/>
        </div>
   )
 }

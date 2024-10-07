@@ -71,7 +71,7 @@ const AttendantTable = () => {
   return (
     <Box>
       <Typography variant="h6" component="div" sx={{ mb: 2 }}>
-        Attendant Details
+        Attendance
       </Typography>
       <TableContainer component={Paper}>
         <Table>
