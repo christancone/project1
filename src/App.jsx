@@ -20,7 +20,7 @@ function App() {
     const [error, setError] = useState(null);
 
     // Polling interval in milliseconds (e.g., check every 5 seconds)
-    const POLLING_INTERVAL = 5000;
+    const POLLING_INTERVAL = 1000;
 
     const fetchUserRole = async () => {
         try {

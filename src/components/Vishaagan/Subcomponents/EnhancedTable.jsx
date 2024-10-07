@@ -6,9 +6,10 @@ export default function EnhancedTable() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost/backend/Vishagan/getBillingDetails.php')
+    axios.get('http://localhost/backend/Vishagan/getBillingDetails.php',{withCredentials:true,})
       .then(response => {
         setData(response.data);
+        console.log(response.data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
