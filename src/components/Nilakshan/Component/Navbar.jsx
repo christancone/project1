@@ -14,12 +14,14 @@ const Navbar = () => {
   
     const buttonClick = () => {
    
-      navigate('/Parent')
+      navigate('/NilakshanParent')
     };
 
     const profilebutton = () => {
    
-      navigate('/Parent')
+      if (role === 'Parent') {
+        navigate('/ '); // Navigate to the route that renders the Parent component
+      }
     };
 
   // const navigate1 = useNavigate();

@@ -17,7 +17,7 @@ import mar8 from '../assets/Group6.png';
 import image2 from '../assets/a1.png';
 import image3 from '../assets/g1.png';
 
-const Parent = () => {
+const NilakshanParent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ const Parent = () => {
        console.log(userRole);
         
        if (userRole === 'Parent') {
-        navigate('/parent', { state: { email, userRole } });
+        navigate('/', { state: { email, userRole } });
       } else if (userRole === 'Attendant') {
         navigate('/otp', { state: { email, userRole } });
       } else if (userRole === 'Mishaf') {
@@ -145,4 +145,4 @@ const Parent = () => {
   );
 };
 
-export default Parent;
+export default NilakshanParent;
