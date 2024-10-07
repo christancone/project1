@@ -1,40 +1,35 @@
 <?php
-header('Content-Type: application/json');
+namespace Christan;
 
-// Allow requests from any origin (for development purposes)
-header('Access-Control-Allow-Origin: *');
-// Allow specific methods (e.g., GET, POST)
-header('Access-Control-Allow-Methods: POST');
-// Allow specific headers
-header('Access-Control-Allow-Headers: Content-Type');
+header("Access-Control-Allow-Origin: http://localhost:5173"); // Change this to your frontend URL
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true"); // Allow credentials
 
-include 'DBConnector.php';  // Include your DBConnector class
+include "Messages.php";
+use Christan\Messages;
 
-// Create an instance of DBConnector
-$dbConnector = new DBConnector();
-$conn = $dbConnector->getConnection();
+header("Content-Type: application/json");
+session_start(); // Start the session
 
-// Get POST parameters
-$sender_id = intval($_POST['sender_id']);
-$receiver_id = intval($_POST['receiver_id']);
-$message = $_POST['message'];
+$messages = new Messages();
 
-// Prepare and execute SQL statement
-$sql = "INSERT INTO Message (sender_id, receiver_id, message) VALUES (?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param('iis', $sender_id, $receiver_id, $message);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $senderId = $_SESSION['id']; // Assuming the user's ID is stored in the session
+    $receiverId = $_POST['receiver_id'] ?? null;
+    $message = $_POST['message'] ?? null;
 
-$response = [];
-if ($stmt->execute()) {
-    $response['status'] = 'success';
+    // Check if senderId, receiverId, and message are valid
+    if (!$senderId || !$receiverId || !$message) {
+        http_response_code(400); // Bad Request
+        echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+        exit;
+    }
+
+    // Call the sendMessage method and return its response
+    $result = $messages->sendMessage($senderId, $receiverId, $message);
+    echo $result;
 } else {
-    $response['status'] = 'error';
+    http_response_code(405); // Method Not Allowed
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed']);
 }
-
-// Return response as JSON
-echo json_encode($response);
-
-// Close the connection
-$dbConnector->closeConnection($conn);
-?>
-

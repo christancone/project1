@@ -20,6 +20,7 @@ if (!isset($_SESSION['id'])) {
             'id' => $_SESSION['id'],
             'role' => $_SESSION['role'] ?? null,
             'email' => $_SESSION['email'] ?? null,
+            'admin_username' => $_SESSION['admin_username'] ?? null,
         ),
     );
 }

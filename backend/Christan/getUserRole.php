@@ -6,7 +6,7 @@ header("Access-Control-Allow-Credentials: true");
 
 session_set_cookie_params(0, "/");
 session_start();
-error_log("getUserRole.php session ID: ".session_id());
+
 
 $response = []; // Initialize response variable
 
@@ -15,17 +15,17 @@ if (isset($_SESSION['role'])) {
         'message' => 'User role fetched successfully',
         'role' => $_SESSION['role']
     ];
-    error_log("getUserRole.php session data: " . $_SESSION["role"]);
+
 } else {
     $response = [
         'message' => 'No user role found',
         'role' => null
     ];
-    error_log("Ran getUserRole.php without role.");
+
 }
 
 // Log the response for debugging
-error_log("Response: " . json_encode($response));
+
 
 // Set Content-Type for the response to be JSON
 header('Content-Type: application/json');
