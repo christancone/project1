@@ -14,7 +14,7 @@ const Navbar = () => {
   
     const buttonClick = () => {
    
-      navigate('/login')
+      navigate('/Parent')
     };
 
     const profilebutton = () => {

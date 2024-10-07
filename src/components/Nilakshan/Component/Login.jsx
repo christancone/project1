@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const buttonClick = (role) => {
     console.log(role);
-    navigate('/parent', { state: { role } });
+    navigate('/CreateAccount', { state: { role } });
   };
 
   return (
@@ -65,7 +65,7 @@ const Login = () => {
 
           <div className="sign">
             <div className="buttons">
-              <h2>Login or Sign up</h2>
+              <h2> Sign up</h2>
               <button className='button' onClick={() => buttonClick('Parent')}>as Parent</button>
               <button className='button' onClick={() => buttonClick('Attendant')}>as Attendant</button>
               <button className='button' onClick={() => buttonClick('Daycare Admin')}>as Daycare Admin</button>

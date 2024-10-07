@@ -34,7 +34,7 @@ const Parent = () => {
 
   const handleRegister = () => {
 
-    navigate('/CreateAccount', { state: { role } });
+    navigate('/Login', { state: { role } });
   };
 
   const otpButton = async () => {
@@ -58,7 +58,17 @@ const Parent = () => {
         const userRole =  response.data.role;
        console.log(userRole);
         
-        navigate('/', { state: { email ,userRole: userRole} });
+       if (userRole === 'Parent') {
+        navigate('/parent', { state: { email, userRole } });
+      } else if (userRole === 'Attendant') {
+        navigate('/otp', { state: { email, userRole } });
+      } else if (userRole === 'Mishaf') {
+        navigate('/mishaf', { state: { email, userRole } });
+      } else if (userRole === 'Admin') {
+        navigate('/admin', { state: { email, userRole } });
+      } else if (userRole === 'Visa') {
+        navigate('/visa', { state: { email, userRole } });
+      }
 
       } else {
         NotificationManager.error(response.data.errors);
