@@ -1,30 +1,32 @@
 <?php
-header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *"); // Allow all origins, change to specific domain if needed
+namespace Christan;
+header("Access-Control-Allow-Origin: http://localhost:5173"); // Change this to your frontend URL
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true"); // Allow credentials
 
-// Handle preflight request for CORS
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-include 'Messages.php'; // Include the Messages class
+include "Messages.php";
 use Christan\Messages;
 
-$data = json_decode(file_get_contents("php://input"), true);
+header("Content-Type: application/json");
+session_start(); // Start the session
 
-// Extract sender_id and receiver_id from the request
-$senderId = $data['sender_id'] ?? null;
-$receiverId = $data['receiver_id'] ?? null;
+$messages = new Messages();
 
-// Instantiate the Messages class
-$messagesModel = new Messages();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true); // Get raw input
 
-// Fetch messages using the fetchMessages method
-$response = $messagesModel->fetchMessages($senderId, $receiverId);
+    // Ensure the parameters are set
+    if (isset($data['sender_id']) && isset($data['receiver_id'])) {
+        $senderId = $data['sender_id'];
+        $receiverId = $data['receiver_id'];
 
-// Output the response
-echo $response;
-?>
+        $x = new Messages();
+        $messages = $x -> fetchMessages($senderId, $receiverId); // Call your function
+        echo $messages; // Return messages as JSON
+    } else {
+        http_response_code(400); // Bad request
+        echo json_encode(['error' => 'Missing parameters']);
+    }
+}
+
