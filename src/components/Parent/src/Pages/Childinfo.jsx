@@ -7,6 +7,7 @@ const Childinfo = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({ childMedicalReport: null });
+    const [userImage, setUserImage] = useState(null);
 
     // Fetch child data from the PHP backend
     useEffect(() => {
@@ -16,22 +17,38 @@ const Childinfo = () => {
                     method: 'GET',
                     credentials: 'include', // Include cookies with requests
                 });
-
+    
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
+    
                 const data = await response.json();
                 setChildData(data);
+    
+                // Fetch user data to get the image URL
+                const userResponse = await fetch(`http://localhost:3000/project1/backend/parents/user.php?id=${data.userId}`, {
+                    method: 'GET',
+                    credentials: 'include', // Include cookies with requests
+                });
+    
+                if (!userResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
+    
+                const userData = await userResponse.json();
+                if (userData.status === 'success') {
+                    setUserImage(userData.data.child_image); // Assuming 'child_image' is the field that stores the image URL
+                }
             } catch (error) {
                 setError(error.message);
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchChildData();
     }, []);
+    
 
     const handleChangef = (event) => {
         const file = event.target.files[0];
@@ -49,13 +66,12 @@ const Childinfo = () => {
     const renderChildInfo = (child) => (
         <div className="content2" key={child.child_name}>
             <div className="image">
-                <img src={r4} alt="Child" />
+                {userImage && <img src={`http://localhost:3000/project1/backend/parents/${userImage}`} alt="Child" />}
                 <div className="name">
                     <h3>{child.child_name}</h3>
                     <h4>{child.dob}</h4>
                 </div>
             </div>
-
             <div className="info">
                 <div className="details">
                     <h3>Name: </h3>

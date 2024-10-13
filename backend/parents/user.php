@@ -39,6 +39,46 @@ class ChildDataHandler {
         echo json_encode($this->response);
     }
 
+    <?php 
+    header('Content-Type: application/json');
+    header("Access-Control-Allow-Origin: http://localhost:5173");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    
+    include './dbtest.php';  
+    
+    $dbConnector = new Database('tinytoes');
+    $conn = $dbConnector->getConnection();
+    
+    if (!$conn) {
+        echo json_encode(['status' => 'error', 'message' => 'Database connection failed.']);
+        exit;
+    }
+    
+    // Assuming a valid user ID is passed as a GET parameter
+    $userId = $_GET['id'] ?? null;
+    
+    if ($userId) {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            echo json_encode(['status' => 'success', 'data' => $user]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'User not found.']);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
+    }
+    ?>
+    
+
+
+
+
     private function processFormData() {
         $formData = $this->sanitizeFormData();
 
@@ -117,21 +157,24 @@ class ChildDataHandler {
     }
     
     private function uploadFile($file, $directory, $customFileName) {
-        // Get the file extension (e.g., jpg, png, pdf)
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf']; // Allowed file types
         $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
         
-        // Create the full file name with the custom name and extension
+        // Check if the file type is allowed
+        if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
+            return "Invalid file type. Only JPG, JPEG, PNG, and PDF files are allowed.";
+        }
+    
         $newFileName = $customFileName . '.' . $fileExtension;
-        
-        // Full path to save the file
         $targetFilePath = $directory . $newFileName;
-        
+    
         if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
             return $targetFilePath;
         } else {
             return "Error uploading {$file['name']}.";
         }
     }
+    
     
 
     private function uploadData($formData, $uploadedFiles) {
