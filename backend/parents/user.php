@@ -1,6 +1,6 @@
 <?php 
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: http://localhost:5174");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
@@ -39,41 +39,7 @@ class ChildDataHandler {
         echo json_encode($this->response);
     }
 
-    <?php 
-    header('Content-Type: application/json');
-    header("Access-Control-Allow-Origin: http://localhost:5173");
-    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
-    
-    include './dbtest.php';  
-    
-    $dbConnector = new Database('tinytoes');
-    $conn = $dbConnector->getConnection();
-    
-    if (!$conn) {
-        echo json_encode(['status' => 'error', 'message' => 'Database connection failed.']);
-        exit;
-    }
-    
-    // Assuming a valid user ID is passed as a GET parameter
-    $userId = $_GET['id'] ?? null;
-    
-    if ($userId) {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            echo json_encode(['status' => 'success', 'data' => $user]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'User not found.']);
-        }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
-    }
-    ?>
+  
     
 
 

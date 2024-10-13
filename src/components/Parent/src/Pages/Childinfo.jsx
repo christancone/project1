@@ -66,6 +66,7 @@ const Childinfo = () => {
     const renderChildInfo = (child) => (
         <div className="content2" key={child.child_name}>
             <div className="image">
+                <img src={r4} alt="Child" />
                 {userImage && <img src={`http://localhost:3000/project1/backend/parents/${userImage}`} alt="Child" />}
                 <div className="name">
                     <h3>{child.child_name}</h3>
