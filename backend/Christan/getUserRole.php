@@ -13,7 +13,8 @@ $response = []; // Initialize response variable
 if (isset($_SESSION['role'])) {
     $response = [
         'message' => 'User role fetched successfully',
-        'role' => $_SESSION['role']
+        'role' => $_SESSION['role'],
+        'email'=>$_SESSION['email']
     ];
 
 } else {

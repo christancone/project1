@@ -22,6 +22,7 @@ const OTP = () => {
   const [loading, setLoading] = useState(false); // Change initial state to false
   const location = useLocation();
   const { email } = location.state || {};
+  
   const role = location?.state?.role || '';
   const handleEvent = (e) => {
     const { name, value } = e.target;
@@ -62,7 +63,7 @@ const OTP = () => {
       console.log('Response from server:', response.data);
 
       if (response.status === 200 && response.data.message === 'Verification successful') {
-        navigate('/Parent');
+        navigate('/User', { state: { email, role } });
       } else {
         toast.error('Invalid OTP. Please try again.');
         setTimeout(() => {

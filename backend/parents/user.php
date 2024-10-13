@@ -1,21 +1,19 @@
 <?php 
-// Set the response header to allow JSON response
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-// Include your Database class
 include './dbtest.php';  
 
-// Create an instance of the Database class
-$dbConnector = new Database('project');
+$dbConnector = new Database('tinytoes');
 $conn = $dbConnector->getConnection();
 
-// Define a class for handling form submissions and file uploads
+if (!$conn) {
+    echo json_encode(['status' => 'error', 'message' => 'Database connection failed.']);
+    exit;
+}
+
 class ChildDataHandler {
     private $response;
     private $directory;
@@ -27,49 +25,42 @@ class ChildDataHandler {
             'message' => '',
             'data' => []
         ];
-        $this->directory = 'uploads/'; // Base directory for uploads
-        $this->conn = $dbConnection; // Store the database connection
+        $this->directory = 'uploads/';
+        $this->conn = $dbConnection;
     }
 
     public function handleRequest() {
-        // Check if the request method is POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->processFormData();
         } else {
-            $this->response['message'] = 'Invalid request method. Please submit the form using POST method.';
+            $this->response['message'] = 'Invalid request method. Please submit the form using POST.';
         }
         
-        // Output the JSON response
         echo json_encode($this->response);
     }
 
     private function processFormData() {
-        // Retrieve and sanitize form data
         $formData = $this->sanitizeFormData();
 
-        // Check for required fields
         if (!$this->areRequiredFieldsFilled($formData)) {
             $this->response['message'] = 'Please fill in all required fields.';
-            echo json_encode($this->response);
             return;
         }
 
-        // Directory for child's files
         $this->directory .= $formData['child_name'] . '/';
+        
         if (!is_dir($this->directory)) {
-            mkdir($this->directory, 0777, true);
+            if (!mkdir($this->directory, 0777, true)) {
+                $this->response['message'] = 'Failed to create upload directory.';
+                return;
+            }
         }
 
-        // Upload files
         $uploadedFiles = $this->uploadFiles($_FILES, $formData['child_name']);
-
-        // Prepare the response data
         $this->response['data']['form'] = $formData;
         $this->response['data']['files'] = $uploadedFiles;
 
-        // Insert data into the database
         if ($this->uploadData($formData, $uploadedFiles)) {
-            // If everything is successful
             $this->response['status'] = 'success';
             $this->response['message'] = 'Data received successfully!';
         }
@@ -77,6 +68,7 @@ class ChildDataHandler {
 
     private function sanitizeFormData() {
         return [
+            'email' => htmlspecialchars(trim($_POST['email'] ?? '')),
             'parent_name' => htmlspecialchars(trim($_POST['parent_name'] ?? '')),
             'phone' => htmlspecialchars(trim($_POST['phone'] ?? '')),
             'child_name' => htmlspecialchars(trim($_POST['child_name'] ?? '')),
@@ -86,32 +78,8 @@ class ChildDataHandler {
             'emergency_ph' => htmlspecialchars(trim($_POST['emergency_ph'] ?? '')),
             'allergies' => htmlspecialchars(trim($_POST['allergies'] ?? '')),
             'medical' => htmlspecialchars(trim($_POST['medical'] ?? '')),
-            'medication' => htmlspecialchars(trim($_POST['medication'] ?? ''))
+            'medication' => htmlspecialchars(trim($_POST['medication'] ?? '')),
         ];
-    }
-
-    private function uploadFiles($files, $childName) {
-        $uploadedFiles = [];
-        $fileKeys = ['parentNIC', 'birth_certificate', 'child_image', 'medical_report'];
-
-        foreach ($fileKeys as $fileKey) {
-            if (isset($files[$fileKey]) && $files[$fileKey]['error'] === UPLOAD_ERR_OK) {
-                $uploadedFiles[$fileKey] = $this->uploadFile($files[$fileKey], $this->directory);
-            } else {
-                $uploadedFiles[$fileKey] = "{$fileKey} upload error.";
-            }
-        }
-
-        return $uploadedFiles;
-    }
-
-    private function uploadFile($file, $directory) {
-        $targetFilePath = $directory . basename($file['name']);
-        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-            return $targetFilePath; // Return the path of the uploaded file
-        } else {
-            return "Error uploading {$file['name']}.";
-        }
     }
 
     private function areRequiredFieldsFilled($formData) {
@@ -120,41 +88,97 @@ class ChildDataHandler {
                !empty($formData['gender']);
     }
 
-    private function uploadData($formData, $uploadedFiles) {
-        // Prepare a JSON string of uploaded files
-        $filesJson = json_encode($uploadedFiles);
-
-        // Insert into database
-        $stmt = $this->conn->prepare("INSERT INTO children_data (parent_name, phone, child_name, dob, gender, emergency, emergency_ph, allergies, medical, medication, files) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssss", 
-            $formData['parent_name'], 
-            $formData['phone'], 
-            $formData['child_name'], 
-            $formData['dob'], 
-            $formData['gender'], 
-            $formData['emergency'], 
-            $formData['emergency_ph'], 
-            $formData['allergies'], 
-            $formData['medical'], 
-            $formData['medication'], 
-            $filesJson
-        );
-
-        // Execute the prepared statement
-        if ($stmt->execute()) {
-            // Data saved successfully
-            return true;
+    private function uploadFiles($files, $childName) {
+        $uploadedFiles = [];
+        $fileKeys = [
+            'parentNIC' => 'PNIC',
+            'birth_certificate' => 'BCertificate',
+            'child_image' => 'Image',
+            'medical_report' => 'MedicalReport'
+        ];
+    
+        foreach ($fileKeys as $fileKey => $fileSuffix) {
+            if (isset($files[$fileKey]) && $files[$fileKey]['error'] === UPLOAD_ERR_OK) {
+                // Ensure file size is less than 2MB (2 * 1024 * 1024 bytes = 2MB)
+                if ($files[$fileKey]['size'] <= 2 * 1024 * 1024) {
+                    // Use the childName and the suffix to create the custom file name
+                    $uploadedFiles[$fileKey] = $this->uploadFile($files[$fileKey], $this->directory, $childName . '.' . $fileSuffix);
+                } else {
+                    $uploadedFiles[$fileKey] = "{$fileKey} exceeds the maximum file size of 2MB.";
+                    $this->response['status'] = 'error';
+                }
+            } else {
+                $uploadedFiles[$fileKey] = "{$fileKey} upload error.";
+                $this->response['status'] = 'error';
+            }
+        }
+    
+        return $uploadedFiles;
+    }
+    
+    private function uploadFile($file, $directory, $customFileName) {
+        // Get the file extension (e.g., jpg, png, pdf)
+        $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        
+        // Create the full file name with the custom name and extension
+        $newFileName = $customFileName . '.' . $fileExtension;
+        
+        // Full path to save the file
+        $targetFilePath = $directory . $newFileName;
+        
+        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
+            return $targetFilePath;
         } else {
-            $this->response['message'] = 'Error saving data: ' . $stmt->error;
-            error_log('Database insert error: ' . $stmt->error); // Log the error for debugging
-            return false;
+            return "Error uploading {$file['name']}.";
+        }
+    }
+    
+
+    private function uploadData($formData, $uploadedFiles) {
+        $email = $formData['email'];
+        $stmt = $this->conn->prepare("UPDATE users SET 
+            parent_name = ?, 
+            phone_no = ?, 
+            child_name = ?, 
+            dob = ?, 
+            gender = ?, 
+            emergency_contact = ?, 
+            emergency_phone = ?, 
+            allergies = ?, 
+            medical_info = ?, 
+            medication = ?, 
+            files = ? 
+            WHERE email = ?");
+
+        if ($stmt) {
+            $stmt->bind_param("ssssssssssss", 
+                $formData['parent_name'], 
+                $formData['phone'], 
+                $formData['child_name'], 
+                $formData['dob'], 
+                $formData['gender'], 
+                $formData['emergency'], 
+                $formData['emergency_ph'], 
+                $formData['allergies'], 
+                $formData['medical'], 
+                $formData['medication'], 
+                json_encode($uploadedFiles),
+                $email
+            );
+
+            if ($stmt->execute()) {
+                $this->response['message'] = 'Data updated successfully.';
+                $stmt->close();
+                return true;
+            }
+            $stmt->close();
         }
 
-        // Close the statement
-        $stmt->close();
+        $this->response['message'] = 'Database update failed.';
+        return false;
     }
 }
 
-// Create an instance of the handler and process the request
-$dataHandler = new ChildDataHandler($conn);
-$dataHandler->handleRequest();
+$formHandler = new ChildDataHandler($conn);
+$formHandler->handleRequest();
+?>

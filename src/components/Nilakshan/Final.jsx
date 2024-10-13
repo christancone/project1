@@ -8,6 +8,7 @@ import Parent from './Component/NilakshanParent'; // Import Parent
 import OTP from './Component/OTP';
 import CreateAccount from './Component/CreateAccount';
 import './index.css';
+import User from './Component/User';
 
 const Final = () => {
   const [userRole, setUserRole] = useState(null); // State to hold user role
@@ -25,6 +26,7 @@ const Final = () => {
                   element={<Parent onLoginSuccess={setUserRole} />} // Pass the setUserRole function
               />
               <Route path="/otp" element={<OTP />} />
+              <Route path="/User" element={<User />} />
               <Route path="/CreateAccount" element={<CreateAccount />} />
             </Routes>
           </div>

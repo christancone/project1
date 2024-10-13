@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import './User.css';
 const User = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = location?.state?.email || '';
+  // const email = "spyboy000002@gmail.com";
   const [formData, setFormData] = useState({
     parent_name: '',
     phone: '',
@@ -17,16 +22,26 @@ const User = () => {
     birth_certificate: null,
     child_image: null,
     medical_report: null,
-    message: ''
+    message: '',
+    email : email
   });
-
   const handleChangef = (e) => {
     const { name, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : null, // Handling file input
-    });
+    const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
+  
+    if (files && files[0]) {
+      if (files[0].size > maxFileSize) {
+        alert("File size should be less than 2MB.");
+        return;
+      }
+  
+      setFormData({
+        ...formData,
+        [name]: files[0], // Handling valid file input
+      });
+    }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,8 +64,17 @@ const User = () => {
     // Append text fields
     Object.keys(formData).forEach((key) => {
       formDataToSend.append(key, formData[key]);
+      
     });
+
+
+
+  console.log("FormData before submission:");
+  for (let [key, value] of formDataToSend.entries()) {
+    console.log(`${key}: ${value}`);
+  }
     try {
+      console.log (email);
       const response = await fetch('http://localhost:3000/project1/backend/parents/user.php', {
         method: 'POST',
         body: formDataToSend,
@@ -62,6 +86,7 @@ const User = () => {
       if (result.status === 'success') {
         // Handle success (e.g., show a success message)
         alert('Data submitted successfully!');
+        navigate('/NilakshanParent')
       } else {
         // Handle errors from the server
         alert(result.message);
@@ -362,9 +387,9 @@ const User = () => {
                 </div>
 
 
-                <button type="submit" name="submit" className="continue_button" onClick={handleSubmitd}>
-                  Continue
-                </button>
+                <button type="submit" name="submit" className="continue_button" onClick={handleSubmit}>
+  Continue
+</button>
               </form>
             </div>
           </div>

@@ -81,7 +81,7 @@ const CreateAccount = () => {
 
                 // Wait a short time before navigating to ensure the notification is displayed
                 setTimeout(() => {
-                    navigate('/otp', { state: { email: formData.email, role: formData.role } });
+                    navigate('/OTP', { state: { email: formData.email, role: formData.role } });
                 }, 1500); // Adjust delay as needed
 
             }

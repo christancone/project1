@@ -24,16 +24,12 @@ const NilakshanParent = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const role = location?.state?.role || '';
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  const handleEmailChange = (e) => setEmail(e.target.value);
+
+  const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleRegister = () => {
-
     navigate('/Login', { state: { role } });
   };
 
@@ -47,32 +43,27 @@ const NilakshanParent = () => {
 
     try {
       const response = await axios.post(
-          'http://localhost:3000/project1/backend/Login_php/Login_php/login.php',
-          { email, password },
-          { headers: { 'Content-Type': 'application/json' } }
+        'http://localhost:3000/project1/backend/Login_php/Login_php/login.php',
+        { email, password },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
       );
 
       if (response.data.message === 'Login successful') {
         NotificationManager.success('Login successful!', 'Success', 3000);
         console.log('Response from server:', response.data);
-        const userRole =  response.data.role;
-       console.log(userRole);
-        
-       if (userRole === 'Parent') {
-        navigate('/', { state: { email, userRole } });
-      } else if (userRole === 'Attendant') {
-        navigate('/otp', { state: { email, userRole } });
-      } else if (userRole === 'Mishaf') {
-        navigate('/mishaf', { state: { email, userRole } });
-      } else if (userRole === 'Admin') {
-        navigate('/admin', { state: { email, userRole } });
-      } else if (userRole === 'Visa') {
-        navigate('/visa', { state: { email, userRole } });
+
+        const userRole = response.data.role;
+        console.log(userRole);
+
+        // Redirect or handle successful login based on role
+        navigate('/', { state: { role: userRole } });
+      } else {
+        NotificationManager.error(response.data.errors || 'Login failed.');
       }
 
-      } else {
-        NotificationManager.error(response.data.errors);
-      }
     } catch (error) {
       if (error.response) {
         NotificationManager.error('Server error. Please try again.');
@@ -87,61 +78,61 @@ const NilakshanParent = () => {
   };
 
   return (
-      <div className="parent">
-        <div className="parent1">
-          <h2>Daycares in Sri Lanka</h2>
-          <p>
-            In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
-          </p>
-          <Marquee className='marquee' pauseOnHover>
-            <div className="img-marquee"><img src={mar3} alt="" /></div>
-            <div className="img-marquee"><img src={mar4} alt="" /></div>
-            <div className="img-marquee"><img src={mar5} alt="" /></div>
-            <div className="img-marquee"><img src={mar6} alt="" /></div>
-            <div className="img-marquee"><img src={mar7} alt="" /></div>
-            <div className="img-marquee"><img src={mar8} alt="" /></div>
-          </Marquee>
-        </div>
-
-        <div className="parent2">
-          <h3>Your email or Phone number</h3>
-          <label htmlFor="email">Email:</label>
-          <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder='Email'
-          />
-          <label htmlFor="password">Password:</label>
-          <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder='Password'
-          />
-          <button className="button" onClick={otpButton}>
-            {loading ? <CircularProgress size={30} /> : 'Login'}
-          </button>
-          <div className="or">
-            <hr />
-            <p>or</p>
-            <hr />
-          </div>
-          <button className='sign-button'>
-            <img src={image3} alt="Google" /> Continue with Google
-          </button>
-          <button className='sign-button'>
-            <img src={image2} alt="Apple" /> Continue with Apple
-          </button>
-          <div className="parent3">
-            <p>Don't have an account?</p>
-            <p className="signup" onClick={handleRegister}>Sign up</p>
-          </div>
-        </div>
-        <NotificationContainer />
+    <div className="parent">
+      <div className="parent1">
+        <h2>Daycares in Sri Lanka</h2>
+        <p>
+          In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
+        </p>
+        <Marquee className='marquee' pauseOnHover>
+          <div className="img-marquee"><img src={mar3} alt="" /></div>
+          <div className="img-marquee"><img src={mar4} alt="" /></div>
+          <div className="img-marquee"><img src={mar5} alt="" /></div>
+          <div className="img-marquee"><img src={mar6} alt="" /></div>
+          <div className="img-marquee"><img src={mar7} alt="" /></div>
+          <div className="img-marquee"><img src={mar8} alt="" /></div>
+        </Marquee>
       </div>
+
+      <div className="parent2">
+        <h3>Your email or Phone number</h3>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={handleEmailChange}
+          placeholder='Email'
+        />
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={handlePasswordChange}
+          placeholder='Password'
+        />
+        <button className="button" onClick={otpButton}>
+          {loading ? <CircularProgress size={30} /> : 'Login'}
+        </button>
+        <div className="or">
+          <hr />
+          <p>or</p>
+          <hr />
+        </div>
+        <button className='sign-button'>
+          <img src={image3} alt="Google" /> Continue with Google
+        </button>
+        <button className='sign-button'>
+          <img src={image2} alt="Apple" /> Continue with Apple
+        </button>
+        <div className="parent3">
+          <p>Don't have an account?</p>
+          <p className="signup" onClick={handleRegister}>Sign up</p>
+        </div>
+      </div>
+      <NotificationContainer />
+    </div>
   );
 };
 
