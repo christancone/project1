@@ -1,219 +1,29 @@
-<?php 
-// Set the response header to allow JSON response
-header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+-- Active: 1728567292999@@127.0.0.1@3306@tinytoes
+ALTER TABLE users 
+ADD COLUMN parent_name VARCHAR(50) NULL,
+ADD COLUMN child_name VARCHAR(50) NULL,
+ADD COLUMN dob DATE NULL,
+ADD COLUMN gender VARCHAR(10) NULL,
+ADD COLUMN emergency_contact VARCHAR(50) NULL,
+ADD COLUMN emergency_phone VARCHAR(20) NULL,
+ADD COLUMN allergies TEXT NULL,
+ADD COLUMN medical_info TEXT NULL,
+ADD COLUMN medication TEXT NULL,
+ADD COLUMN files BLOB NULL;
 
-// Include your Database class
-include './dbtest.php';  
 
-// Create an instance of the Database class
-$dbConnector = new Database('tinytoes');
-$conn = $dbConnector->getConnection();
+SELECT * FROM users;
+ DESCRIBE users;
+SELECT * FROM temporary_otp;
 
-// Check for a valid database connection
-if (!$conn) {
-    echo json_encode(['status' => 'error', 'message' => 'Database connection failed.']);
-    exit;
-}
+SELECT * FROM billing;
+DESCRIBE billing;
+SET @new_id = 0;
 
-// Define a class for handling form submissions and file uploads
-class ChildDataHandler {
-    private $response;
-    private $directory;
-    private $conn;
-
-    public function __construct($dbConnection) {
-        $this->response = [
-            'status' => 'error',
-            'message' => '',
-            'data' => []
-        ];
-        $this->directory = 'uploads/'; // Base directory for uploads
-        $this->conn = $dbConnection; // Store the database connection
-    }
-
-    public function handleRequest() {
-        // Check if the request method is POST
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->processFormData();
-        } else {
-            $this->response['message'] = 'Invalid request method. Please submit the form using POST method.';
-        }
-        
-        // Output the JSON response
-        echo json_encode($this->response);
-    }
-
-    private function processFormData() {
-        // Retrieve and sanitize form data
-        $formData = $this->sanitizeFormData();
-
-        // Check for required fields
-        if (!$this->areRequiredFieldsFilled($formData)) {
-            $this->response['message'] = 'Please fill in all required fields.';
-            echo json_encode($this->response);
-            return;
-        }
-
-        // Directory for child's files
-        $this->directory .= $formData['child_name'] . '/';
-        
-        // Create the directory if it doesn't exist
-        if (!is_dir($this->directory)) {
-            if (!mkdir($this->directory, 0777, true) && !is_dir($this->directory)) {
-                $this->response['message'] = 'Failed to create upload directory.';
-                echo json_encode($this->response);
-                return;
-            }
-        }
-
-        // Upload files
-        $uploadedFiles = $this->uploadFiles($_FILES, $formData['child_name']);
-
-        // Prepare the response data
-        $this->response['data']['form'] = $formData;
-        $this->response['data']['files'] = $uploadedFiles;
-
-        // Insert data into the database
-        if ($this->uploadData($formData, $uploadedFiles)) {
-            // If everything is successful
-            $this->response['status'] = 'success';
-            $this->response['message'] = 'Data received successfully!';
-        }
-    }
-
-    private function sanitizeFormData() {
-        return [
-            'parent_name' => htmlspecialchars(trim($_POST['parent_name'] ?? '')),
-            'phone' => htmlspecialchars(trim($_POST['phone'] ?? '')),
-            'child_name' => htmlspecialchars(trim($_POST['child_name'] ?? '')),
-            'dob' => htmlspecialchars(trim($_POST['dob'] ?? '')),
-            'gender' => htmlspecialchars(trim($_POST['gender'] ?? '')),
-            'emergency' => htmlspecialchars(trim($_POST['emergency'] ?? '')),
-            'emergency_ph' => htmlspecialchars(trim($_POST['emergency_ph'] ?? '')),
-            'allergies' => htmlspecialchars(trim($_POST['allergies'] ?? '')),
-            'medical' => htmlspecialchars(trim($_POST['medical'] ?? '')),
-            'medication' => htmlspecialchars(trim($_POST['medication'] ?? '')),
-            'email' => htmlspecialchars(trim($_POST['email'] ?? ''))
-        ];
-    }
-
-    private function uploadFiles($files, $childName) {
-        $uploadedFiles = [];
-        $fileKeys = ['parentNIC', 'birth_certificate', 'child_image', 'medical_report'];
-
-        foreach ($fileKeys as $fileKey) {
-            if (isset($files[$fileKey]) && $files[$fileKey]['error'] === UPLOAD_ERR_OK) {
-                $uploadedFiles[$fileKey] = $this->uploadFile($files[$fileKey], $this->directory);
-            } else {
-                $uploadedFiles[$fileKey] = "{$fileKey} upload error.";
-                // Set response status to error if there's an upload issue
-                $this->response['status'] = 'error';
-            }
-        }
-
-        return $uploadedFiles;
-    }
-
-    private function uploadFile($file, $directory) {
-        $targetFilePath = $directory . basename($file['name']);
-        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-            return $targetFilePath; // Return the path of the uploaded file
-        } else {
-            return "Error uploading {$file['name']}.";
-        }
-    }
-
-    private function areRequiredFieldsFilled($formData) {
-        return !empty($formData['parent_name']) && !empty($formData['phone']) && 
-               !empty($formData['child_name']) && !empty($formData['dob']) && 
-               !empty($formData['gender']);
-    }
-
-    private function uploadData($formData, $uploadedFiles) {
-        // Prepare a JSON string of uploaded files
-        $filesJson = json_encode($uploadedFiles);
-        $email = $formData['email'];
-        
-        // Initialize $emailCount to 0
-        $emailCount = 0;
-    
-        // Check if the email exists in the users table
-        $checkEmailStmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
-        if ($checkEmailStmt) {
-            $checkEmailStmt->bind_param("s", $email);
-            $checkEmailStmt->execute();
-            $checkEmailStmt->bind_result($emailCount);
-            $checkEmailStmt->fetch();
-            $checkEmailStmt->close();
-        } else {
-            // Log error if the statement could not be prepared
-            error_log('Database prepare error: ' . $this->conn->error);
-        }
-        
-        // If the email exists, update the existing row
-        if ($emailCount > 0) {
-            $stmt = $this->conn->prepare("UPDATE users SET 
-                parent_name = ?, 
-                phone = ?, 
-                child_name = ?, 
-                dob = ?, 
-                gender = ?, 
-                emergency = ?, 
-                emergency_ph = ?, 
-                allergies = ?, 
-                medical = ?, 
-                medication = ?, 
-                files = ? 
-                WHERE email = ?");
-            
-            if ($stmt) {
-                $stmt->bind_param("sssssssssssss", 
-                    $formData['parent_name'], 
-                    $formData['phone'], 
-                    $formData['child_name'], 
-                    $formData['dob'], 
-                    $formData['gender'], 
-                    $formData['emergency'], 
-                    $formData['emergency_ph'], 
-                    $formData['allergies'], 
-                    $formData['medical'], 
-                    $formData['medication'], 
-                    $filesJson,
-                    $email
-                );
-    
-                // Execute the prepared statement for update
-                if ($stmt->execute()) {
-                    $this->response['status'] = 'success';
-                    $this->response['message'] = 'Data updated successfully!';
-                    $stmt->close(); // Close the statement
-                    return true; // Return true on success
-                } else {
-                    $this->response['message'] = 'Error updating data: ' . $stmt->error;
-                    error_log('Database update error: ' . $stmt->error); // Log the error for debugging
-                    $stmt->close(); // Close the statement
-                    return false; // Return false on failure
-                }
-            } else {
-                $this->response['message'] = 'Database prepare error: ' . $this->conn->error; // Prepare error
-                return false; // Return false since we cannot insert new data
-            }
-        } else {
-            // If the email does not exist, you might want to return an error or a specific message
-            $this->response['email'] ='emil recived'+ $email;
-            $this->response['message'] = 'Error: Email does not exist in users table.';
-            return false; // Return false since we cannot insert new data
-        }
-    }
-    
-}
-
-// Create an instance of the handler and process the request
-$dataHandler = new ChildDataHandler($conn);
-$dataHandler->handleRequest();
+UPDATE user 
+SET id = (@new_id := @new_id + 1)
+ORDER BY id;
+TRUNCATE TABLE user;
+TRUNCATE TABLE billing;
+DESCRIBE billing;
+SHOW CREATE TABLE billing;
