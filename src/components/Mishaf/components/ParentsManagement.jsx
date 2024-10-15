@@ -14,7 +14,9 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  IconButton
+  IconButton,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 
@@ -29,24 +31,36 @@ const ParentManagement = () => {
   const [selectedParent, setSelectedParent] = useState(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  useEffect(() => {
-    fetchParents();
-  }, []);
-
+  
   const fetchParents = () => {
     fetch('http://localhost/backend/mishaf/fetch_parents.php')
       .then(response => response.json())
       .then(data => setParents(data))
       .catch(error => console.error('Error fetching data:', error));
   };
-
+  
+  
+  useEffect(() => {
+    fetchParents();
+  }, []);
+  
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-
+  
   const handleEdit = (parent) => {
-    setNewParent({ ...parent });
+    setNewParent({
+      first_name: parent.first_name,
+      last_name: parent.last_name,
+      email: parent.email,
+      children_ids: parent.children_ids,
+      address: parent.address,
+      phone_no: parent.phone_no
+    });
     setIsEditing(true);
     setCurrentId(parent.parent_id);
     setOpen(true);
@@ -64,17 +78,27 @@ const ParentManagement = () => {
       },
       body: JSON.stringify({ ...newParent, parent_id: currentId })
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        fetchParents(); // Refresh the list after update
-        handleClose();
-      } else {
-        console.error(data.message);
-      }
-    })
-    .catch(error => console.error('Error updating parent:', error));
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          fetchParents();
+          handleClose();
+          setSnackbarMessage('Parent details updated successfully.');
+          setSnackbarSeverity('success');
+        } else {
+          setSnackbarMessage('Error updating parent details: ' + data.message);
+          setSnackbarSeverity('error');
+        }
+        setSnackbarOpen(true);
+      })
+      .catch(error => {
+        console.error('Error updating parent:', error);
+        setSnackbarMessage('Error updating parent details.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      });
   };
+
 
   const handleDelete = (id) => {
     setDeleteId(id);
@@ -89,17 +113,27 @@ const ParentManagement = () => {
       },
       body: JSON.stringify({ parent_id: deleteId })
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        fetchParents(); // Refresh the list after deletion
-        setDeleteConfirmOpen(false);
-      } else {
-        console.error(data.message);
-      }
-    })
-    .catch(error => console.error('Error deleting parent:', error));
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          fetchParents(); // Refresh the list after deletion
+          setDeleteConfirmOpen(false);
+          setSnackbarMessage('Parent deleted successfully.');
+          setSnackbarSeverity('success');
+        } else {
+          setSnackbarMessage('Error deleting parent: ' + data.message);
+          setSnackbarSeverity('error');
+        }
+        setSnackbarOpen(true);
+      })
+      .catch(error => {
+        console.error('Error deleting parent:', error);
+        setSnackbarMessage('Error deleting parent.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      });
   };
+
 
   const handleViewDetails = (parent) => {
     setSelectedParent(parent);
@@ -110,15 +144,19 @@ const ParentManagement = () => {
     setDetailsOpen(false);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const filteredParents = parents.filter(parent =>
-    parent.name.toLowerCase().includes(searchTerm.toLowerCase())
+    `${parent.first_name} ${parent.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <Container>
       <div className='text-4xl mb-5'>Parents Management</div>
       <TextField
-        label="Search Parents"
+        label="Search Parents by Name"
         variant="outlined"
         fullWidth
         margin="normal"
@@ -130,6 +168,7 @@ const ParentManagement = () => {
           <TableHead>
             <TableRow>
               <TableCell className="bg-gray-200">Parent ID</TableCell>
+              <TableCell className="bg-gray-200">Username</TableCell>
               <TableCell className="bg-gray-200">Name</TableCell>
               <TableCell className="bg-gray-200">Email</TableCell>
               <TableCell className="bg-gray-200">Children IDs</TableCell>
@@ -140,6 +179,7 @@ const ParentManagement = () => {
             {filteredParents.map((parent) => (
               <TableRow key={parent.parent_id}>
                 <TableCell>{parent.parent_id}</TableCell>
+                <TableCell>{parent.username}</TableCell>
                 <TableCell>{parent.name}</TableCell>
                 <TableCell>{parent.email}</TableCell>
                 <TableCell>{parent.children_ids}</TableCell>
@@ -194,6 +234,7 @@ const ParentManagement = () => {
             fullWidth
             value={newParent.children_ids}
             onChange={(e) => setNewParent({ ...newParent, children_ids: e.target.value })}
+            disabled={isEditing}
           />
           <TextField
             margin="dense"
@@ -227,9 +268,10 @@ const ParentManagement = () => {
           {selectedParent && (
             <>
               <p><strong>Parent ID:</strong> {selectedParent.parent_id}</p>
+              <p><strong>Username:</strong> {selectedParent.username}</p>
               <p><strong>Name:</strong> {selectedParent.name}</p>
               <p><strong>Email:</strong> {selectedParent.email}</p>
-              <p><strong>Children IDs:</strong> {selectedParent.children_ids}</p>
+              <p><strong>Children:</strong> {selectedParent.children_names}</p>
               <p><strong>Address:</strong> {selectedParent.address}</p>
               <p><strong>Phone Number:</strong> {selectedParent.phone_no}</p>
             </>
@@ -255,6 +297,11 @@ const ParentManagement = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

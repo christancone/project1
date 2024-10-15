@@ -33,7 +33,7 @@ import AdminManagement from './AdminManagement';
 import ParentsManagement from './ParentsManagement';
 import AttendantsManagement from './AttendantsManagement';
 import ChildManagement from './ChildManagement';
-import Profile from './Profile';
+// import Profile from './Profile';
 import Chat from './Chat';
 import Feedback from './Feedback';
 import { Tooltip, Menu, MenuItem, Badge } from '@mui/material';
@@ -41,6 +41,19 @@ import axios from 'axios'; // Make sure to import axios
 
 // Define the width of the drawer
 const drawerWidth = 270;
+
+// Logout function
+const handleLogout = async () => {
+    try {
+        const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
+        console.log(response.data.message); // Logout successful
+        // Redirect to homepage and refresh the page
+        window.location.href = '/'; // Redirect to the homepage
+        window.location.reload(); // Refresh the entire page
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+};
 
 // Define the items for the main navigation
 const items = [
@@ -55,15 +68,18 @@ const items = [
 const items2 = [
     { text: 'Chat', icon: <ChatBubbleRoundedIcon />, path: '/chat' },
     { text: 'Feedback', icon: <RateReviewRoundedIcon />, path: '/feedback' },
-    { text: 'Profile', icon: <AccountCircleRoundedIcon />, path: '/profile' },
-    { text: 'Logout', icon: <LogoutRoundedIcon />, path: '/logout', action: 'logout' },
+    // { text: 'Profile', icon: <AccountCircleRoundedIcon />, path: '/profile' },
+];
+
+// Define the items for the logout button
+const items3 = [
+    { text: 'Logout', icon: <LogoutRoundedIcon />, onclick:handleLogout } // Logout button with action
 ];
 
 function ResponsiveDrawer(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    // const [notificationCount, setNotificationCount] = useState(5); // Example notification count
 
     // Toggle the drawer open/close state
     const handleDrawerToggle = () => {
@@ -80,17 +96,7 @@ function ResponsiveDrawer(props) {
         setAnchorEl(null);
     };
 
-    // Logout function
-    const handleLogout = async () => {
-        try {
-            const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
-            console.log(response.data.message); // Logout successful
-            // Redirect to homepage
-            window.location.href = '/'; // Redirect to the homepage
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
+    
 
     // Drawer content
     const drawer = (
@@ -114,7 +120,18 @@ function ResponsiveDrawer(props) {
             <List>
                 {items2.map((item) => (
                     <ListItem key={item.text} disablePadding>
-                        <ListItemButton component={item.action === 'logout' ? 'button' : Link} to={item.path} onClick={item.action === 'logout' ? handleLogout : undefined}>
+                        <ListItemButton component={Link} to={item.path}>
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
+            <List>
+                {items3.map((item) => (
+                    <ListItem key={item.text} disablePadding>
+                        <ListItemButton onClick={handleLogout}>
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.text} />
                         </ListItemButton>
@@ -173,11 +190,11 @@ function ResponsiveDrawer(props) {
           </Tooltip> */}
 
                             {/* Settings Icon */}
-                            <Tooltip title="Settings">
+                            {/* <Tooltip title="Settings">
                                 <IconButton component={Link} to="/profile">
                                     <SettingsOutlinedIcon />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             {/* Profile Icon */}
                             <Tooltip title="Profile">
@@ -192,7 +209,7 @@ function ResponsiveDrawer(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleMenuClose}
                             >
-                                <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>Profile</MenuItem>
+                                {/* <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>Profile</MenuItem> */}
                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
                             </Menu>
                         </Box>
@@ -250,7 +267,7 @@ function ResponsiveDrawer(props) {
                         <Route path="/parentsManagement" element={<ParentsManagement />} />
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/feedback" element={<Feedback />} />
-                        <Route path="/profile" element={<Profile />} />
+                        {/* <Route path="/profile" element={<Profile />} /> */}
                     </Routes>
                 </Box>
             </Box>

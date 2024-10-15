@@ -21,35 +21,35 @@ const ChatComponent = () => {
     const [messageInput, setMessageInput] = useState("");
     const [error, setError] = useState("");
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [loggedUserId, setLoggedUserId] = useState(null);
+    const [loggedUserId, setLoggedUserId] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(7);
     const [searchTerm, setSearchTerm] = useState("");
 
-    useEffect(() => {
-        // Fetch the logged user ID from session
-        const fetchLoggedUserId = async () => {
-            try {
-                const response = await axios.get("http://localhost/backend/Christan/get_session_datas.php", { withCredentials: true });
-                console.log("Session Data Response:", response.data);
-                const userId = response.data.data.id;
-                setLoggedUserId(userId);
-            } catch (error) {
-                setError("Failed to fetch user data. Please try again later.");
-                setOpenSnackbar(true);
-                console.error("Error fetching user ID:", error);
-            }
-        };
+    // useEffect(() => {
+    //     // Fetch the logged user ID from session
+    //     const fetchLoggedUserId = async () => {
+    //         try {
+    //             const response = await axios.get("http://localhost/backend/Christan/get_session_datas.php", { withCredentials: true });
+    //             console.log("Session Data Response:", response.data);
+    //             const userId = response.data.data.id;
+    //             setLoggedUserId(1);
+    //         } catch (error) {
+    //             setError("Failed to fetch user data. Please try again later.");
+    //             setOpenSnackbar(true);
+    //             console.error("Error fetching user ID:", error);
+    //         }
+    //     };
 
-        fetchLoggedUserId();
-    }, []);
+    //     fetchLoggedUserId();
+    // }, []);
 
     useEffect(() => {
         if (loggedUserId !== null) {
             // Fetch users only after getting the logged user ID
             const fetchUsers = async () => {
                 try {
-                    const response = await axios.get("http://localhost/backend/Christan/get_users.php");
+                    const response = await axios.get("http://localhost/backend/Christan/get_users_sp.php");
                     const filteredUsers = response.data.filter(user => user.id !== loggedUserId);
                     setUsers(filteredUsers);
                     setFilteredUsers(filteredUsers); // Initialize filtered users
@@ -105,7 +105,7 @@ const ChatComponent = () => {
                 formData.append('receiver_id', selectedUser.id);
                 formData.append('message', messageInput);
 
-                const response = await axios.post("http://localhost/backend/Christan/send_message.php", formData, {
+                const response = await axios.post("http://localhost/Christan/send_message.php", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data', // Important for sending form data
                     },
