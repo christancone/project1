@@ -37,7 +37,7 @@ const Plus = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost/Project1/addChild.php', formData);
+      const response = await axios.post('http://localhost/backend/Vishagan/addChild.php', formData);
       if (response.data.status === 'success') {
         setSnackbar({ open: true, message: response.data.message, severity: 'success' });
       } else {

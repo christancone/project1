@@ -46,8 +46,9 @@ const ChatComponent = () => {
         const fetchUsers = async () => {
             if (loggedUserId !== null) {
                 try {
-                    const usersResponse = await axios.get("http://localhost/backend/Christan/fetchForAttendants.php", { withCredentials: true });
+                    const usersResponse = await axios.get("http://localhost/backend/Christan/get_users.php", { withCredentials: true });
                     const usersData = usersResponse.data;
+                    console.log(usersData);
 
                     const unreadCountsResponse = await axios.get("http://localhost/backend/Christan/fetch_unread_counts.php", { withCredentials: true });
                     const unreadCountsData = unreadCountsResponse.data;
