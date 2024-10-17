@@ -68,7 +68,8 @@ function App() {
         }
 
         if (error) {
-            return <div>{error}</div>; // Display error message if there's an issue fetching the role
+            return <Final /> ; // Display error message if there's an issue fetching the role
+
         }
 
         switch (currentComponent) {

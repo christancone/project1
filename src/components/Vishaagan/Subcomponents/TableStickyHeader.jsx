@@ -26,18 +26,36 @@ export default function TableStickyHeader() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost/backend/Vishagan/getChildrenData.php')
+    axios.get('http://localhost/backend/Vishagan/Connection/get_session_datas.php', { withCredentials: true })
         .then(response => {
-          const fetchedData = response.data.map(item =>
-              createData(item.child_id, item.child_name, item.parent_name, item.address, item.phone_no, item.parent_id)
-          );
-          setRows(fetchedData);
+          if (response.data.status === 'success') {
+            fetchChildrenDetails(response.data.data.username); // Fetch children details with the session username
+          } else {
+            console.error('Session expired or not set:', response.data.message);
+          }
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch(error => {
+          console.error('Error fetching session data:', error);
+        });
   }, []);
 
+  const fetchChildrenDetails = (username) => {
+    axios.get('http://localhost/backend/Vishagan/Connection/getChildrenData.php', { withCredentials: true })
+        .then(response => {
+          if (Array.isArray(response.data)) { // Check if response data is an array
+            const fetchedData = response.data.map(item =>
+                createData(item.child_id, item.child_name, item.parent_name, item.address, item.phone_no, item.parent_id)
+            );
+            setRows(fetchedData);
+          } else {
+            console.error('Unexpected response format:', response.data);
+          }
+        })
+        .catch(error => console.error('Error fetching children data:', error));
+  };
+
   const handleDelete = (id) => {
-    axios.post('http://localhost/backend/Vishagan/deleteChild.php', { child_id: id })
+    axios.post('http://localhost/Project1/Connection/DeleteChild.php', { child_id: id })
         .then(response => {
           if (response.data.status === 'success') {
             setRows(rows.filter(row => row.child_id !== id));
@@ -50,9 +68,10 @@ export default function TableStickyHeader() {
 
   const handleUpdateClick = (child) => {
     setSelectedChild(child);
+    const [firstname, lastname = ''] = child.child_name.split(' ');
     setFormData({
-      firstname: child.child_name.split(' ')[0],
-      lastname: child.child_name.split(' ')[1] || '',
+      firstname,
+      lastname,
       address: child.address,
       phone_no: child.phone_no,
       parent_id: child.parent_id,
@@ -68,23 +87,31 @@ export default function TableStickyHeader() {
     const { name, value } = e.target;
     setFormData(prevData => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleUpdate = () => {
-    axios.post('http://localhost/backend/Vishagan/updateChild.php', {
+    const { firstname, lastname, address, phone_no, parent_id } = formData;
+
+    // Simple validation to check required fields
+    if (!firstname || !lastname || !address || !phone_no || !parent_id) {
+      alert("All fields are required.");
+      return;
+    }
+
+    axios.post('http://localhost/Project1/Connection/updateChild.php', {
       child_id: selectedChild.child_id,
-      parent_id: formData.parent_id,
-      firstname: formData.firstname,
-      lastname: formData.lastname,
-      address: formData.address,
-      phone_no: formData.phone_no,
+      parent_id,
+      firstname,
+      lastname,
+      address,
+      phone_no,
     })
         .then(response => {
           if (response.data.status === 'success') {
             setRows(rows.map(row => row.child_id === selectedChild.child_id
-                ? { ...row, ...formData, child_name: `${formData.firstname} ${formData.lastname}` }
+                ? { ...row, ...formData, child_name: `${firstname} ${lastname}` }
                 : row
             ));
             handleClose();
@@ -182,7 +209,7 @@ export default function TableStickyHeader() {
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
-            backdropFilter: 'blur(5px)'
+            backdropFilter: 'blur(5px)',
           }}>
             <MuiTypography id="modal-title" variant="h6" component="h2">
               Update Child Information

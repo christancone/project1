@@ -15,15 +15,47 @@ export default function MediaCard() {
     totalAttendants: 0,
   });
 
+  const [sessionData, setSessionData] = useState({
+    id: null,
+    username: '',
+  });
+
+  // Fetch session data (admin ID and username)
   useEffect(() => {
-    axios.get("http://localhost/backend/Vishagan/getDashboardData.php")
+    axios.get("http://localhost/backend/Vishagan/Connection/get_session_datas.php", { withCredentials: true })
       .then(response => {
-        setData(response.data);
+        if (response.data.status === 'success') {
+          setSessionData({
+            id: response.data.data.id,
+            username: response.data.data.username,
+          });
+        } else {
+          console.error(response.data.message);
+        }
       })
       .catch(error => {
-        console.error("There was an error fetching the data!", error);
+        console.error("Error fetching session data!", error);
       });
   }, []);
+
+  // Fetch dashboard data
+  useEffect(() => {
+    if (sessionData.id && sessionData.username) {
+      axios.get("http://localhost/backend/Vishagan/Connection/getDashboardData.php", {
+        params: {
+          admin_id: sessionData.id,
+          admin_username: sessionData.username,
+        },
+        withCredentials: true,
+      })
+        .then(response => {
+          setData(response.data);
+        })
+        .catch(error => {
+          console.error("There was an error fetching the data!", error);
+        });
+    }
+  }, [sessionData.id, sessionData.username]);
 
   return (
     <div className='card-container'>
