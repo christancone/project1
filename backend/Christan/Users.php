@@ -32,6 +32,33 @@ class Users {
         $connection->close();
     }
 
+    // Fetch all admins
+    public function fetchAllAdmins() {
+    // Establish a database connection
+    $connection = $this->db->getConnection();
+
+    // SQL query to select all admins
+    $query = "SELECT id, username, email, firstname, lastname FROM users WHERE role = 'Admin'";
+    $admins = array();
+
+    // Execute the query and fetch results
+    if ($result = $connection->query($query)) {
+        while ($row = $result->fetch_assoc()) {
+            $admins[] = $row;
+        }
+        // Set the content type to JSON and output the result
+        header('Content-Type: application/json');
+        echo json_encode($admins);
+    } else {
+        // Handle query error
+        http_response_code(500);
+        echo json_encode(["error" => "Database error: " . $connection->error]);
+    }
+
+    // Close the database connection
+    $connection->close();
+}
+
     // Fetch a single user by ID
     public function getUserById($id) {
         if (!$id) {
