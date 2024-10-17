@@ -11,9 +11,6 @@ import {
     Alert,
     Grid,
     Pagination,
-    Badge,
-    Paper,
-    Divider,
 } from "@mui/material";
 
 const ChatComponent = () => {
@@ -30,113 +27,91 @@ const ChatComponent = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
+        // Fetch the logged user ID from session
         const fetchLoggedUserId = async () => {
             try {
                 const response = await axios.get("http://localhost/backend/Christan/get_session_datas.php", { withCredentials: true });
+                console.log("Session Data Response:", response.data);
                 const userId = response.data.data.id;
                 setLoggedUserId(userId);
             } catch (error) {
-                handleError("Failed to fetch user data.");
+                setError("Failed to fetch user data. Please try again later.");
+                setOpenSnackbar(true);
+                console.error("Error fetching user ID:", error);
             }
         };
+
         fetchLoggedUserId();
     }, []);
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            if (loggedUserId !== null) {
+        if (loggedUserId !== null) {
+            // Fetch users only after getting the logged user ID
+            const fetchUsers = async () => {
                 try {
-                    const usersResponse = await axios.get("http://localhost/backend/Christan/get_users.php", { withCredentials: true });
-                    const usersData = usersResponse.data;
-
-                    const unreadCountsResponse = await axios.get("http://localhost/backend/Christan/fetch_unread_counts.php", { withCredentials: true });
-                    const unreadCountsData = unreadCountsResponse.data;
-
-                    const combinedUsers = usersData.map(user => {
-                        const unreadCountData = unreadCountsData.find(unread => unread.id === user.id);
-                        return {
-                            ...user,
-                            unread_count: unreadCountData ? unreadCountData.unread_count : 0,
-                        };
-                    });
-
-                    setUsers(combinedUsers);
-                    setFilteredUsers(combinedUsers);
+                    const response = await axios.get("http://localhost/backend/Christan/get_users.php");
+                    const filteredUsers = response.data.filter(user => user.id !== loggedUserId);
+                    setUsers(filteredUsers);
+                    setFilteredUsers(filteredUsers); // Initialize filtered users
                 } catch (error) {
-                    handleError("Failed to fetch users.");
+                    setError("Failed to fetch users. Please try again later.");
+                    setOpenSnackbar(true);
+                    console.error("Error fetching users:", error);
                 }
-            }
-        };
-        fetchUsers();
+            };
+
+            fetchUsers();
+        }
     }, [loggedUserId]);
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            if (selectedUser && loggedUserId !== null) {
+        if (selectedUser && loggedUserId !== null) {
+            const fetchMessages = async () => {
                 try {
                     const response = await axios.post("http://localhost/backend/Christan/get_messages.php", {
                         sender_id: loggedUserId,
-                        receiver_id: selectedUser.id,
-                    }, { withCredentials: true });
-                    setMessages(Array.isArray(response.data) ? response.data : []);
+                        receiver_id: selectedUser.id
+                    });
+                    if (Array.isArray(response.data)) {
+                        setMessages(response.data);
+                    } else {
+                        setMessages([]);
+                    }
                 } catch (error) {
-                    handleError("Failed to fetch messages.");
+                    console.error("Error fetching messages:", error.response?.data || error.message);
+                    setError("Failed to fetch messages. Please try again later.");
+                    setOpenSnackbar(true);
+                    setMessages([]);
                 }
-            }
-        };
-        fetchMessages();
+            };
+
+            fetchMessages();
+        }
     }, [selectedUser, loggedUserId]);
 
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            if (selectedUser) {
-                try {
-                    const response = await axios.post("http://localhost/backend/Christan/get_messages.php", {
-                        sender_id: loggedUserId,
-                        receiver_id: selectedUser.id,
-                    }, { withCredentials: true });
-                    setMessages(Array.isArray(response.data) ? response.data : []);
-                } catch (error) {
-                    console.error("Error fetching messages during polling:", error);
-                }
-            }
-
-            if (loggedUserId) {
-                try {
-                    const unreadCountsResponse = await axios.get("http://localhost/backend/Christan/fetch_unread_counts.php", { withCredentials: true });
-                    const unreadCountsData = unreadCountsResponse.data;
-
-                    const updatedUsers = users.map(user => {
-                        const unreadCountData = unreadCountsData.find(unread => unread.id === user.id);
-                        return {
-                            ...user,
-                            unread_count: unreadCountData ? unreadCountData.unread_count : 0,
-                        };
-                    });
-
-                    setUsers(updatedUsers);
-                    setFilteredUsers(updatedUsers);
-                } catch (error) {
-                    console.error("Error fetching unread counts:", error);
-                }
-            }
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [selectedUser, loggedUserId, users]);
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevents default behavior (such as form submission)
+            sendMessage(); // Call the sendMessage function when Enter is pressed
+        }
+    };
 
     const sendMessage = async () => {
         if (messageInput.trim() && selectedUser) {
             try {
+                // Use FormData to send the POST request
                 const formData = new FormData();
-                formData.append("sender_id", loggedUserId);
-                formData.append("receiver_id", selectedUser.id);
-                formData.append("message", messageInput);
+                formData.append('sender_id', loggedUserId);
+                formData.append('receiver_id', selectedUser.id);
+                formData.append('message', messageInput);
 
-                const response = await axios.post("http://localhost/backend/Christan/send_messages.php", formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                    withCredentials: true,
+                const response = await axios.post("http://localhost/backend/Christan/send_message.php", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data', // Important for sending form data
+                    },
                 });
 
+                // Check if the message was successfully sent
                 if (response.data.status === "success") {
                     setMessages((prevMessages) => [
                         ...prevMessages,
@@ -144,187 +119,167 @@ const ChatComponent = () => {
                             sender_id: loggedUserId,
                             receiver_id: selectedUser.id,
                             message: messageInput,
-                            timestamp: new Date().toISOString(),
+                            timestamp: new Date().toISOString(), // Adding current timestamp
                         },
                     ]);
-                    setMessageInput("");
-                    setOpenSnackbar(true);
+                    setMessageInput(""); // Clear the input field
                 } else {
-                    handleError("Failed to send message.");
+                    setError("Failed to send message. Please try again later.");
+                    setOpenSnackbar(true);
                 }
             } catch (error) {
-                handleError("Error sending message.");
+                // Handle network or server errors
+                setError("Error sending message. Please try again later.");
+                setOpenSnackbar(true);
+                console.error("Error sending message:", error);
             }
+        } else {
+            // Handle case when message is empty or no user is selected
+            setError("Message cannot be empty and no user selected.");
+            setOpenSnackbar(true);
         }
     };
 
-    const handleError = (errorMessage) => {
-        console.error(errorMessage);
-        setError(errorMessage);
-        setOpenSnackbar(true);
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
     };
 
     const handleSearchChange = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
-        const filtered = users.filter((user) => user.username.toLowerCase().includes(value.toLowerCase()));
+        const filtered = users.filter(user =>
+            user.username.toLowerCase().includes(value.toLowerCase())
+        );
         setFilteredUsers(filtered);
-        setCurrentPage(1);
+        setCurrentPage(1); // Reset to first page when search changes
     };
 
-    const handlePageChange = (event, value) => {
-        setCurrentPage(value);
-    };
-
-    const handleUserClick = (user) => {
-        setSelectedUser(user);
-        setMessages([]); // Clear messages initially
-
-        const senderId = loggedUserId; // This should be the logged-in user ID
-        const receiverId = user.id; // The user that is clicked on
-
-        const payload = {
-            sender_id: senderId,
-            receiver_id: receiverId,
-        };
-
-        // Mark messages as read in the backend
-        axios.post("http://localhost/backend/Christan/mark_messages_as_read.php", JSON.stringify(payload), {
-            headers: {
-                "Content-Type": "application/json" // Set Content-Type to application/json
-            },
-            withCredentials: true // Config option
-        })
-            .then(response => {
-                console.log("Response from mark_messages_as_read:", response.data);
-                // Remove the unread count badge
-                const updatedUsers = users.map(u => {
-                    if (u.id === user.id) {
-                        return { ...u, unread_count: 0 }; // Set unread count to 0
-                    }
-                    return u;
-                });
-                setUsers(updatedUsers);
-                setFilteredUsers(updatedUsers);
-            })
-            .catch(error => {
-                console.error("Error calling mark_messages_as_read:", error);
-                setError("Failed to mark messages as read. Please try again later.");
-                setOpenSnackbar(true);
-            });
-    };
-
-    const handleKeyPress = (event) => {
-        if (event.key === "Enter") {
-            sendMessage();
-        }
-    };
-
+    // Calculate the current users to display based on pagination
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
+    // Handle page change
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
     return (
-        <Box>
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+        <Box sx={{ display: 'flex', height: '100vh' }}>
+            <Grid container>
+                <Grid item xs={12} md={4} sx={{ bgcolor: 'background.paper', p: 2, borderRight: 1, borderColor: 'divider' }}>
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        Select a User to Chat
+                    </Typography>
                     <TextField
-                        label="Search Users"
                         variant="outlined"
-                        fullWidth
+                        placeholder="Search Users"
                         value={searchTerm}
                         onChange={handleSearchChange}
+                        fullWidth
+                        sx={{ mb: 2 }}
                     />
-                    <Paper elevation={3} sx={{ maxHeight: "400px", overflowY: "auto", marginTop: 2 }}>
-                        <List>
-                            {currentUsers.map((user) => (
-                                <ListItem
-                                    button
-                                    key={user.id}
-                                    onClick={() => handleUserClick(user)}
-                                    selected={selectedUser?.id === user.id}
-                                >
-                                    <Badge
-                                        color="error"
-                                        badgeContent={user.unread_count > 0 ? user.unread_count : null}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                    >
-                                        {user.username}
-                                    </Badge>
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Paper>
+                    <List sx={{ bgcolor: 'background.default', borderRadius: 2, p: 1 }}>
+                        {currentUsers.map(user => (
+                            <ListItem
+                                key={user.id}
+                                sx={{
+                                    bgcolor: selectedUser?.id === user.id ? 'primary.main' : 'background.default',
+                                    color: selectedUser?.id === user.id ? 'white' : 'text.primary',
+                                    mb: 1,
+                                    borderRadius: 1,
+                                    cursor: 'pointer',
+                                    '&:hover': { bgcolor: 'primary.main', color: 'white' }
+                                }}
+                                onClick={() => setSelectedUser(user)}
+                            >
+                                {user.username}
+                            </ListItem>
+                        ))}
+                    </List>
+                    {/* Pagination Controls */}
                     <Pagination
                         count={Math.ceil(filteredUsers.length / usersPerPage)}
                         page={currentPage}
                         onChange={handlePageChange}
-                        sx={{ marginTop: 2 }}
+                        color="primary"
+                        sx={{ mt: 2, justifyContent: 'center', display: 'flex' }}
                     />
                 </Grid>
-                <Grid item xs={12} md={8}>
-                    {selectedUser && (
+
+                <Grid item xs={12} md={8} sx={{ p: 3, display: 'flex', flexDirection: 'column' }}>
+                    {selectedUser ? (
                         <>
-                            <Typography variant="h5">{selectedUser.username}</Typography>
-                            <Divider sx={{ marginBottom: 2 }} />
-                            <Box
-                                sx={{
-                                    maxHeight: "400px",
-                                    overflowY: "auto",
-                                    padding: 2,
-                                    border: "1px solid #ccc",
-                                    borderRadius: "8px",
-                                    backgroundColor: "#f9f9f9",
-                                }}
-                            >
-                                {messages.map((msg, index) => (
-                                    <Box
-                                        key={index}
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: msg.sender_id === loggedUserId ? 'flex-end' : 'flex-start',
-                                            marginBottom: 1,
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="body1"
+                            <Typography variant="h6" sx={{ mb: 2 }}>
+                                Chat with {selectedUser.username}
+                            </Typography>
+                            <Box sx={{
+                                flexGrow: 1,
+                                bgcolor: 'background.default',
+                                p: 2,
+                                borderRadius: 2,
+                                overflowY: 'auto',
+                                maxHeight: '60vh',
+                                border: 1,
+                                borderColor: 'divider',
+                                mb: 2,
+                            }}>
+                                {messages.length > 0 ? (
+                                    messages.map((msg, index) => (
+                                        <Box
+                                            key={index}
                                             sx={{
-                                                backgroundColor: msg.sender_id === loggedUserId ? "#d1f0d1" : "#f0f0f0",
-                                                borderRadius: "8px",
-                                                padding: 1,
-                                                maxWidth: '75%',
+                                                display: 'flex',
+                                                justifyContent: msg.sender_id === loggedUserId ? 'flex-end' : 'flex-start',
+                                                mb: 1
                                             }}
                                         >
-                                            {msg.message}
-                                        </Typography>
-                                    </Box>
-                                ))}
+                                            <Box sx={{
+                                                bgcolor: msg.sender_id === loggedUserId ? 'primary.main' : 'grey.300',
+                                                color: 'text.primary',
+                                                p: 1,
+                                                borderRadius: 2,
+                                                maxWidth: '70%',
+                                                wordBreak: 'break-word'
+                                            }}>
+                                                {msg.message}
+                                            </Box>
+                                        </Box>
+                                    ))
+                                ) : (
+                                    <Typography>No messages yet.</Typography>
+                                )}
                             </Box>
-                            <TextField
-                                variant="outlined"
-                                fullWidth
-                                placeholder="Type a message..."
-                                value={messageInput}
-                                onChange={(e) => setMessageInput(e.target.value)}
-                                onKeyPress={handleKeyPress} // Added onKeyPress event
-                                sx={{ marginTop: 2 }}
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={sendMessage}
-                                sx={{ marginTop: 1 }}
-                            >
-                                Send
-                            </Button>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    value={messageInput}
+                                    onKeyPress={handleKeyPress}
+                                    onChange={(e) => setMessageInput(e.target.value)}
+                                    placeholder="Type a message..."
+                                />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ ml: 2 }}
+                                    onClick={sendMessage}
+                                >
+                                    Send
+                                </Button>
+                            </Box>
                         </>
+                    ) : (
+                        <Typography>Select a user to start chatting.</Typography>
                     )}
                 </Grid>
             </Grid>
 
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+                    {error}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
