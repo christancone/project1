@@ -16,14 +16,19 @@ export default function MediaCard() {
   });
 
   useEffect(() => {
-    axios.get("http://localhost/backend/Vishagan/getDashboardData.php")
+    console.log('Fetching dashboard data...');
+
+    axios.get("http://localhost/Project1/Connection/getDashboardData.php")
       .then(response => {
+        console.log('Data fetched successfully:', response.data);
         setData(response.data);
       })
       .catch(error => {
         console.error("There was an error fetching the data!", error);
       });
   }, []);
+
+  console.log('Rendered with data:', data);
 
   return (
     <div className='card-container'>
