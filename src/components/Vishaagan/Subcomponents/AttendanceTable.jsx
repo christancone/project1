@@ -48,12 +48,13 @@ const AttendanceTable = () => {
         );
     };
 
+
     const handleSaveAttendance = async () => {
         try {
             await Promise.all(
                 attendanceData.map((record) =>
                     axios.post('http://localhost/backend/Vishagan/updateAttendance.php', {
-                        id: record.child_id,
+                        id: record.child_id, // Make sure this matches the key used in the PHP script
                         check_in_time: record.check_in_time,
                         check_out_time: record.check_out_time,
                     })
@@ -65,6 +66,7 @@ const AttendanceTable = () => {
             alert('There was an error saving the attendance!');
         }
     };
+
 
     if (error) {
         return <div>{error}</div>;

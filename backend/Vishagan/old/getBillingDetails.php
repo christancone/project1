@@ -5,7 +5,7 @@ header("Access-Control-Allow-Origin: http://localhost:5173");
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header("Access-Control-Allow-Credentials: true");
-include 'DBConnector.php';
+include '../';
 
 class BillingDetailsFetcher {
     private $db;
@@ -28,6 +28,7 @@ class BillingDetailsFetcher {
             WHERE u.admin_username = ?
         ";
 
+        // Prepare and execute the SQL statement
         $stmt = $this->db->prepare($query);
         if ($stmt) {
             $stmt->bind_param('s', $adminUsername);
@@ -51,7 +52,7 @@ class BillingDetailsFetcher {
 session_start();
 if (!isset($_SESSION['id'])) {
     http_response_code(403); // Forbidden
-    echo json_encode(['status' => 'error', 'message' => 'Session expired or not set.', 'data' => []]);
+    echo json_encode(['status' => 'error', 'message' => 'Session expired or not set.']);
     exit;
 }
 
@@ -60,10 +61,10 @@ $fetcher = new BillingDetailsFetcher();
 header('Content-Type: application/json');
 
 // Get the admin username from the session
-$adminUsername = $_SESSION['username'] ?? null;
+$adminUsername = $_SESSION['admin_username'] ?? null;
 if ($adminUsername) {
     $billingDetails = $fetcher->getBillingDetails($adminUsername);
     echo json_encode($billingDetails);
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Admin username not found.', 'data' => []]);
+    echo json_encode(['status' => 'error', 'message' => 'Admin username not found.']);
 }

@@ -7,8 +7,6 @@ import {
     TextField,
     Button,
     Typography,
-    Snackbar,
-    Alert,
     Grid,
     Pagination,
     Badge,
@@ -46,7 +44,7 @@ const ChatComponent = () => {
         const fetchUsers = async () => {
             if (loggedUserId !== null) {
                 try {
-                    const usersResponse = await axios.get("http://localhost/backend/Christan/get_users.php", { withCredentials: true });
+                    const usersResponse = await axios.get("http://localhost/backend/Christan/fetchForAttendants.php", { withCredentials: true });
                     const usersData = usersResponse.data;
                     console.log(usersData);
 

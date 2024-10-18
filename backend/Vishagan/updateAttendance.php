@@ -1,47 +1,49 @@
 <?php
-// Set CORS headers
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json");
+include 'DBConnector.php';
 
-// Handle preflight requests
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    http_response_code(200);
-    exit();
+// Get the raw POST data
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Validate inputs
+$child_id = $data['id'] ?? null; // Update to match the key used in React
+$check_in_time = $data['check_in_time'] ?? null;
+$check_out_time = $data['check_out_time'] ?? null;
+
+if (!$child_id || !$check_in_time) {
+    echo json_encode(['status' => 'error', 'message' => 'Child ID and check-in time are required.']);
+    exit;
 }
 
-require_once 'DbConnector.php';
+try {
+    $db = (new DBConnector())->getConnection();
 
-class AttendanceUpdater {
-    private $db;
+    // Check if the child attendance already exists for today
+    $query = "SELECT id FROM attendance WHERE child_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $child_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    public function __construct() {
-        $dbConnector = new DBConnector();
-        $this->db = $dbConnector->getConnection();
+
+        // Update existing record
+        $query = "UPDATE attendance SET check_in_time = ?, check_out_time = ? WHERE child_id = ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param('ssi', $check_in_time, $check_out_time, $child_id);
+
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Attendance saved successfully!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Error executing the query.']);
     }
 
-    public function updateAttendance($id, $status) {
-        $currentTime = date('H:i:s');
-        $query = "UPDATE attendance SET status = ?, check_in_time = ? WHERE id = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ssi', $status, $currentTime, $id);
-        $result = $stmt->execute();
-        return $result;
-    }
-
-    public function closeConnection() {
-        $this->db->close();
-    }
+    $stmt->close(); // Close the statement
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Error saving attendance: ' . $e->getMessage()]);
 }
-
-$data = json_decode(file_get_contents('php://input'), true);
-$id = $data['id'];
-$status = $data['status'];
-
-$attendanceUpdater = new AttendanceUpdater();
-$success = $attendanceUpdater->updateAttendance($id, $status);
-$attendanceUpdater->closeConnection();
-
-echo json_encode(['success' => $success]);
 ?>
