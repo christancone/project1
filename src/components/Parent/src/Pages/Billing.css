@@ -1,17 +1,111 @@
-.bill {
-    padding-left: 20%;
-    color: #6A41AE;
-} 
-
-.bill .content {
-    padding-top: 10%;
-
-    margin-left: 10%;
-
-    width: 80%;
-
-    align-items: center;
-    justify-content: center;
-
+/* Main container for the billing section */
+.billing-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;  /* Centers the content horizontally */
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically centers the content */
+    align-items: center;     /* Horizontally centers the content */
+    height: 100vh;           /* Full viewport height for centering */
     text-align: center;
+}
+
+/* Header styling */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Table container */
+.bill {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;  /* Set a max-width to keep table responsive */
+}
+
+/* Table styling */
+.billing-table {
+    width: 100%;            /* Ensure table takes up full width */
+    border-collapse: collapse;
+}
+
+/* Table header and cell styling */
+.billing-table th, 
+.billing-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.billing-table th {
+    background-color: #007BFF;
+    color: white;
+    text-align: center;     /* Center text in the table headers */
+}
+
+.billing-table td {
+    font-size: 16px;
+    text-align: center;     /* Center content in table cells */
+}
+
+/* Alternate row colors */
+.billing-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover effect for rows */
+.billing-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Status color classes */
+.paid {
+    color: green;
+    font-weight: bold;
+}
+
+.pending {
+    color: red;
+    font-weight: bold;
+}
+
+/* Date filter container */
+.date-filter {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Field labels */
+.field label {
+    font-size: 14px;
+    color: #6A41AE;
+}
+
+/* Input styling */
+.date-input {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #6A41AE;
+}
+
+/* Filter button styling */
+.filter-button {
+    background-color: #6A41AE;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: #59369b;
 }

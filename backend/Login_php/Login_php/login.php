@@ -4,15 +4,18 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-header("Access-Control-Allow-Origin: *");
+// Set CORS headers
+header("Access-Control-Allow-Origin: http://localhost:5174");
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
 require 'dbtest.php';
 
 // Set session cookie parameters and start the session
-session_set_cookie_params(0, "/");
+session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => false, 'httponly' => true]); // Adjust as needed
 session_start();
+error_log("login.php session ID: ".session_id());
 
 class Login {
     private $db;
@@ -59,7 +62,7 @@ class Login {
     private function validateUser($email, $password) {
         try {
             // Modified query to fetch role and email along with password
-            $query = "SELECT email, password, role FROM users WHERE email = ?";
+            $query = "SELECT email, password, role, id, admin_username FROM users WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
 
             if (!$stmt) {
@@ -71,10 +74,15 @@ class Login {
             $result = $stmt->get_result()->fetch_assoc();
 
             if ($result && password_verify($password, $result['password'])) {
-                // Successful login: store email and role in the session
+                error_log("login.php session ID: ".session_id());
+
+                $_SESSION['id'] = $result['id'];
                 $_SESSION['email'] = $result['email'];
                 $_SESSION['role'] = $result['role'];
-                error_log($_SESSION['role']);
+                $_SESSION['admin_username'] = $result['admin_username'];
+
+
+                error_log("loggedFromLogin.php: ".$_SESSION['role']);
 
                 // Return the login success response with email and role
                 echo json_encode([

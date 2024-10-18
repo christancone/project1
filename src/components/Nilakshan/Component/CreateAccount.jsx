@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation  } from 'react-router-dom';
 import './CreateAccount.css';
 import Marquee from "react-fast-marquee";
 import mar3 from '../assets/Group1.png';
@@ -15,6 +15,8 @@ import 'react-notifications/lib/notifications.css'; // Import notification style
 
 const CreateAccount = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const role = location?.state?.role || '';
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -22,7 +24,8 @@ const CreateAccount = () => {
         address: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        role: role,
     });
 
     const [errors, setErrors] = useState({});
@@ -38,7 +41,7 @@ const CreateAccount = () => {
 
     const handleClick = async () => {
         setLoading(true);
-    
+
         // Validate form fields
         const newErrors = {};
         if (!formData.firstname) newErrors.firstname = 'First name is required.';
@@ -48,7 +51,7 @@ const CreateAccount = () => {
         if (!formData.email) newErrors.email = 'Email is required.';
         if (!formData.password) newErrors.password = 'Password is required.';
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match.';
-    
+
         if (Object.keys(newErrors).length > 0) {
             for (const [field, message] of Object.entries(newErrors)) {
                 NotificationManager.error(message, field);
@@ -56,14 +59,14 @@ const CreateAccount = () => {
             setLoading(false);
             return;
         }
-    
+
         try {
-            const response = await axios.post('http://localhost/backend/satalan/Otp.php', formData, {
+            const response = await axios.post('http://localhost:3000/project1/backend/Login_php/Login_php/Otp.php', formData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             if (response.data.errors) {
                 if (typeof response.data.errors === 'string') {
                     NotificationManager.error(response.data.errors);
@@ -75,12 +78,12 @@ const CreateAccount = () => {
             } else {
                 // Notify the user of successful OTP sending
                 NotificationManager.success('OTP has been sent successfully!');
-    
+
                 // Wait a short time before navigating to ensure the notification is displayed
                 setTimeout(() => {
-                    navigate('/otp', { state: { email: formData.email } });
+                    navigate('/OTP', { state: { email: formData.email, role: formData.role } });
                 }, 1500); // Adjust delay as needed
-    
+
             }
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -89,9 +92,6 @@ const CreateAccount = () => {
             setLoading(false);
         }
     };
-    
-    
-
     return (
         <div className="CreateAccount">
             <div className="CreateAccount1">
@@ -130,8 +130,8 @@ const CreateAccount = () => {
                     </div>
                 </div>
                 <div className="content2">
-                    <div className="row1">
-                        <div className="name">
+                    <div className="row">
+                        <div className="input-box">
                             <h4>First name</h4>
                             <input
                                 type="text"
@@ -141,7 +141,7 @@ const CreateAccount = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Last name</h4>
                             <input
                                 type="text"
@@ -153,12 +153,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Phone no</h4>
                             <input
                                 type="text"
                                 name="phone_no"
-                                className='input-box'
                                 placeholder='Phone number'
                                 value={formData.phone_no}
                                 onChange={handleChange}
@@ -166,12 +165,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Address</h4>
                             <input
                                 type="text"
                                 name="address"
-                                className='input-box'
                                 placeholder='Address'
                                 value={formData.address}
                                 onChange={handleChange}
@@ -179,12 +177,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Email</h4>
                             <input
                                 type="text"
                                 name="email"
-                                className='input-box'
                                 placeholder='Email'
                                 value={formData.email}
                                 onChange={handleChange}
@@ -192,12 +189,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Password</h4>
                             <input
                                 type="password"
                                 name="password"
-                                className='input-box'
                                 placeholder='Password'
                                 value={formData.password}
                                 onChange={handleChange}
@@ -205,12 +201,11 @@ const CreateAccount = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="name">
+                        <div className="input-box">
                             <h4>Confirm Password</h4>
                             <input
                                 type="password"
                                 name="confirmPassword"
-                                className='input-box'
                                 placeholder='Confirm Password'
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
@@ -223,7 +218,7 @@ const CreateAccount = () => {
                 </div>
             </div>
 
-            <NotificationContainer /> 
+            <NotificationContainer />
         </div>
     );
 };

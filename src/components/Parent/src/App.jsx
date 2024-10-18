@@ -14,7 +14,7 @@ import Billing from './Pages/Billing';
 import Feedback from './Pages/Feedback';
 import Profile from './Pages/Profile';
 import { Logout } from '@mui/icons-material';
-import User from './Pages/User';
+import User from '../../Nilakshan/Component/User';
 
 function Parent() {
   return (

@@ -5,8 +5,8 @@ class DBConnector
     // Database connection parameters
     private $host = 'localhost';
     private $dbuser = 'root';
-    private $dbpw = '';
-    private $dbname = 'tinytoes';
+    private $dbpw = 'Satalan1925$';
+    private $dbname = 'project';
 
     // Method to establish and return a database connection
     public function getConnection()

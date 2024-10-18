@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-
+import { useLocation } from 'react-router-dom';
 // Import images
 import mar3 from '../assets/Group1.png';
 import mar4 from '../assets/Group2.png';
@@ -17,22 +17,20 @@ import mar8 from '../assets/Group6.png';
 import image2 from '../assets/a1.png';
 import image3 from '../assets/g1.png';
 
-const Parent = () => {
+const NilakshanParent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const role = location?.state?.role || '';
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const handleEmailChange = (e) => setEmail(e.target.value);
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleRegister = () => {
-    navigate('/CreateAccount');
+    navigate('/Login', { state: { role } });
   };
 
   const otpButton = async () => {
@@ -45,19 +43,27 @@ const Parent = () => {
 
     try {
       const response = await axios.post(
-          'http://localhost/backend/satalan/login.php',
-          { email, password },
-          { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
+        'http://localhost:3000/project1/backend/Login_php/Login_php/login.php',
+        { email, password },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        }
       );
 
       if (response.data.message === 'Login successful') {
-        // Assuming the role is returned in the response
-        const role = response.data.role;
-        console.log(role);
-        navigate('/', { state: { role } });
+        NotificationManager.success('Login successful!', 'Success', 3000);
+        console.log('Response from server:', response.data);
+
+        const userRole = response.data.role;
+        console.log(userRole);
+
+        // Redirect or handle successful login based on role
+        navigate('/', { state: { role: userRole } });
       } else {
-        NotificationManager.error(response.data.errors);
+        NotificationManager.error(response.data.errors || 'Login failed.');
       }
+
     } catch (error) {
       if (error.response) {
         NotificationManager.error('Server error. Please try again.');
@@ -70,8 +76,6 @@ const Parent = () => {
       setLoading(false);
     }
   };
-
-
 
   return (
     <div className="parent">
@@ -116,13 +120,9 @@ const Parent = () => {
           <p>or</p>
           <hr />
         </div>
-
-
         <button className='sign-button'>
-          <img src={image3} alt="Google" />
-          <p>Continue with Google</p>
+          <img src={image3} alt="Google" /> Continue with Google
         </button>
-
         <button className='sign-button'>
           <img src={image2} alt="Apple" /> Continue with Apple
         </button>
@@ -136,4 +136,4 @@ const Parent = () => {
   );
 };
 
-export default Parent;
+export default NilakshanParent;

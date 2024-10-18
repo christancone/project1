@@ -1,197 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Childinfo.css';
 import r4 from '../assets/r4.png';
-import r1 from '../assets/r1.png';
 
 const Childinfo = () => {
+    const [childData, setChildData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [formData, setFormData] = useState({ childMedicalReport: null });
+    const [userImage, setUserImage] = useState(null);
 
-    const [formData, setFormData] = useState({
-        childMedicalReport: null,
-    });
+    // Fetch child data from the PHP backend
+    useEffect(() => {
+        const fetchChildData = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/project1/backend/parents/chilinfo.php', {
+                    method: 'GET',
+                    credentials: 'include', // Include cookies with requests
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+    
+                const data = await response.json();
+                setChildData(data);
+    
+                // Fetch user data to get the image URL
+                const userResponse = await fetch(`http://localhost:3000/project1/backend/parents/user.php?id=${data.userId}`, {
+                    method: 'GET',
+                    credentials: 'include', // Include cookies with requests
+                });
+    
+                if (!userResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
+    
+                const userData = await userResponse.json();
+                if (userData.status === 'success') {
+                    setUserImage(userData.data.child_image); // Assuming 'child_image' is the field that stores the image URL
+                }
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchChildData();
+    }, []);
+    
 
-    const handleFileUpload = (e, field) => {
-        e.preventDefault();
-        const fileInput = document.getElementById(field);
-        fileInput.click();
+    const handleChangef = (event) => {
+        const file = event.target.files[0];
+        setFormData((prevState) => ({
+            ...prevState,
+            childMedicalReport: file,
+        }));
     };
 
-    const handleChangef = (e) => {
-        const { name, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files ? files[0] : null,
-        });
+    const handleFileUpload = (event, field) => {
+        // Logic for file upload goes here
+        console.log(`Uploading ${field}:`, formData.childMedicalReport);
     };
+
+    const renderChildInfo = (child) => (
+        <div className="content2" key={child.child_name}>
+            <div className="image">
+                <img src={r4} alt="Child" />
+                {userImage && <img src={`http://localhost:3000/project1/backend/parents/${userImage}`} alt="Child" />}
+                <div className="name">
+                    <h3>{child.child_name}</h3>
+                    <h4>{child.dob}</h4>
+                </div>
+            </div>
+            <div className="info">
+                <div className="details">
+                    <h3>Name: </h3>
+                    <h4>{child.child_name}</h4>
+                </div>
+                <div className="details">
+                    <h3>Date of Birth: </h3>
+                    <h4>{child.dob}</h4>
+                </div>
+                <div className="details">
+                    <h3>Allergies: </h3>
+                    <h4>{child.allergies}</h4>
+                </div>
+                <div className="details">
+                    <h3>Medications: </h3>
+                    <h4>{child.medication}</h4>
+                </div>
+                <div className="details">
+                    <h3>Medical Conditions: </h3>
+                    <h4>{child.medical_info}</h4>
+                </div>
+                <div className="details">
+                    <h3>Emergency Contact: </h3>
+                    <h4>{child.emergency_contact}</h4>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="childinfo">
             <div className="content1">
-                <h1>Child info.</h1>
+                <h1>Child Info</h1>
             </div>
 
-            <div className="content">
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
 
-                <div className="content2">
-                    <div className="image">
-                        <p>
-                            <img src={r4} alt="Child" />
-                            <div className="name">
-                                <h3>Mishaf</h3>
-                                <h4>13 months</h4>
+            {!loading && childData && (
+                <div className="content">
+                    {renderChildInfo(childData)}
+
+                    <div className="edit">
+                        <label htmlFor="Child_Medical">Child Medical Report:</label>
+                        <div className="upload-container">
+                            <input
+                                required
+                                type="file"
+                                id="Child_Medical"
+                                name="childMedicalReport"
+                                style={{ display: 'none' }}
+                                onChange={handleChangef}
+                                accept=".pdf,.jpg,.jpeg,.png"
+                            />
+                            <div className="upload-box">
+                                <input
+                                    type="text"
+                                    readOnly
+                                    placeholder="PDF/JPG/JPEG/PNG only allowed"
+                                    value={formData.childMedicalReport ? formData.childMedicalReport.name : ''}
+                                />
                             </div>
+                            <button
+                                className="upload-button"
+                                onClick={(e) => handleFileUpload(e, 'Child_Medical')}
+                            >
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="para">
+                        <h3>Note: </h3>
+                        <p>
+                            My Baby has allergies to peanuts and dairy but requires no regular medications. She manages mild asthma under the care of Dr. Michael Smith. Emma's health is carefully monitored, and she follows a specific diet to avoid allergens. Regular check-ups with Dr. Smith ensure her conditions are well-managed, ensuring her overall well-being and safety.
                         </p>
                     </div>
-
-                    <div className="info">
-                        <div className="details">
-                            <h3>Name: </h3>
-                            <h4>Mishaf</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Date of Birth: </h3>
-                            <h4>January 15, 2022</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Allergies: </h3>
-                            <h4>Peanuts, Dairy</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Medications: </h3>
-                            <h4>None</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Medical Conditions: </h3>
-                            <h4>Mild Asthma</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Emergency Contact: </h3>
-                            <h4>Christan (0711111111)</h4>
-                        </div>
-                    </div>
                 </div>
-
-                <div className="edit">
-                    <label htmlFor="Child_Medical">Child Medical Report:</label>
-                    <div className="upload-container">
-                        <input
-                            required
-                            type="file"
-                            id="Child_Medical"
-                            name="childMedicalReport"
-                            style={{ display: 'none' }}
-                            onChange={handleChangef}
-                            accept=".pdf,.jpg,.jpeg,.png"
-                        />
-                        <div className="upload-box">
-                            <input
-                                type="text"
-                                readOnly
-                                placeholder="PDF/JPG/JPEG/PNG only allowed"
-                                value={formData.childMedicalReport ? formData.childMedicalReport.name : ''}
-                            />
-                        </div>
-                        <button
-                            className="upload-button"
-                            onClick={(e) => handleFileUpload(e, 'Child_Medical')}
-                        >
-                            Edit
-                        </button>
-                    </div>
-                </div>
-                <div className="para">
-                    <h3>Note: </h3>
-                    <p>
-                        My Baby has allergies to peanuts and dairy but requires no regular medications. She manages mild asthma under the care of Dr. Michael Smith. Emma's health is carefully monitored, and she follows a specific diet to avoid allergens.
-                        Regular check-ups with Dr. Smith ensure her conditions are well-managed, ensuring her overall well-being and safety.
-                    </p>
-                </div>
-
-            </div>
-
-
-
-
-
-            <div className="content">
-
-                <div className="content2">
-                    <div className="image">
-                        <p>
-                            <img src={r1} alt="Child" />
-                            <div className="name">
-                                <h3>Satalan</h3>
-                                <h4>20 months</h4>
-                            </div>
-                        </p>
-                    </div>
-
-                    <div className="info">
-                        <div className="details">
-                            <h3>Name: </h3>
-                            <h4>Satalan</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Date of Birth: </h3>
-                            <h4>January 25, 2022</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Allergies: </h3>
-                            <h4>Shrimp</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Medications: </h3>
-                            <h4>None</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Medical Conditions: </h3>
-                            <h4>Mild Asthma</h4>
-                        </div>
-                        <div className="details">
-                            <h3>Emergency Contact: </h3>
-                            <h4>Meera (0711111111)</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="edit">
-                    <label htmlFor="Child_Medical">Child Medical Report:</label>
-                    <div className="upload-container">
-                        <input
-                            required
-                            type="file"
-                            id="Child_Medical"
-                            name="childMedicalReport"
-                            style={{ display: 'none' }}
-                            onChange={handleChangef}
-                            accept=".pdf,.jpg,.jpeg,.png"
-                        />
-                        <div className="upload-box">
-                            <input
-                                type="text"
-                                readOnly
-                                placeholder="PDF/JPG/JPEG/PNG only allowed"
-                                value={formData.childMedicalReport ? formData.childMedicalReport.name : ''}
-                            />
-                        </div>
-                        <button
-                            className="upload-button"
-                            onClick={(e) => handleFileUpload(e, 'Child_Medical')}
-                        >
-                            Edit
-                        </button>
-                    </div>
-                </div>
-                <div className="para">
-                    <h3>Note: </h3>
-                    <p>
-                        My Baby has allergies to peanuts and dairy but requires no regular medications.
-                        Regular check-ups with Dr. Smith ensure her conditions are well-managed, ensuring her overall well-being and safety.
-                    </p>
-                </div>
-
-            </div>
+            )}
         </div>
     );
-}
+};
 
 export default Childinfo;

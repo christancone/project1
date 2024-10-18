@@ -1,0 +1,29 @@
+-- Active: 1728567292999@@127.0.0.1@3306@tinytoes
+ALTER TABLE users 
+ADD COLUMN parent_name VARCHAR(50) NULL,
+ADD COLUMN child_name VARCHAR(50) NULL,
+ADD COLUMN dob DATE NULL,
+ADD COLUMN gender VARCHAR(10) NULL,
+ADD COLUMN emergency_contact VARCHAR(50) NULL,
+ADD COLUMN emergency_phone VARCHAR(20) NULL,
+ADD COLUMN allergies TEXT NULL,
+ADD COLUMN medical_info TEXT NULL,
+ADD COLUMN medication TEXT NULL,
+ADD COLUMN files BLOB NULL;
+
+
+SELECT * FROM users;
+ DESCRIBE users;
+SELECT * FROM temporary_otp;
+
+SELECT * FROM billing;
+DESCRIBE billing;
+SET @new_id = 0;
+
+UPDATE user 
+SET id = (@new_id := @new_id + 1)
+ORDER BY id;
+TRUNCATE TABLE user;
+TRUNCATE TABLE billing;
+DESCRIBE billing;
+SHOW CREATE TABLE billing;

@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:5173"); // Ensure it's your frontend's URL
+header("Access-Control-Allow-Origin: http://localhost:5174"); // Ensure it's your frontend's URL
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
@@ -13,7 +13,8 @@ $response = []; // Initialize response variable
 if (isset($_SESSION['role'])) {
     $response = [
         'message' => 'User role fetched successfully',
-        'role' => $_SESSION['role']
+        'role' => $_SESSION['role'],
+        'email'=>$_SESSION['email']
     ];
 
 } else {
