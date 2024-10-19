@@ -35,21 +35,24 @@ const Plus = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post('http://localhost/Project1/addChild.php', formData);
-      if (response.data.status === 'success') {
-        setSnackbar({ open: true, message: response.data.message, severity: 'success' });
-      } else {
-        setSnackbar({ open: true, message: response.data.message, severity: 'error' });
-      }
-      handleClose();
-    } catch (error) {
-      setSnackbar({ open: true, message: 'An error occurred', severity: 'error' });
-    }
-  };
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.post('http://localhost/backend/Vishagan/addChild.php', formData);
+            console.log(response.data);  // Log server response
+            if (response.data.status === 'success') {
+                setSnackbar({ open: true, message: response.data.message, severity: 'success' });
+            } else {
+                setSnackbar({ open: true, message: response.data.message, severity: 'error' });
+            }
+            handleClose();
+        } catch (error) {
+            console.error(error);  // Log client-side error
+            setSnackbar({ open: true, message: 'An error occurred', severity: 'error' });
+        }
+    };
 
-  return (
+
+    return (
     <div>
       <LeftEndContainer>
         <IconButton aria-label="add" sx={{ transform: 'scale(1.5)' }} onClick={handleOpen}>

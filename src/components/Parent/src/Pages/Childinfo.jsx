@@ -13,7 +13,7 @@ const Childinfo = () => {
     useEffect(() => {
         const fetchChildData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/project1/backend/parents/chilinfo.php', {
+                const response = await fetch('http://localhost/backend/parents/chilinfo.php', {
                     method: 'GET',
                     credentials: 'include', // Include cookies with requests
                 });
@@ -26,7 +26,7 @@ const Childinfo = () => {
                 setChildData(data);
     
                 // Fetch user data to get the image URL
-                const userResponse = await fetch(`http://localhost:3000/project1/backend/parents/user.php?id=${data.userId}`, {
+                const userResponse = await fetch(`http://localhost/backend/parents/user.php?id=${data.userId}`, {
                     method: 'GET',
                     credentials: 'include', // Include cookies with requests
                 });
@@ -67,7 +67,7 @@ const Childinfo = () => {
         <div className="content2" key={child.child_name}>
             <div className="image">
                 <img src={r4} alt="Child" />
-                {userImage && <img src={`http://localhost:3000/project1/backend/parents/${userImage}`} alt="Child" />}
+                {userImage && <img src={`http://localhost/backend/parents/${userImage}`} alt="Child" />}
                 <div className="name">
                     <h3>{child.child_name}</h3>
                     <h4>{child.dob}</h4>
