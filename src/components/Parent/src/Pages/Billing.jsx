@@ -14,7 +14,7 @@ const Billing = () => {
     useEffect(() => {
         const fetchBillingData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/project1/backend/parents/billing.php', {
+                const response = await fetch('http://localhost/backend/parents/billing.php', {
                     credentials: 'include', // Ensure cookies are sent with the request
                 });
                 
