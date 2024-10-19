@@ -187,7 +187,7 @@ const ParentManagement = () => {
                   <IconButton color="primary" onClick={() => handleEdit(parent)}>
                     <Edit />
                   </IconButton>
-                  <IconButton color="secondary" onClick={() => handleDelete(parent.parent_id)}>
+                  <IconButton color="error" onClick={() => handleDelete(parent.parent_id)}>
                     <Delete />
                   </IconButton>
                   <IconButton color="default" onClick={() => handleViewDetails(parent)}>
@@ -292,7 +292,7 @@ const ParentManagement = () => {
           <Button onClick={() => setDeleteConfirmOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={confirmDelete} color="secondary">
+          <Button onClick={confirmDelete} color="error">
             Delete
           </Button>
         </DialogActions>

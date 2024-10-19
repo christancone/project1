@@ -42,6 +42,17 @@ const AdminManagement = () => {
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
+    const calculateAge = (dob) => {
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
     };
@@ -125,7 +136,8 @@ const AdminManagement = () => {
     };
 
     const handleView = (child) => {
-        setViewChild(child);
+        const age = calculateAge(child.dob);
+        setViewChild({ ...child, age });
         setViewDialogOpen(true);
     };
 
@@ -152,6 +164,7 @@ const AdminManagement = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <TableCell className="bg-gray-200">Child ID</TableCell>
                             <TableCell className="bg-gray-200">Name</TableCell>
                             <TableCell className="bg-gray-200">Parent ID</TableCell>
                             <TableCell className="bg-gray-200">Attendant ID</TableCell>
@@ -162,6 +175,7 @@ const AdminManagement = () => {
                     <TableBody>
                         {filteredChildren.map((child) => (
                             <TableRow key={child.id}>
+                                <TableCell>{child.id}</TableCell>
                                 <TableCell>{child.name}</TableCell>
                                 <TableCell>{child.parent_id}</TableCell>
                                 <TableCell>{child.attendant_id}</TableCell>
@@ -170,7 +184,7 @@ const AdminManagement = () => {
                                     <IconButton color="primary" onClick={() => handleOpen(child)}>
                                         <Edit />
                                     </IconButton>
-                                    <IconButton color="secondary" onClick={() => handleDelete(child.id)}>
+                                    <IconButton color="error" onClick={() => handleDelete(child.id)}>
                                         <Delete />
                                     </IconButton>
                                     <IconButton color="default" onClick={() => handleView(child)}>
@@ -247,7 +261,7 @@ const AdminManagement = () => {
                     <Button onClick={() => setDeleteDialogOpen(false)} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={confirmDelete} color="secondary">
+                    <Button onClick={confirmDelete} color="error">
                         Delete
                     </Button>
                 </DialogActions>
@@ -255,8 +269,10 @@ const AdminManagement = () => {
             <Dialog open={viewDialogOpen} onClose={() => setViewDialogOpen(false)}>
                 <DialogTitle>View Child Details</DialogTitle>
                 <DialogContent>
+                    <p><strong>ID:</strong> {viewChild.id}</p>
                     <p><strong>Name:</strong> {viewChild.name}</p>
-                    <p><strong>Date of Birth:</strong> {viewChild.dob}</p> {/* Display the dob here */}
+                    <p><strong>Date of Birth:</strong> {viewChild.dob}</p>
+                    <p><strong>Age:</strong> {viewChild.age}</p>
                     <p><strong>Parent Name:</strong> {viewChild.parent_name}</p>
                     <p><strong>Attendant Name:</strong> {viewChild.attendant_name}</p>
                     <p><strong>Medical Info:</strong> {viewChild.medical_info}</p>

@@ -33,7 +33,8 @@ const AdminManagement = () => {
     admin_name: '',
     email: '',
     phone_no: '',
-    password: ''
+    password: '',
+    reg_no: ''
   });
   const [viewAdmin, setViewAdmin] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -43,6 +44,7 @@ const AdminManagement = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [addConfirmDialogOpen, setAddConfirmDialogOpen] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost/backend/mishaf/fetch_admin.php')
@@ -63,7 +65,8 @@ const AdminManagement = () => {
         admin_name: admin.admin_name,
         email: admin.email,
         phone_no: admin.phone_no,
-        password: ''
+        password: '',
+        reg_no: admin.reg_no
       });
       setIsEditing(true);
       setCurrentId(admin.admin_id);
@@ -74,7 +77,8 @@ const AdminManagement = () => {
         admin_name: '',
         email: '',
         phone_no: '',
-        password: ''
+        password: '',
+        reg_no: ''
       });
       setIsEditing(false);
     }
@@ -122,9 +126,21 @@ const AdminManagement = () => {
       });
   };
 
+  const handleAddConfirm = () => {
+    setAddConfirmDialogOpen(true);
+  };
+
   const handleAdd = () => {
     axios
-      .post('http://localhost/backend/mishaf/add_admin.php', newAdmin, {
+      .post('http://localhost/backend/mishaf/add_admin.php', {
+        admin_username: newAdmin.admin_username,
+        admin_address: newAdmin.admin_address,
+        admin_name: newAdmin.admin_name,
+        email: newAdmin.email,
+        phone_no: newAdmin.phone_no,
+        password: newAdmin.password,
+        reg_no: newAdmin.reg_no
+      }, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -141,43 +157,45 @@ const AdminManagement = () => {
           setSnackbarSeverity('error');
         }
         setSnackbarOpen(true);
+        setAddConfirmDialogOpen(false);
       })
       .catch((error) => {
         console.error('Error adding admin:', error);
         setSnackbarMessage('An unexpected error occurred. Please try again later.');
         setSnackbarSeverity('error');
         setSnackbarOpen(true);
+        setAddConfirmDialogOpen(false);
       });
   };
 
   const handleDelete = (id) => {
-  fetch('http://localhost/backend/mishaf/delete_admin.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ admin_id: id })
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        setAdmins(admins.filter(admin => admin.admin_id !== id));
-        setSnackbarMessage('Admin deleted successfully!');
-        setSnackbarSeverity('success');
-      } else {
-        setSnackbarMessage(data.message || 'Error deleting admin.');
-        setSnackbarSeverity('error');
-      }
-      setSnackbarOpen(true);
-      setDeleteDialogOpen(false);
+    fetch('http://localhost/backend/mishaf/delete_admin.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ admin_id: id })
     })
-    .catch(error => {
-      console.error('Error deleting admin:', error);
-      setSnackbarMessage('An unexpected error occurred. Please try again later.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    });
-};
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          setAdmins(admins.filter(admin => admin.admin_id !== id));
+          setSnackbarMessage('Admin deleted successfully!');
+          setSnackbarSeverity('success');
+        } else {
+          setSnackbarMessage(data.message || 'Error deleting admin.');
+          setSnackbarSeverity('error');
+        }
+        setSnackbarOpen(true);
+        setDeleteDialogOpen(false);
+      })
+      .catch(error => {
+        console.error('Error deleting admin:', error);
+        setSnackbarMessage('An unexpected error occurred. Please try again later.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      });
+  };
 
   const handleViewDetails = (admin) => {
     setViewAdmin(admin);
@@ -209,22 +227,21 @@ const AdminManagement = () => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      {!isEditing && (
-        <Button variant="contained" color="primary" onClick={() => handleOpen()} className='mt-3'>
-          Add Admin
-        </Button>
-      )}
+      <Button variant="contained" color="primary" onClick={() => handleOpen()} className='mt-3'>
+        Add Admin
+      </Button>
 
       <TableContainer component={Paper} className='mt-3'>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="bg-gray-200">Admin ID</TableCell>
+              <TableCell className="bg-gray-200">ID</TableCell>
+              <TableCell className="bg-gray-200">Reg.No</TableCell>
               <TableCell className="bg-gray-200">Username</TableCell>
               <TableCell className="bg-gray-200">Name</TableCell>
               <TableCell className="bg-gray-200">Email</TableCell>
-              <TableCell className="bg-gray-200">Address</TableCell>
-              <TableCell className="bg-gray-200">Phone Number</TableCell>
+              {/* <TableCell className="bg-gray-200">Address</TableCell> */}
+              <TableCell className="bg-gray-200">Phone No</TableCell>
               <TableCell className="bg-gray-200">Attendants</TableCell>
               <TableCell className="bg-gray-200">Parents</TableCell>
               <TableCell className="bg-gray-200">Children</TableCell>
@@ -235,10 +252,11 @@ const AdminManagement = () => {
             {filteredAdmins.map((admin) => (
               <TableRow key={admin.admin_id}>
                 <TableCell>{admin.admin_id}</TableCell>
+                <TableCell>{admin.reg_no}</TableCell>
                 <TableCell>{admin.admin_username}</TableCell>
                 <TableCell>{admin.admin_name}</TableCell>
                 <TableCell>{admin.email}</TableCell>
-                <TableCell>{admin.admin_address}</TableCell>
+                {/* <TableCell>{admin.admin_address}</TableCell> */}
                 <TableCell>{admin.phone_no}</TableCell>
                 <TableCell>{admin.total_attendants}</TableCell>
                 <TableCell>{admin.total_parents}</TableCell>
@@ -248,7 +266,7 @@ const AdminManagement = () => {
                     <IconButton color="primary" onClick={() => handleOpen(admin)}>
                       <Edit />
                     </IconButton>
-                    <IconButton color="secondary" onClick={() => handleDeleteClick(admin)}>
+                    <IconButton color="error" onClick={() => handleDeleteClick(admin)}>
                       <Delete />
                     </IconButton>
                     <IconButton color="default" onClick={() => handleViewDetails(admin)}>
@@ -306,6 +324,14 @@ const AdminManagement = () => {
             value={newAdmin.phone_no}
             onChange={(e) => setNewAdmin({ ...newAdmin, phone_no: e.target.value })}
           />
+          <TextField
+            margin="dense"
+            label="Reg.No"
+            type="text"
+            fullWidth
+            value={newAdmin.reg_no}
+            onChange={(e) => setNewAdmin({ ...newAdmin, reg_no: e.target.value })}
+          />
           {!isEditing && (
             <TextField
               margin="dense"
@@ -321,8 +347,23 @@ const AdminManagement = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={isEditing ? handleUpdate : handleAdd} color="primary">
+          <Button onClick={isEditing ? handleUpdate : handleAddConfirm} color="primary">
             {isEditing ? 'Update' : 'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={addConfirmDialogOpen} onClose={() => setAddConfirmDialogOpen(false)}>
+        <DialogTitle>Confirm Add</DialogTitle>
+        <DialogContent>
+          Are you sure you want to add this admin?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAddConfirmDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAdd} color="primary">
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>
@@ -335,6 +376,7 @@ const AdminManagement = () => {
           <p><strong>Email:</strong> {viewAdmin.email}</p>
           <p><strong>Address:</strong> {viewAdmin.admin_address}</p>
           <p><strong>Phone Number:</strong> {viewAdmin.phone_no}</p>
+          <p><strong>Reg.No:</strong> {viewAdmin.reg_no}</p>
           <p><strong>Attendants:</strong> {viewAdmin.total_attendants}</p>
           <p><strong>Parents:</strong> {viewAdmin.total_parents}</p>
           <p><strong>Children:</strong> {viewAdmin.total_children}</p>
@@ -355,7 +397,7 @@ const AdminManagement = () => {
           <Button onClick={() => setDeleteDialogOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={confirmDelete} color="secondary">
+          <Button onClick={confirmDelete} color="error">
             Delete
           </Button>
         </DialogActions>

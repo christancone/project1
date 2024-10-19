@@ -43,7 +43,7 @@ const NilakshanParent = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/Login_php/login.php',
+        'http://localhost/backend/satalan/login.php',
         { email, password },
         {
           headers: { 'Content-Type': 'application/json' },
