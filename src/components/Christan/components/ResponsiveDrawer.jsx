@@ -23,6 +23,7 @@ import AirlineSeatIndividualSuiteRoundedIcon from '@mui/icons-material/AirlineSe
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useNavigate } from 'react-router-dom';
+import {lo,logo} from '../assets';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import axios from 'axios';
@@ -66,7 +67,8 @@ function ResponsiveDrawer(props) {
         <div>
             <Toolbar>
                 <Typography variant="h6" noWrap>
-                    TinyToes
+
+                    <img src={logo}/>
                 </Typography>
             </Toolbar>
             <Divider />

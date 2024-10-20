@@ -14,27 +14,31 @@ const Feedback = () => {
       .then(response => response.json())
       .then(data => setFeedbackData(data))
       .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  }, []);  
+
+  const filteredFeedback = feedbackData.filter(item => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    
+    const matchesSearchTerm = item.parent_name?.toLowerCase().includes(lowercasedSearchTerm) || 
+                              item.comments?.toLowerCase().includes(lowercasedSearchTerm);
+
+    const matchesRating = filterRating === '' || item.rating === parseFloat(filterRating);
+
+    return matchesRating && matchesSearchTerm;
+  });
 
   const handleFilterClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleFilterClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleFilterChange = (event) => {
-    setFilterRating(event.target.value);
-    handleFilterClose();
+  const handleRatingFilter = (rating) => {
+    setFilterRating(rating);
+    handleClose(); // Close the menu after selection
   };
-
-  const filteredFeedback = feedbackData.filter(item => {
-    return (
-      (filterRating === '' || item.rating === parseFloat(filterRating)) &&
-      (searchTerm === '' || item.parent_name.toLowerCase().includes(searchTerm.toLowerCase()) || item.comments.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  });
 
   return (
     <div className="p-4">
@@ -50,15 +54,13 @@ const Feedback = () => {
         <IconButton onClick={handleFilterClick}>
           <FilterAltIcon />
         </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleFilterClose}
-        >
-          {[1, 2, 3, 4, 5].map(rating => (
-            <MenuItem key={rating} value={rating} onClick={handleFilterChange}>{rating} Stars</MenuItem>
-          ))}
-          <MenuItem onClick={() => { setFilterRating(''); handleFilterClose(); }}><em>Clear Filter</em></MenuItem>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem onClick={() => handleRatingFilter(1)}>1 Star</MenuItem>
+          <MenuItem onClick={() => handleRatingFilter(2)}>2 Stars</MenuItem>
+          <MenuItem onClick={() => handleRatingFilter(3)}>3 Stars</MenuItem>
+          <MenuItem onClick={() => handleRatingFilter(4)}>4 Stars</MenuItem>
+          <MenuItem onClick={() => handleRatingFilter(5)}>5 Stars</MenuItem>
+          <MenuItem onClick={() => handleRatingFilter('')}>All Ratings</MenuItem> {/* Option to clear filter */}
         </Menu>
       </div>
       <div className="grid grid-cols-1 gap-4">
@@ -67,7 +69,9 @@ const Feedback = () => {
             <CardContent>
               <Typography variant="h6">{item.parent_name}</Typography>
               <Typography variant="body2">{item.comments}</Typography>
-              <Typography variant="caption">{new Date(item.created_at).toLocaleDateString()}</Typography>
+              <Typography variant="caption">
+                {new Date(item.created_at).toLocaleString()}  {/* Displays both date and time */}
+              </Typography>
               <div>
                 {[...Array(Math.round(item.rating))].map((_, index) => (
                   <StarIcon key={index} color="primary" />

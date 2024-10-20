@@ -24,7 +24,7 @@ function App() {
 
     const fetchUserRole = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/project1/backend/Christan/getUserRole.php', { withCredentials: true });
+            const response = await axios.get('http://localhost/backend/Christan/getUserRole.php', { withCredentials: true });
             const userRole = response.data.role;
 
             switch (userRole) {
@@ -68,7 +68,8 @@ function App() {
         }
 
         if (error) {
-            return <div>{error}</div>; // Display error message if there's an issue fetching the role
+            return <Final /> ; // Display error message if there's an issue fetching the role
+
         }
 
         switch (currentComponent) {

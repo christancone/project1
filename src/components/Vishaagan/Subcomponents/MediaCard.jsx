@@ -15,57 +15,70 @@ export default function MediaCard() {
     totalAttendants: 0,
   });
 
+  const [error, setError] = useState(null); // State to handle errors
+
   useEffect(() => {
-    axios.get("http://localhost/backend/Vishagan/getDashboardData.php")
-      .then(response => {
-        setData(response.data);
-      })
-      .catch(error => {
-        console.error("There was an error fetching the data!", error);
-      });
+    // Fetch data from the backend
+    axios.get("http://localhost/backend/Vishagan/getDashboardData.php", { withCredentials: true })
+        .then(response => {
+          if (response.data.status === 'error') {
+            setError(response.data.message); // Set error message
+          } else {
+            setData(response.data); // Update data state
+          }
+        })
+        .catch(error => {
+          console.error("There was an error fetching the data!", error);
+          setError("Error fetching data. Please try again later."); // Set a generic error message
+        });
   }, []);
 
   return (
-    <div className='card-container'>
-      <Card className='media-card'>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            No Of Kids Added
-          </Typography>
-          <div className='card-content'>
-            <ChildCareTwoToneIcon fontSize='large' />
-            <Typography variant="body2" color="text.secondary">
-              {data.totalKids}
+      <div className='card-container'>
+        {error && (
+            <Typography variant="h6" color="error">
+              {error}
             </Typography>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className='media-card'>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            No Of Sick Kids Added
-          </Typography>
-          <div className='card-content'>
-            <SickIcon fontSize='large' />
-            <Typography variant="body2" color="text.secondary">
-              {data.sickKids}
+        )}
+        <Card className='media-card'>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              No Of Kids Added
             </Typography>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className='media-card'>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            No Of Attendants Added
-          </Typography>
-          <div className='card-content'>
-            <BadgeIcon fontSize='large' />
-            <Typography variant="body2" color="text.secondary">
-              {data.totalAttendants}
+            <div className='card-content'>
+              <ChildCareTwoToneIcon fontSize='large' />
+              <Typography variant="body2" color="text.secondary">
+                {data.totalKids}
+              </Typography>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className='media-card'>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              No Of Sick Kids Added
             </Typography>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+            <div className='card-content'>
+              <SickIcon fontSize='large' />
+              <Typography variant="body2" color="text.secondary">
+                {data.sickKids}
+              </Typography>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className='media-card'>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              No Of Attendants Added
+            </Typography>
+            <div className='card-content'>
+              <BadgeIcon fontSize='large' />
+              <Typography variant="body2" color="text.secondary">
+                {data.totalAttendants}
+              </Typography>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
   );
 }

@@ -32,6 +32,33 @@ class Users {
         $connection->close();
     }
 
+    // Fetch all admins
+    public function fetchAllAdmins() {
+    // Establish a database connection
+    $connection = $this->db->getConnection();
+
+    // SQL query to select all admins
+    $query = "SELECT id, username, email, firstname, lastname FROM users WHERE role = 'Admin'";
+    $admins = array();
+
+    // Execute the query and fetch results
+    if ($result = $connection->query($query)) {
+        while ($row = $result->fetch_assoc()) {
+            $admins[] = $row;
+        }
+        // Set the content type to JSON and output the result
+        header('Content-Type: application/json');
+        echo json_encode($admins);
+    } else {
+        // Handle query error
+        http_response_code(500);
+        echo json_encode(["error" => "Database error: " . $connection->error]);
+    }
+
+    // Close the database connection
+    $connection->close();
+}
+
     // Fetch a single user by ID
     public function getUserById($id) {
         if (!$id) {
@@ -215,6 +242,53 @@ class Users {
         } else {
             http_response_code(404);
             echo json_encode(["error" => "Admin not found for this attendant."]);
+        }
+
+        $connection->close();
+    }
+
+    public function fetchForParent() {
+        $connection = $this->db->getConnection(); // Get the DB connection
+        $parent_id = $_SESSION['id']; // Get the logged-in attendant's ID from session
+
+        // Query to get the admin_username for the logged-in attendant
+        $query = "SELECT admin_username FROM users WHERE id = ?";
+
+        $stmt = $connection->prepare($query);
+        $stmt->bind_param("i", $parent_id); // 'i' for integer binding (attendant_id is an integer)
+        $stmt->execute();
+        $stmt->bind_result($admin_username);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($admin_username) {
+            // Query to get parents and attendants registered under the same admin_username
+            $query = "
+            SELECT id, username, role
+            FROM users 
+            WHERE (role = 'Attendant') 
+            AND admin_username = ?;
+        ";
+
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("s", $admin_username); // 's' for string binding (admin_username is a string)
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $users = array();
+
+            while ($row = $result->fetch_assoc()) {
+                $users[] = $row;
+            }
+
+            // Return the results as a JSON response
+            header('Content-Type: application/json');
+            echo json_encode($users);
+
+            $stmt->close();
+        } else {
+            http_response_code(404);
+            echo json_encode(["error" => "Attendant not found for this parent."]);
         }
 
         $connection->close();
