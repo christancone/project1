@@ -1,6 +1,6 @@
 <?php
 
-require_once 'DbConnector.php';
+require_once '../DBConnector.php';
 
 class ParentClass {
     private $db;

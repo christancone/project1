@@ -2,7 +2,7 @@
 
 namespace mishaf;
 
-include "DBConnector.php";
+include "../DBConnector.php";
 
 use DBConnector;
 
@@ -12,6 +12,10 @@ class Attendant {
 
     public function __construct() {
         $this->db = new DBConnector();
+    }
+
+    public function add_attendant() {
+        
     }
 
     public function fetchAllAttendants() {
