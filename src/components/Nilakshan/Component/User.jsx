@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import './User.css';
+import CircularProgress from '@mui/material/CircularProgress';
+import 'react-notifications/lib/notifications.css';
 const User = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,6 +87,7 @@ const User = () => {
 
       if (result.status === 'success') {
         // Handle success (e.g., show a success message)
+        
         alert('Data submitted successfully!');
         navigate('/NilakshanParent')
       } else {

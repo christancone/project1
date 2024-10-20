@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Set CORS headers
-header("Access-Control-Allow-Origin: http://localhost:5174");
+header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -62,7 +62,7 @@ class Login {
     private function validateUser($email, $password) {
         try {
             // Modified query to fetch role and email along with password
-            $query = "SELECT email, password, role, id, admin_username FROM users WHERE email = ?";
+            $query = "SELECT email, password, role, id, admin_username, username FROM users WHERE email = ?";
             $stmt = $this->db->getConnection()->prepare($query);
 
             if (!$stmt) {
@@ -78,6 +78,8 @@ class Login {
 
                 $_SESSION['id'] = $result['id'];
                 $_SESSION['email'] = $result['email'];
+                $_SESSION['username'] = $result['username'];
+
                 $_SESSION['role'] = $result['role'];
                 $_SESSION['admin_username'] = $result['admin_username'];
 

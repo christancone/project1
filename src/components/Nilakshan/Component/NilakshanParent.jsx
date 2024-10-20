@@ -30,52 +30,63 @@ const NilakshanParent = () => {
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleRegister = () => {
-    navigate('/Login', { state: { role } });
+    navigate('/CreateAccount', { state: { role } });
   };
-
   const otpButton = async () => {
     if (!email || !password) {
       NotificationManager.error('Please enter both email and password.');
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
+      console.log("Email:", email, "Password:", password);
+  
       const response = await axios.post(
+
         'http://localhost/backend/satalan/login.php',
+
         { email, password },
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
         }
       );
-
+  
+      console.log('Full response from server:', response);  // Log full response object
+  
       if (response.data.message === 'Login successful') {
         NotificationManager.success('Login successful!', 'Success', 3000);
-        console.log('Response from server:', response.data);
-
+        console.log('Response data from server:', response.data);
+  
         const userRole = response.data.role;
-        console.log(userRole);
-
+        console.log('User role:', userRole);
+  
         // Redirect or handle successful login based on role
         navigate('/', { state: { role: userRole } });
       } else {
         NotificationManager.error(response.data.errors || 'Login failed.');
+        console.log('Error response data from server:', response.data);  // Log response errors
       }
-
+  
     } catch (error) {
       if (error.response) {
         NotificationManager.error('Server error. Please try again.');
+        console.log('Error response:', error.response);  // Log server response errors
       } else if (error.request) {
         NotificationManager.error('Network error. Please try again.');
+        console.log('Error request:', error.request);  // Log network errors
       } else {
         NotificationManager.error('An unexpected error occurred.');
+        console.log('General error:', error.message);  // Log general errors
       }
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   return (
     <div className="parent">
