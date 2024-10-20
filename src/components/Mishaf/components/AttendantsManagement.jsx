@@ -20,7 +20,6 @@ import {
   Box
 } from '@mui/material';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import axios from 'axios';
 
 const AttendantsManagement = () => {
   const [attendants, setAttendants] = useState([]);
@@ -43,6 +42,7 @@ const AttendantsManagement = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [updateConfirmationOpen, setUpdateConfirmationOpen] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost/backend/mishaf/fetch_attendants.php')
@@ -59,8 +59,8 @@ const AttendantsManagement = () => {
     if (attendant) {
       setNewAttendant({
         attendant_username: attendant.attendant_username,
-        attendant_address: attendant.attendant_address,
-        attendant_name: attendant.attendant_name,
+        attendant_address: attendant.address,
+        attendant_name: `${attendant.firstname} ${attendant.lastname}`,
         email: attendant.email,
         phone_no: attendant.phone_no,
         password: ''
@@ -90,16 +90,26 @@ const AttendantsManagement = () => {
   };
 
   const handleUpdate = () => {
-    const { password, ...attendantData } = newAttendant;
+    setUpdateConfirmationOpen(true);
+  };
+
+  const confirmUpdate = () => {
+    const [firstname, lastname] = newAttendant.attendant_name.split(' ');
+    const attendantData = {
+      attendant_username: newAttendant.attendant_username,
+      email: newAttendant.email,
+      phone_no: newAttendant.phone_no,
+      firstname: firstname || '',
+      lastname: lastname || '',
+      attendant_id: currentId
+    };
+
     fetch('http://localhost/backend/mishaf/update_attendant.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        attendant_id: currentId,
-        ...attendantData,
-      })
+      body: JSON.stringify(attendantData)
     })
       .then(response => response.json())
       .then(data => {
@@ -120,34 +130,8 @@ const AttendantsManagement = () => {
         setSnackbarSeverity('error');
         setSnackbarOpen(true);
       });
-  };
 
-  const handleAdd = () => {
-    axios
-      .post('http://localhost/backend/mishaf/add_attendant.php', newAttendant, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-        if (data.status === 'success') {
-          setAttendants([...attendants, data.attendant]);
-          handleClose();
-          setSnackbarMessage('Attendant added successfully!');
-          setSnackbarSeverity('success');
-        } else {
-          setSnackbarMessage(data.error || 'Error adding attendant.');
-          setSnackbarSeverity('error');
-        }
-        setSnackbarOpen(true);
-      })
-      .catch((error) => {
-        console.error('Error adding attendant:', error);
-        setSnackbarMessage('An unexpected error occurred. Please try again later.');
-        setSnackbarSeverity('error');
-        setSnackbarOpen(true);
-      });
+    setUpdateConfirmationOpen(false);
   };
 
   const handleDelete = (id) => {
@@ -209,11 +193,6 @@ const AttendantsManagement = () => {
         value={searchTerm}
         onChange={handleSearch}
       />
-      {!isEditing && (
-        <Button variant="contained" color="primary" onClick={() => handleOpen()} className='mt-3'>
-          Add Attendant
-        </Button>
-      )}
 
       <TableContainer component={Paper} className='mt-3'>
         <Table>
@@ -240,7 +219,7 @@ const AttendantsManagement = () => {
                     <IconButton color="primary" onClick={() => handleOpen(attendant)}>
                       <Edit />
                     </IconButton>
-                    <IconButton color="secondary" onClick={() => handleDeleteClick(attendant)}>
+                    <IconButton color="error" onClick={() => handleDeleteClick(attendant)}>
                       <Delete />
                     </IconButton>
                     <IconButton color="default" onClick={() => handleViewDetails(attendant)}>
@@ -254,9 +233,9 @@ const AttendantsManagement = () => {
         </Table>
       </TableContainer>
 
-      {/* Add/Edit Dialog */}
+      {/* Edit Dialog */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{isEditing ? 'Edit Attendant' : 'Add Attendant'}</DialogTitle>
+        <DialogTitle>Edit Attendant</DialogTitle>
         <DialogContent>
           <TextField
             label="Username"
@@ -293,20 +272,22 @@ const AttendantsManagement = () => {
             fullWidth
             margin="normal"
           />
-          {!isEditing && (
-            <TextField
-              label="Password"
-              type="password"
-              value={newAttendant.password}
-              onChange={(e) => setNewAttendant({ ...newAttendant, password: e.target.value })}
-              fullWidth
-              margin="normal"
-            />
-          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">Cancel</Button>
-          <Button onClick={isEditing ? handleUpdate : handleAdd} color="primary">{isEditing ? 'Update' : 'Add'}</Button>
+          <Button onClick={handleUpdate} color="primary">Update</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Update Confirmation Dialog */}
+      <Dialog open={updateConfirmationOpen} onClose={() => setUpdateConfirmationOpen(false)}>
+        <DialogTitle>Confirm Update</DialogTitle>
+        <DialogContent>
+          Are you sure you want to update this attendant's details?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setUpdateConfirmationOpen(false)} color="primary">Cancel</Button>
+          <Button onClick={confirmUpdate} color="primary">Confirm</Button>
         </DialogActions>
       </Dialog>
 
@@ -333,7 +314,7 @@ const AttendantsManagement = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)} color="primary">Cancel</Button>
-          <Button onClick={confirmDelete} color="secondary">Delete</Button>
+          <Button onClick={confirmDelete} color="error">Delete</Button>
         </DialogActions>
       </Dialog>
 

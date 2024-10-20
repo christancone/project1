@@ -20,11 +20,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import EscalatorWarningRoundedIcon from '@mui/icons-material/EscalatorWarningRounded';
 import ChildFriendlyRoundedIcon from '@mui/icons-material/ChildFriendlyRounded';
-import RateReviewRoundedIcon from '@mui/icons-material/RateReviewRounded';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ChildCareRoundedIcon from '@mui/icons-material/ChildCareRounded';
 import Face4Icon from '@mui/icons-material/Face4';
@@ -35,7 +31,7 @@ import AttendantsManagement from './AttendantsManagement';
 import ChildManagement from './ChildManagement';
 // import Profile from './Profile';
 import Chat from './Chat';
-import Feedback from './Feedback';
+// import Feedback from './Feedback';
 import { Tooltip, Menu, MenuItem, Badge } from '@mui/material';
 import axios from 'axios'; // Make sure to import axios
 
@@ -47,8 +43,7 @@ const handleLogout = async () => {
     try {
         const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
         console.log(response.data.message); // Logout successful
-        // Redirect to homepage and refresh the page
-        window.location.href = '/'; // Redirect to the homepage
+        navigate('/NilakshanParent');
         window.location.reload(); // Refresh the entire page
     } catch (error) {
         console.error('Logout failed:', error);
@@ -58,16 +53,16 @@ const handleLogout = async () => {
 // Define the items for the main navigation
 const items = [
     { text: 'Dashboard', icon: <DashboardRoundedIcon />, path: '/' },
-    { text: 'Admin Management', icon: <ChildFriendlyRoundedIcon />, path: '/adminManagement' },
-    { text: 'Attendants Management', icon: <Face4Icon />, path: '/attendantsManagement' },
-    { text: 'Child Management', icon: <ChildCareRoundedIcon />, path: '/ChildManagement' },
-    { text: 'Parent Management', icon: <EscalatorWarningRoundedIcon />, path: '/parentsManagement' }
+    { text: 'Manage Admins', icon: <ChildFriendlyRoundedIcon />, path: '/adminManagement' },
+    { text: 'Manage Attendants', icon: <Face4Icon />, path: '/attendantsManagement' },
+    { text: 'Manage Children', icon: <ChildCareRoundedIcon />, path: '/ChildManagement' },
+    { text: 'Manage Parents', icon: <EscalatorWarningRoundedIcon />, path: '/parentsManagement' }
 ];
 
 // Define the items for the secondary navigation
 const items2 = [
     { text: 'Chat', icon: <ChatBubbleRoundedIcon />, path: '/chat' },
-    { text: 'Feedback', icon: <RateReviewRoundedIcon />, path: '/feedback' },
+    // { text: 'Feedback', icon: <RateReviewRoundedIcon />, path: '/feedback' },
     // { text: 'Profile', icon: <AccountCircleRoundedIcon />, path: '/profile' },
 ];
 
@@ -266,7 +261,7 @@ function ResponsiveDrawer(props) {
                         <Route path="/childManagement" element={<ChildManagement />} />
                         <Route path="/parentsManagement" element={<ParentsManagement />} />
                         <Route path="/chat" element={<Chat />} />
-                        <Route path="/feedback" element={<Feedback />} />
+                        {/* <Route path="/feedback" element={<Feedback />} /> */}
                         {/* <Route path="/profile" element={<Profile />} /> */}
                     </Routes>
                 </Box>

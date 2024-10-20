@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 
 const ChatComponent = () => {
+    // State variables for managing users, messages, and UI state
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -29,6 +30,7 @@ const ChatComponent = () => {
     const [usersPerPage] = useState(7);
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Fetch the logged-in user's ID on component mount
     useEffect(() => {
         const fetchLoggedUserId = async () => {
             try {
@@ -42,6 +44,7 @@ const ChatComponent = () => {
         fetchLoggedUserId();
     }, []);
 
+    // Fetch users and their unread message counts when the logged-in user ID is available
     useEffect(() => {
         const fetchUsers = async () => {
             if (loggedUserId !== null) {
@@ -53,6 +56,7 @@ const ChatComponent = () => {
                     const unreadCountsResponse = await axios.get("http://localhost/backend/Christan/fetch_unread_counts.php", { withCredentials: true });
                     const unreadCountsData = unreadCountsResponse.data;
 
+                    // Combine user data with unread message counts
                     const combinedUsers = usersData.map(user => {
                         const unreadCountData = unreadCountsData.find(unread => unread.id === user.id);
                         return {
@@ -71,6 +75,7 @@ const ChatComponent = () => {
         fetchUsers();
     }, [loggedUserId]);
 
+    // Fetch messages for the selected user
     useEffect(() => {
         const fetchMessages = async () => {
             if (selectedUser && loggedUserId !== null) {
@@ -88,6 +93,7 @@ const ChatComponent = () => {
         fetchMessages();
     }, [selectedUser, loggedUserId]);
 
+    // Poll for new messages and unread counts every 5 seconds
     useEffect(() => {
         const interval = setInterval(async () => {
             if (selectedUser) {
@@ -107,6 +113,7 @@ const ChatComponent = () => {
                     const unreadCountsResponse = await axios.get("http://localhost/backend/Christan/fetch_unread_counts.php", { withCredentials: true });
                     const unreadCountsData = unreadCountsResponse.data;
 
+                    // Update users with new unread counts
                     const updatedUsers = users.map(user => {
                         const unreadCountData = unreadCountsData.find(unread => unread.id === user.id);
                         return {
@@ -125,6 +132,7 @@ const ChatComponent = () => {
         return () => clearInterval(interval);
     }, [selectedUser, loggedUserId, users]);
 
+    // Send a message to the selected user
     const sendMessage = async () => {
         if (messageInput.trim() && selectedUser) {
             try {
@@ -139,6 +147,7 @@ const ChatComponent = () => {
                 });
 
                 if (response.data.status === "success") {
+                    // Update messages with the new message
                     setMessages((prevMessages) => [
                         ...prevMessages,
                         {
@@ -159,12 +168,14 @@ const ChatComponent = () => {
         }
     };
 
+    // Handle errors by displaying a snackbar with the error message
     const handleError = (errorMessage) => {
         console.error(errorMessage);
         setError(errorMessage);
         setOpenSnackbar(true);
     };
 
+    // Filter users based on the search term
     const handleSearchChange = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
@@ -173,10 +184,12 @@ const ChatComponent = () => {
         setCurrentPage(1);
     };
 
+    // Handle pagination page change
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
+    // Handle user selection and mark messages as read
     const handleUserClick = (user) => {
         setSelectedUser(user);
         setMessages([]); // Clear messages initially
@@ -215,12 +228,14 @@ const ChatComponent = () => {
             });
     };
 
+    // Send message on Enter key press
     const handleKeyPress = (event) => {
         if (event.key === "Enter") {
             sendMessage();
         }
     };
 
+    // Calculate the indices for pagination
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -228,7 +243,9 @@ const ChatComponent = () => {
     return (
         <Box>
             <Grid container spacing={3}>
+                {/* User list section */}
                 <Grid item xs={12} md={4}>
+                    {/* Search bar for filtering users */}
                     <TextField
                         label="Search Users"
                         variant="outlined"
@@ -236,6 +253,7 @@ const ChatComponent = () => {
                         value={searchTerm}
                         onChange={handleSearchChange}
                     />
+                    {/* Display list of users with unread message count */}
                     <Paper elevation={3} sx={{ maxHeight: "400px", overflowY: "auto", marginTop: 2 }}>
                         <List>
                             {currentUsers.map((user) => (
@@ -245,6 +263,7 @@ const ChatComponent = () => {
                                     onClick={() => handleUserClick(user)}
                                     selected={selectedUser?.id === user.id}
                                 >
+                                    {/* Badge to show unread message count */}
                                     <Badge
                                         color="error"
                                         badgeContent={user.unread_count > 0 ? user.unread_count : null}
@@ -259,6 +278,7 @@ const ChatComponent = () => {
                             ))}
                         </List>
                     </Paper>
+                    {/* Pagination for user list */}
                     <Pagination
                         count={Math.ceil(filteredUsers.length / usersPerPage)}
                         page={currentPage}
@@ -266,14 +286,19 @@ const ChatComponent = () => {
                         sx={{ marginTop: 2 }}
                     />
                 </Grid>
+
+                {/* Chat section for the selected user */}
                 <Grid item xs={12} md={8}>
                     {selectedUser && (
                         <>
+                            {/* Display selected user's name */}
                             <Typography variant="h5">{selectedUser.username}</Typography>
                             <Divider sx={{ marginBottom: 2 }} />
+                            {/* Message display area */}
                             <Box
                                 sx={{
                                     maxHeight: "400px",
+                                    minHeight: "400px", // Set a minimum height to increase the default height
                                     overflowY: "auto",
                                     padding: 2,
                                     border: "1px solid #ccc",
@@ -290,6 +315,7 @@ const ChatComponent = () => {
                                             marginBottom: 1,
                                         }}
                                     >
+                                        {/* Display individual message */}
                                         <Typography
                                             variant="body1"
                                             sx={{
@@ -304,15 +330,17 @@ const ChatComponent = () => {
                                     </Box>
                                 ))}
                             </Box>
+                            {/* Input field for typing a new message */}
                             <TextField
                                 variant="outlined"
                                 fullWidth
                                 placeholder="Type a message..."
                                 value={messageInput}
                                 onChange={(e) => setMessageInput(e.target.value)}
-                                onKeyPress={handleKeyPress} // Added onKeyPress event
+                                onKeyPress={handleKeyPress} // Send message on Enter key press
                                 sx={{ marginTop: 2 }}
                             />
+                            {/* Button to send the message */}
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -325,7 +353,6 @@ const ChatComponent = () => {
                     )}
                 </Grid>
             </Grid>
-
         </Box>
     );
 };
