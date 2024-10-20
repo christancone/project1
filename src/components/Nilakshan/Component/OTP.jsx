@@ -55,15 +55,19 @@ const OTP = () => {
     console.log(role);
     try {
       const response = await axios.post(
-          'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
-          { enteredOtp, email,role },
-          { headers: { 'Content-Type': 'application/json' } }
+        'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
+        { enteredOtp, email, role },
+        { 
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true // Add this line
+        }
       );
+      
 
       console.log('Response from server:', response.data);
 
       if (response.status === 200 && response.data.message === 'Verification successful') {
-        navigate('/User', { state: { email, role } });
+        navigate('/NilakshanParent', { state: { email, role } });
       } else {
         toast.error('Invalid OTP. Please try again.');
         setTimeout(() => {
