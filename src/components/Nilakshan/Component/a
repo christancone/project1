@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './CreateAccount.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -16,17 +16,19 @@ const CreateAccount = () => {
         username: '',
         password: '',
         confirmPassword: '',
-        adminId: '', // Admin ID field
+        adminId: '', // New field for Admin ID
     });
 
-    const [adminUsernames, setAdminUsernames] = useState([]); // Admin usernames
+    const [adminUsernames, setAdminUsernames] = useState([]); // State for admin usernames
+    const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        // Fetch admin usernames when component mounts
         const fetchAdminUsernames = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/project1/backend/Login_php/Login_php/fetch_admins.php');
-                if (Array.isArray(response.data)) {
+                const response = await axios.get('http://localhost:3000/project1/backend/Login_php/Login_php/fetch_admins.php'); // Adjust the URL to your endpoint
+                if (response.data && Array.isArray(response.data)) {
                     setAdminUsernames(response.data);
                 } else {
                     NotificationManager.error('Invalid data received from server.');
@@ -44,70 +46,58 @@ const CreateAccount = () => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value, // Update state for the changed field
+            [name]: value
         });
     };
 
-    const validateForm = () => {
-        let errors = {};
-        if (!formData.firstname) errors.firstname = 'First name is required';
-        if (!formData.lastname) errors.lastname = 'Last name is required';
-        if (!formData.phone_no) errors.phone_no = 'Phone number is required';
-        if (!formData.email) errors.email = 'Email is required';
-        if (formData.password !== formData.confirmPassword) errors.password = 'Passwords do not match';
-        if (!formData.adminId) errors.adminId = 'Please select an Admin ID';
-
-        return errors;
-    };
-
     const handleClick = async () => {
-        setLoading(true);  // Start loading state
-        const newErrors = validateForm();  // Validate form fields
-    
-        // Check for validation errors
+        setLoading(true);
+        const newErrors = {};
+        if (!formData.firstname) newErrors.firstname = 'First name is required.';
+        if (!formData.lastname) newErrors.lastname = 'Last name is required.';
+        if (!formData.phone_no) newErrors.phone_no = 'Phone number is required.';
+        if (!formData.address) newErrors.address = 'Address is required.';
+        if (!formData.email) newErrors.email = 'Email is required.';
+        if (!formData.username) newErrors.username = 'Username is required.';
+        if (!formData.password) newErrors.password = 'Password is required.';
+        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match.';
+
         if (Object.keys(newErrors).length > 0) {
             for (const [field, message] of Object.entries(newErrors)) {
-                NotificationManager.error(message, field);  // Notify validation errors
+                NotificationManager.error(message, field);
             }
-            setLoading(false);  // Stop loading state
-            return;  // Exit early on validation errors
+            setLoading(false);
+            return;
         }
-    
+
         try {
-            const response = await axios.post(
-                'http://localhost:3000/project1/backend/Login_php/Login_php/Otp.php',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',  // Specify content type
-                    },
-                    withCredentials: true,  // Enable credentials for cross-origin requests
+            const response = await axios.post('http://localhost:3000/project1/backend/Login_php/Login_php/Otp.php', formData, {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            );
-    
-            console.log('Response Data:', response.data);  // Log the response for debugging
-    
-            // Check if there are any errors in the response
-            if (response.data.errors && typeof response.data.errors === 'object') {
-                // Iterate through the errors object and show each error
-                for (const [field, message] of Object.entries(response.data.errors)) {
-                    NotificationManager.error(message, field);  // Notify each error
+            });
+
+            if (response.data.errors) {
+                if (typeof response.data.errors === 'string') {
+                    NotificationManager.error(response.data.errors);
+                } else {
+                    for (const [key, message] of Object.entries(response.data.errors)) {
+                        NotificationManager.error(message, key);
+                    }
                 }
             } else {
-                // If there are no errors, show success message and navigate
                 NotificationManager.success('OTP has been sent successfully!');
                 setTimeout(() => {
-                    navigate('/OTP', { state: { email: formData.email } });  // Navigate to OTP page
+                    navigate('/OTP', { state: { email: formData.email } });
                 }, 1500);
             }
         } catch (error) {
-            console.error('Error submitting form:', error);  // Log error for debugging
-            NotificationManager.error('An error occurred. Please try again.');  // Notify user of general error
+            console.error('Error submitting form:', error);
+            NotificationManager.error('An error occurred. Please try again.');
         } finally {
-            setLoading(false);  // Stop loading state
+            setLoading(false);
         }
     };
-    
 
     return (
         <div className="CreateAccount">
@@ -124,9 +114,9 @@ const CreateAccount = () => {
                     <h2>Create new account.</h2>
                     <div className="sec1">
                         <p>Already a Member?</p>
-                        <Link to="/login">
+                        <a href="./login">
                             <p className="Login">Login</p>
-                        </Link>
+                        </a>
                     </div>
                 </div>
                 <div className="content2">
@@ -136,7 +126,7 @@ const CreateAccount = () => {
                             <input
                                 type="text"
                                 name="firstname"
-                                placeholder="First name"
+                                placeholder='First name'
                                 value={formData.firstname}
                                 onChange={handleChange}
                             />
@@ -146,7 +136,7 @@ const CreateAccount = () => {
                             <input
                                 type="text"
                                 name="lastname"
-                                placeholder="Last name"
+                                placeholder='Last name'
                                 value={formData.lastname}
                                 onChange={handleChange}
                             />
@@ -156,9 +146,9 @@ const CreateAccount = () => {
                         <div className="input-box">
                             <h4>Phone no</h4>
                             <input
-                                type="tel"
+                                type="text"
                                 name="phone_no"
-                                placeholder="Phone number"
+                                placeholder='Phone number'
                                 value={formData.phone_no}
                                 onChange={handleChange}
                             />
@@ -170,7 +160,7 @@ const CreateAccount = () => {
                             <input
                                 type="text"
                                 name="address"
-                                placeholder="Address"
+                                placeholder='Address'
                                 value={formData.address}
                                 onChange={handleChange}
                             />
@@ -180,9 +170,9 @@ const CreateAccount = () => {
                         <div className="input-box">
                             <h4>Email</h4>
                             <input
-                                type="email"
+                                type="text"
                                 name="email"
-                                placeholder="Email"
+                                placeholder='Email'
                                 value={formData.email}
                                 onChange={handleChange}
                             />
@@ -195,7 +185,7 @@ const CreateAccount = () => {
                             <input
                                 type="text"
                                 name="username"
-                                placeholder="Username"
+                                placeholder='Username'
                                 value={formData.username}
                                 onChange={handleChange}
                             />
@@ -207,7 +197,7 @@ const CreateAccount = () => {
                             <input
                                 type="password"
                                 name="password"
-                                placeholder="Password"
+                                placeholder='Password'
                                 value={formData.password}
                                 onChange={handleChange}
                             />
@@ -217,7 +207,7 @@ const CreateAccount = () => {
                             <input
                                 type="password"
                                 name="confirmPassword"
-                                placeholder="Confirm Password"
+                                placeholder='Confirm Password'
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                             />
@@ -225,6 +215,7 @@ const CreateAccount = () => {
                     </div>
 
                     <div className="row">
+                        {/* New Admin ID Dropdown */}
                         <div className="input-box">
                             <h4>Admin ID</h4>
                             <select
@@ -241,6 +232,7 @@ const CreateAccount = () => {
                             </select>
                         </div>
                     </div>
+
                     <div className="row">
                         <button onClick={handleClick} disabled={loading}>
                             {loading ? 'Loading...' : 'Create Account'}
@@ -248,6 +240,7 @@ const CreateAccount = () => {
                     </div>
                 </div>
             </div>
+
             <NotificationContainer />
         </div>
     );

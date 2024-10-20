@@ -27,7 +27,7 @@ const Sidebar = () => {
             if (response.ok) {
                 const data = await response.json(); // Handle the JSON response if needed
                 console.log(data); // Optional: Log the response
-                navigate('/');
+                window.location.href = "parent";
             } else {
                 const errorData = await response.json();
                 console.error('Logout failed:', errorData.message);
