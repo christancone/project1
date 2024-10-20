@@ -25,7 +25,7 @@ const CreateAccount = () => {
     useEffect(() => {
         const fetchAdminUsernames = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/project1/backend/Login_php/Login_php/fetch_admins.php');
+                const response = await axios.get('http://localhost/backend/satalan/fetch_admins.php');
                 if (Array.isArray(response.data)) {
                     setAdminUsernames(response.data);
                 } else {
@@ -56,58 +56,59 @@ const CreateAccount = () => {
         if (!formData.email) errors.email = 'Email is required';
         if (formData.password !== formData.confirmPassword) errors.password = 'Passwords do not match';
         if (!formData.adminId) errors.adminId = 'Please select an Admin ID';
-
+        console.log(formData.adminId);
         return errors;
     };
 
     const handleClick = async () => {
-        setLoading(true);  // Start loading state
-        const newErrors = validateForm();  // Validate form fields
-    
+        setLoading(true); // Start loading state
+        const newErrors = validateForm(); // Validate form fields
+
         // Check for validation errors
         if (Object.keys(newErrors).length > 0) {
             for (const [field, message] of Object.entries(newErrors)) {
-                NotificationManager.error(message, field);  // Notify validation errors
+                NotificationManager.error(message, field); // Notify validation errors
             }
-            setLoading(false);  // Stop loading state
-            return;  // Exit early on validation errors
+            setLoading(false); // Stop loading state
+            return; // Exit early on validation errors
         }
-    
+
         try {
+            console.log('Data sent to backend:', JSON.stringify(formData)); // Log the form data
+
             const response = await axios.post(
-                'http://localhost:3000/project1/backend/Login_php/Login_php/Otp.php',
+                'http://localhost/backend/satalan/registerForm.php',
                 formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json',  // Specify content type
+                        'Content-Type': 'application/json', // Specify content type
                     },
-                    withCredentials: true,  // Enable credentials for cross-origin requests
+                    withCredentials: true, // Enable credentials for cross-origin requests
                 }
             );
-    
-            console.log('Response Data:', response.data);  // Log the response for debugging
-    
+
+            console.log('Response Data:', response.data); // Log the response for debugging
+
             // Check if there are any errors in the response
             if (response.data.errors && typeof response.data.errors === 'object') {
                 // Iterate through the errors object and show each error
                 for (const [field, message] of Object.entries(response.data.errors)) {
-                    NotificationManager.error(message, field);  // Notify each error
+                    NotificationManager.error(message, field); // Notify each error
                 }
             } else {
                 // If there are no errors, show success message and navigate
                 NotificationManager.success('OTP has been sent successfully!');
                 setTimeout(() => {
-                    navigate('/OTP', { state: { email: formData.email } });  // Navigate to OTP page
+                    navigate('/OTP', { state: { email: formData.email } }); // Navigate to OTP page
                 }, 1500);
             }
         } catch (error) {
-            console.error('Error submitting form:', error);  // Log error for debugging
-            NotificationManager.error('An error occurred. Please try again.');  // Notify user of general error
+            console.error('Error submitting form:', error); // Log error for debugging
+            NotificationManager.error('An error occurred. Please try again.'); // Notify user of general error
         } finally {
-            setLoading(false);  // Stop loading state
+            setLoading(false); // Stop loading state
         }
     };
-    
 
     return (
         <div className="CreateAccount">
@@ -230,12 +231,12 @@ const CreateAccount = () => {
                             <select
                                 name="adminId"
                                 value={formData.adminId}
-                                onChange={handleChange}
+                                onChange={handleChange} // Use the unified change handler
                             >
                                 <option value="">Select Admin</option>
                                 {adminUsernames.map((admin, index) => (
                                     <option key={index} value={admin}>
-                                        {admin}
+                                        {admin} {/* Admin username will be sent as adminId */}
                                     </option>
                                 ))}
                             </select>

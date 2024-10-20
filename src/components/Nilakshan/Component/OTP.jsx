@@ -9,7 +9,7 @@ import mar8 from '../assets/Group6.png';
 import Marquee from 'react-fast-marquee';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import CircularWithValueLabel from './CircularWithValueLabel'; // Import the loading indicator component
+import CircularWithValueLabel from './CircularWithValueLabel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,30 +19,54 @@ const OTP = () => {
   const [otp2, setOtp2] = useState('');
   const [otp3, setOtp3] = useState('');
   const [otp4, setOtp4] = useState('');
-  const [loading, setLoading] = useState(false); // Change initial state to false
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { email } = location.state || {};
-  
   const role = location?.state?.role || '';
+
   const handleEvent = (e) => {
     const { name, value } = e.target;
+
+    // Only allow single digit or empty input
     if (/^\d$/.test(value) || value === '') {
       switch (name) {
         case 'otp1':
           setOtp1(value);
+          if (value) {
+            document.getElementsByName('otp2')[0].focus();
+          }
           break;
         case 'otp2':
           setOtp2(value);
+          if (value) {
+            document.getElementsByName('otp3')[0].focus();
+          } else {
+            document.getElementsByName('otp1')[0].focus();
+          }
           break;
         case 'otp3':
           setOtp3(value);
+          if (value) {
+            document.getElementsByName('otp4')[0].focus();
+          } else {
+            document.getElementsByName('otp2')[0].focus();
+          }
           break;
         case 'otp4':
           setOtp4(value);
+          if (!value) {
+            document.getElementsByName('otp3')[0].focus();
+          }
           break;
         default:
           break;
       }
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      loginButton();
     }
   };
 
@@ -51,28 +75,42 @@ const OTP = () => {
     const enteredOtp = parseInt(otpString, 10);
     console.log('Entered OTP:', enteredOtp);
     setLoading(true);
-    console.log(email);
-    console.log(role);
+
     try {
       const response = await axios.post(
-        'http://localhost:3000/project1/backend/Login_php/Login_php/registerForm.php',
-        { enteredOtp, email, role },
-        { 
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true // Add this line
-        }
+          'http://localhost/backend/satalan/Otp.php',
+          { enteredOtp, email, role },
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true
+          }
       );
-      
 
       console.log('Response from server:', response.data);
 
-      if (response.status === 200 && response.data.message === 'Verification successful') {
-        navigate('/NilakshanParent', { state: { email, role } });
-      } else {
-        toast.error('Invalid OTP. Please try again.');
-        setTimeout(() => {
-          // window.location.reload();
-        }, 1000);
+      // Check if the server returned a message or errors
+      if (response.status === 200) {
+        // Check for the verification success message
+        if (response.data.message === "Verification successful") {
+          // Clear OTP fields and navigate
+          setOtp1('');
+          setOtp2('');
+          setOtp3('');
+          setOtp4('');
+          toast.success("Verification successful!"); // Display success message
+          console.log("Verification successful!"); // Log success message in console
+          navigate('/NilakshanParent');
+        } else if (response.data.errors) {
+          // Display the first error message if it exists
+          const firstErrorKey = Object.keys(response.data.errors)[0];
+          const firstErrorMessage = response.data.errors[firstErrorKey];
+          toast.error(firstErrorMessage); // Display the first error
+          console.log(`Error: ${firstErrorKey} - ${firstErrorMessage}`); // Log the first error in console
+        } else {
+          toast.success("Verification successful!"); // Display success message
+          console.log("Verification successful!"); // Log success message in console
+          navigate('/NilakshanParent');
+        }
       }
     } catch (error) {
       toast.error('An error occurred. Please try again later.');
@@ -82,14 +120,17 @@ const OTP = () => {
     }
   };
 
+
+
   return (
       <div className="otp">
         <div className="otp1">
-          <h2>Srilanka</h2>
+          <h2>Sri Lanka</h2>
           <p>
-            In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime. With a focus on child development and socialization, daycare facilities in Sri Lanka often incorporate cultural and educational activities into their programs. Many centers also prioritize safety and hygiene standards, ensuring a healthy environment for children to thrive. From urban centers to rural communities, daycare options in Sri Lanka aim to support families by providing quality care and early childhood education opportunities for their children.
+            In Sri Lanka, daycare centers cater to the needs of working parents by providing safe and nurturing environments for children. These centers offer various services, including early childhood education, nutritious meals, and supervised playtime...
           </p>
           <Marquee className="marquee" pauseOnHover>
+            {/* Images */}
             <div className="img-marquee">
               <img src={mar3} alt="marquee image 1" />
             </div>
@@ -121,6 +162,7 @@ const OTP = () => {
                 maxLength={1}
                 value={otp1}
                 onChange={handleEvent}
+                onKeyPress={handleKeyPress}
                 required
             />
             <input
@@ -130,6 +172,7 @@ const OTP = () => {
                 maxLength={1}
                 value={otp2}
                 onChange={handleEvent}
+                onKeyPress={handleKeyPress}
                 required
             />
             <input
@@ -139,6 +182,7 @@ const OTP = () => {
                 maxLength={1}
                 value={otp3}
                 onChange={handleEvent}
+                onKeyPress={handleKeyPress}
                 required
             />
             <input
@@ -148,6 +192,7 @@ const OTP = () => {
                 maxLength={1}
                 value={otp4}
                 onChange={handleEvent}
+                onKeyPress={handleKeyPress}
                 required
             />
           </div>
