@@ -1,5 +1,7 @@
 <?php
 
+use mishaf\DBConnector;
+
 require_once '../DBConnector.php';
 
 class ParentClass {

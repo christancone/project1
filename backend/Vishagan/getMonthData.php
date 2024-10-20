@@ -1,4 +1,7 @@
 <?php
+
+use mishaf\DBConnector;
+
 header('Content-Type: application/json');
 
 // Allow requests from any origin (for development purposes)

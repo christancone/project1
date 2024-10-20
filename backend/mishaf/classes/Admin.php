@@ -4,8 +4,6 @@ namespace mishaf;
 
 include "../DBConnector.php";
 
-use DBConnector;
-
 class Admin
 {
 

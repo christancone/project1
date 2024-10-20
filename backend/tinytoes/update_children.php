@@ -1,5 +1,7 @@
 <?php
 
+use mishaf\DBConnector;
+
 require_once 'DbConnector.php';
 
 $data = json_decode(file_get_contents('php://input'), true);

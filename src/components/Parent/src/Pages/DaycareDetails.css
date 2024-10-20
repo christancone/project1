@@ -1,67 +1,138 @@
-.details {
-    padding-left: 20%;
+.tables {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between tables */
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Space between tables */
 }
 
-.details .content {
-    padding-top: 10%;
-
-    margin-left: 10%;
-
-    width: 80%;
+.food, .nap {
+    width: 48%; /* Adjust width of each table to fit side by side */
+    border: 1px solid #ddd; /* Optional: Add a border around each table */
+    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+    overflow: hidden; /* Prevent overflow from inner content */
 }
 
-.details .content h1 {
-    color: #6A41AE;
-    font-size: 37.2px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-
-    padding-bottom: 1%;
+.details table,
+.food table,
+.nap table {
+    width: 100%; /* Set table width to 100% of its parent */
+    border-collapse: collapse; /* Merge table borders */
 }
 
-.details .content h2 {
-    color: #9290C3;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-}
-.details .content .content2 {
-    margin-top: 5%;
+.details th,
+.food th,
+.nap th {
+    background-color: #6A41AE; /* Header background color */
+    color: white; /* Header text color */
+    padding: 10px; /* Padding in headers */
+    text-align: left; /* Align text to the left */
 }
 
-
-.details .content .content2 .rec1 {
-    width: 100%;
-    height: fit-content;
-    flex-shrink: 0;
-
-    border-radius: 20px;
-    background: #FFF;
-    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.13);
-
-    padding: 5%;
+.details td,
+.food td,
+.nap td {
+    border: 1px solid #ddd; /* Table cell border */
+    padding: 10px; /* Padding in cells */
+    text-align: left; /* Align text to the left */
 }
 
-.details .content .content2 .rec1 p {
-    color: #9290C3;
-
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+.details tr:nth-child(even),
+.food tr:nth-child(even),
+.nap tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row color */
 }
 
-.details .content .content2 .rec1 h5 {
-    color: #6A41AE;
-    font-size: 16.67px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    padding-right: 10px;
+.details tr:hover,
+.food tr:hover,
+.nap tr:hover {
+    background-color: #ddd; /* Row hover effect */
 }
 
-.details .content .content2 .rec1 .rating{
-    display: flex;
+.bold {
+    font-weight: bold; /* Bold text for important data */
 }
+
+.red {
+    color: red; /* Style for negative status */
+}
+
+.green {
+    color: green; /* Style for positive status */
+}
+
+h3 {
+    color: #6A41AE; /* Heading color for new table */
+    margin-bottom: 10px; /* Space below the heading */
+}
+
+.tables {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between tables */
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Space between tables */
+}
+
+.food, .nap {
+    width: 48%; /* Adjust width of each table to fit side by side */
+    border: 1px solid #ddd; /* Optional: Add a border around each table */
+    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+    overflow: hidden; /* Prevent overflow from inner content */
+}
+
+.details table,
+.food table,
+.nap table {
+    width: 100%; /* Set table width to 100% of its parent */
+    border-collapse: collapse; /* Merge table borders */
+}
+
+.details th,
+.food th,
+.nap th {
+    background-color: #6A41AE; /* Header background color */
+    color: white; /* Header text color */
+    padding: 10px; /* Padding in headers */
+    text-align: left; /* Align text to the left */
+}
+
+.details td,
+.food td,
+.nap td {
+    border: 1px solid #ddd; /* Table cell border */
+    padding: 10px; /* Padding in cells */
+    text-align: left; /* Align text to the left */
+}
+
+.details tr:nth-child(even),
+.food tr:nth-child(even),
+.nap tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row color */
+}
+
+.details tr:hover,
+.food tr:hover,
+.nap tr:hover {
+    background-color: #ddd; /* Row hover effect */
+}
+
+.bold {
+    font-weight: bold; /* Bold text for important data */
+}
+
+.red {
+    color: red; /* Style for negative status */
+}
+
+.green {
+    color: green; /* Style for positive status */
+}
+
+.nap td.nap-status {
+    color: red; /* Red color for nap statuses */
+}
+
+h3 {
+    color: #6A41AE; /* Heading color for new table */
+    margin-bottom: 10px; /* Space below the heading */
+}
+

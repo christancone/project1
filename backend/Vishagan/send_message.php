@@ -1,4 +1,7 @@
 <?php
+
+use mishaf\DBConnector;
+
 require 'DbConnector.php'; // Ensure this file exists and includes the database connection setup
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

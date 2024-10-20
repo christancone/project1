@@ -2,7 +2,8 @@
 namespace Christan;
 
 include "DBConnector.php";
-use DBConnector;
+
+use mishaf\DBConnector;
 
 class Users {
     private $db;

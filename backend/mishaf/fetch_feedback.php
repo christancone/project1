@@ -1,4 +1,7 @@
 <?php
+
+use mishaf\DBConnector;
+
 require_once 'DbConnector.php';
 
 class Feedback

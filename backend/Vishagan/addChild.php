@@ -1,4 +1,7 @@
 <?php
+
+use mishaf\DBConnector;
+
 header('Content-Type: application/json');
 include 'DbConnector.php';
 

@@ -1,8 +1,8 @@
 /* Main container for the billing section */
 .billing-container {
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;  /* Centers the content horizontally */
+    max-width: 800px;       /* Centers the content horizontally */
+    margin: 0 auto;         /* Centers the content horizontally */
     background-color: #f4f4f4;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -11,7 +11,7 @@
     flex-direction: column;
     justify-content: center; /* Vertically centers the content */
     align-items: center;     /* Horizontally centers the content */
-    height: 100vh;           /* Full viewport height for centering */
+    height: 100vh;          /* Full viewport height for centering */
     text-align: center;
 }
 
@@ -24,88 +24,104 @@ h2 {
 
 /* Table container */
 .bill {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 600px;  /* Set a max-width to keep table responsive */
+    margin-top: 30px;       /* Increased top margin */
+    width: 100%;            /* Ensure it takes the full width */
+    max-width: 800px;       /* Increase max-width for larger display */
 }
 
 /* Table styling */
 .billing-table {
     width: 100%;            /* Ensure table takes up full width */
     border-collapse: collapse;
+    min-height: 400px;      /* Set a minimum height for the table */
 }
 
 /* Table header and cell styling */
-.billing-table th, 
+.billing-table th,
 .billing-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding: 16px 20px;     /* Increased padding for more space */
+    text-align: left;       /* Align text to the left */
+    border-bottom: 1px solid #ddd; /* Bottom border for separation */
+    font-size: 18px;        /* Increased font size for better readability */
+}
+
+/* Specific styling for Last Paid Date (3rd column) */
+.billing-table th:nth-child(3),
+.billing-table td:nth-child(3) {
+    width: 200px;           /* Set width for Last Paid Date column */
+    font-size: 20px;        /* Increased font size for better readability */
+}
+
+/* Specific styling for Due Date (5th column) */
+.billing-table th:nth-child(5),
+.billing-table td:nth-child(5) {
+    width: 200px;           /* Set width for Due Date column */
+    font-size: 20px;        /* Increased font size for better readability */
 }
 
 .billing-table th {
-    background-color: #007BFF;
-    color: white;
-    text-align: center;     /* Center text in the table headers */
+    background-color: #007BFF; /* Header background color */
+    color: white;              /* Header text color */
+    text-align: center;        /* Center text in the table headers */
 }
 
 .billing-table td {
-    font-size: 16px;
-    text-align: center;     /* Center content in table cells */
+    font-size: 18px;           /* Base font size for table data */
+    text-align: center;        /* Center content in table cells */
 }
 
 /* Alternate row colors */
 .billing-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Light gray for even rows */
 }
 
 /* Hover effect for rows */
 .billing-table tr:hover {
-    background-color: #f1f1f1;
+    background-color: #f1f1f1; /* Light gray for hover effect */
 }
 
 /* Status color classes */
 .paid {
-    color: green;
-    font-weight: bold;
+    color: green;              /* Green color for paid status */
+    font-weight: bold;         /* Bold font for emphasis */
 }
 
 .pending {
-    color: red;
-    font-weight: bold;
+    color: red;                /* Red color for pending status */
+    font-weight: bold;         /* Bold font for emphasis */
 }
 
 /* Date filter container */
 .date-filter {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    display: flex;             /* Use flexbox for layout */
+    gap: 15px;                /* Space between elements */
+    margin-bottom: 20px;      /* Space below the date filter */
 }
 
 /* Field labels */
 .field label {
-    font-size: 14px;
-    color: #6A41AE;
+    font-size: 14px;          /* Label font size */
+    color: #6A41AE;           /* Label color */
 }
 
 /* Input styling */
 .date-input {
-    padding: 5px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #6A41AE;
+    padding: 5px;             /* Padding for inputs */
+    font-size: 14px;          /* Font size for inputs */
+    border-radius: 5px;       /* Rounded corners for inputs */
+    border: 1px solid #6A41AE;/* Border color for inputs */
 }
 
 /* Filter button styling */
 .filter-button {
-    background-color: #6A41AE;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: #6A41AE; /* Button background color */
+    color: white;              /* Button text color */
+    padding: 10px 20px;       /* Button padding */
+    border: none;             /* No border */
+    border-radius: 5px;       /* Rounded corners for buttons */
+    cursor: pointer;           /* Pointer cursor on hover */
 }
 
 .filter-button:hover {
-    background-color: #59369b;
+    background-color: #59369b; /* Darker shade on hover */
 }

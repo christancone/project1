@@ -21,6 +21,7 @@ export default function TableStickyHeader() {
     });
     const [searchTerm, setSearchTerm] = useState('');
 
+    // Fetch initial data
     useEffect(() => {
         axios.get('http://localhost/backend/Vishagan/getChildrenData.php', { withCredentials: true })
             .then(response => {
@@ -36,18 +37,20 @@ export default function TableStickyHeader() {
             });
     }, []);
 
+    // Delete a record
     const handleDelete = (id) => {
         axios.post('http://localhost/backend/Vishagan/Connection/DeleteChild.php', { child_id: id })
             .then(response => {
                 if (response.data.status === 'success') {
                     setRows(rows.filter(row => row.child_id !== id));
                 } else {
-                    alert(response.data.message);
+                    alert(response.data.message || 'Failed to delete child.');
                 }
             })
             .catch(error => console.error('Error deleting record:', error));
     };
 
+    // Handle opening the update form
     const handleUpdateClick = (child) => {
         setSelectedChild(child);
         const [firstname, lastname = ''] = child.child_name.split(' ');
@@ -61,10 +64,12 @@ export default function TableStickyHeader() {
         setOpen(true);
     };
 
+    // Close the modal
     const handleClose = () => {
         setOpen(false);
     };
 
+    // Handle form changes
     const handleFormChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevData => ({
@@ -73,38 +78,42 @@ export default function TableStickyHeader() {
         }));
     };
 
+    // Handle updating the child record
     const handleUpdate = () => {
-        console.log("Form Data before submission:", formData); // Log form data
         const { firstname, lastname, address, phone_no, parent_id } = formData;
 
-        // Adjust validation to only check required fields
-        if (!firstname || !lastname || !address || !phone_no) {
-            alert("All fields are required except Parent ID.");
-            return;
-        }
+        // Update only the fields that are filled (ignore empty fields)
+        const updateData = {};
+        if (firstname) updateData.firstname = firstname.trim();
+        if (lastname) updateData.lastname = lastname.trim();
+        if (address) updateData.address = address.trim();
+        if (phone_no) updateData.phone_no = phone_no.trim();
+        updateData.parent_id = parent_id; // Allow parent_id to be nullable
 
-        axios.post('http://localhost/backend/Vishagan/Connection/updateChild.php', {
+        // Make the API request to update the data
+        axios.post('http://localhost/backend/Vishagan/updateChild.php', {
             child_id: selectedChild.child_id,
-            parent_id,
-            firstname,
-            lastname,
-            address,
-            phone_no,
+            ...updateData,
         })
             .then(response => {
-                if (response.data.status === 'success') {
+                const { status, message } = response.data || {};
+
+                if (status === 'success') {
+                    // Update the UI with the new data
                     setRows(rows.map(row => row.child_id === selectedChild.child_id
-                        ? { ...row, ...formData, child_name: `${firstname} ${lastname}` }
+                        ? { ...row, ...updateData, child_name: `${updateData.firstname || row.firstname} ${updateData.lastname || row.lastname}` }
                         : row
                     ));
                     handleClose();
                 } else {
-                    alert(response.data.message);
+                    // If response structure is missing, show a default error message
+                    alert(message || 'Failed to update child.');
                 }
             })
             .catch(error => console.error('Error updating record:', error));
     };
 
+    // Filter rows based on search input
     const filteredRows = rows.filter(row => row.child_name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
@@ -170,6 +179,7 @@ export default function TableStickyHeader() {
                 </Table>
             </Sheet>
 
+            {/* Modal for Update Form */}
             <Modal open={open} onClose={handleClose}>
                 <Box sx={{
                     p: 4,

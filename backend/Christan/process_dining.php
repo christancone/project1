@@ -1,5 +1,7 @@
 <?php
 
+use mishaf\DBConnector;
+
 header('Content-Type: application/json');
 
 // Allow requests from any origin (for development purposes)
@@ -10,8 +12,7 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
 require_once 'DBConnector.php'; // Include your DBConnector class file
-use Christan\Children;
-use DBConnector;
+
 // Create an instance of DBConnector
 $dbConnector = new DBConnector();
 $con = $dbConnector->getConnection();

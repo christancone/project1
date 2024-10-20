@@ -5,7 +5,10 @@
 
 
   <?php
-header('Content-Type: application/json');
+
+  use mishaf\DBConnector;
+
+  header('Content-Type: application/json');
 
 // Allow requests from any origin (for development purposes)
 header('Access-Control-Allow-Origin: *');

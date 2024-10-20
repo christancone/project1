@@ -1,8 +1,9 @@
 <?php
- 
+
+
+use mishaf\DBConnector;
 
 include "DBConnector.php";
-use DBConnector;
 
 class Users {
     private $db;

@@ -4,7 +4,8 @@ namespace Christan;
 
 
 
-use DBConnector;
+use mishaf\DBConnector;
+
 require_once 'DBConnector.php';
 
 class Children

@@ -1,216 +1,71 @@
 .childinfo {
-    width: 80%;
-    padding-left: 20%;
-    padding-top: 100px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9; /* Light background for contrast */
+    min-height: 100vh; /* Ensure it covers full height */
 }
 
-.childinfo .content1 {
-    color: #6A41AE;
-    font-size: 30px;
-    font-weight: bold;
-    color: #AD88C6;
-    padding-bottom: 2%;
-    padding-left: 10%;
-}
-
-.childinfo .content {
+.content1 {
+    text-align: center;
     margin-bottom: 20px;
-    margin-left: 10%;
-    width: 80%;
-    padding: auto;
-
-    border: 2px solid #AD88C6;
-    border-radius: 16px;
-    border-collapse: separate; /* Make sure cells are not collapsed to see the border radius */
-    border-spacing: 0; /* Optional, you can adjust spacing if needed */
-    overflow: hidden; 
 }
 
-
-
-.childinfo .content .content2 {
+.card-container {
     display: flex;
-}
-
-
-
-.childinfo .content .image {
-    padding-right: 10px;
-}
-
-.childinfo .content .image p {
-    width: 200px;
-    height: fit-content;
-    flex-shrink: 0;
-
-    border-radius: 20px;
-    border: 2px solid #6A41AE;
-    display: flex;
-    flex-direction: column;
-
-    text-align: center;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
-
-
+    gap: 20px; /* Spacing between cards */
+    margin-left: 25%; /* Left margin of 25% */
 }
 
-.childinfo .content .image img {
-    width: 183px;
-    height: 208px;
-    flex-shrink: 0;
-
-    padding: 5%;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    border-radius: 20px;
+.card {
+    background-color: #fff; /* White background for cards */
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Attractive shadow effect */
+    width: 300px; /* Fixed width */
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    position: relative; /* Needed for pseudo-element positioning */
+    overflow: hidden; /* Prevent overflow for pseudo-element */
 }
 
-.childinfo .content .image .name {
-    padding-bottom: 5%;
-    width: 50%;
+.card:hover {
+    transform: scale(1.05); /* Increase size on hover */
+    box-shadow: 0 8px 40px rgba(128, 0, 128, 0.5); /* Light purple shadow on hover */
 }
 
-
-.childinfo .content .image .name h3 {
-    font-size: 18px;
-    font-weight: 600;
+.card::after {
+    content: ''; /* Pseudo-element for decoration */
+    position: absolute; /* Positioning it absolutely */
+    top: 10px; /* Positioning from top */
+    left: 10px; /* Positioning from left */
+    right: 10px; /* Positioning from right */
+    bottom: 10px; /* Positioning from bottom */
+    background: rgba(255, 255, 255, 0.1); /* Slightly transparent overlay */
+    border-radius: 15px; /* Same border-radius as the card */
+    z-index: 0; /* Send it to the back */
 }
 
-.childinfo .content .image .name h4 {
-    font-size: 15px;
-    font-weight: 300;
+.card-content {
+    text-align: left; /* Align text to the left */
+    position: relative; /* Needed for z-index on content */
+    z-index: 1; /* Bring content above the pseudo-element */
 }
 
-
-.childinfo .content .content2 .info {
-    width: 80%;
-    color: #6A41AE;
-    padding-left: 5%;
-    display: flex;
-    flex-direction: column;
+.card-details {
+    margin-bottom: 15px; /* Space between details */
 }
 
-.childinfo .content .content2 .info .details {
-    display: flex;
-    align-items: baseline;
+.card-details h3 {
+    margin: 0;
+    font-size: 1.4em; /* Larger font for headings */
+    color: #333; /* Dark color for readability */
 }
 
-.childinfo .content .content2 .info h3 {
-    padding-bottom: 8%;
-    font-size: 18px;
+.card-details h4 {
+    margin: 5px 0 0 0; /* Space between heading and value */
+    font-size: 1em; /* Regular font for values */
+    color: #555; /* Slightly lighter color */
+    font-weight: 300; /* Lighter weight for value text */
 }
-
-.childinfo .content .content2 .info h4 {
-    color: #AD88C6;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-
-    padding-left: 10px;
-}
-
-
-
-
-.childinfo .content .edit {
-    color: #6A41AE;
-}
-
-.childinfo .content .edit .upload-container {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    margin-top: 18px;
-}
-
-.childinfo .content .edit .upload-container .upload-box {
-    width: 100%;
-    height: 60px;
-    border: 1px solid #6A41AE;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    background-color: #ffffff;
-    padding-left: 20px;
-}
-
-.childinfo .content .edit .upload-container .upload-box input[type="text"] {
-    border: none;
-    outline: none;
-    background: none;
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    font-size: 15px;
-    white-space: nowrap;
-    /* Prevents wrapping */
-    overflow: hidden;
-    /* Hides overflow */
-    text-overflow: ellipsis;
-    /* Adds '...' if text is too long */
-}
-
-.childinfo .content .edit .upload-container .upload-button {
-    width: 185px;
-    height: 60px;
-    border: none;
-    background-color: #6A41AE;
-    color: white;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.upload-button:hover {
-    color: #6A41AE;
-    background-color: #fafafa;
-    border: 1px solid #6A41AE;
-}
-
-
-.childinfo .content .para {
-    padding-top: 20px;
-}
-
-
-.childinfo .content .para h3{
-    color: #AD88C6;
-}
-
-.childinfo .content .para p{
-    font-size: 14px;
-    padding-top: 4px;
-    color: red;
-}
-
-
-
-/* .childinfo .content .para {
-    color: #6A41AE;
-    padding-top: 10%;
-}
-
-.childinfo .content .para h3 {
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-}
-
-.childinfo .content .para p {
-    width: 980px;
-    height: 81px;
-    flex-shrink: 0;
-
-    color: #9290C3;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-} */

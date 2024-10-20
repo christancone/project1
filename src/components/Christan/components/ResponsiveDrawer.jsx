@@ -50,7 +50,7 @@ function ResponsiveDrawer(props) {
         try {
             const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
             console.log(response.data.message); // Logout successful
-            navigate('/parent');
+            navigate('/NilakshanParent');
 
         } catch (error) {
             console.error('Logout failed:', error);

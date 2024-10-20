@@ -19,7 +19,7 @@ const Sidebar = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost/new/project1/backend/Christan/logout.php', {
+            const response = await fetch('http://localhost/backend/Christan/logout.php', {
                 method: 'POST', // Changed to POST
                 credentials: 'include' // Ensure cookies are sent along with the request
             });
@@ -27,7 +27,7 @@ const Sidebar = () => {
             if (response.ok) {
                 const data = await response.json(); // Handle the JSON response if needed
                 console.log(data); // Optional: Log the response
-                window.location.href = "parent";
+                window.location.href = "NilakshanParent";
             } else {
                 const errorData = await response.json();
                 console.error('Logout failed:', errorData.message);

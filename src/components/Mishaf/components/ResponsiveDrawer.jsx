@@ -43,8 +43,7 @@ const handleLogout = async () => {
     try {
         const response = await axios.post('http://localhost/backend/Christan/logout.php', {}, { withCredentials: true });
         console.log(response.data.message); // Logout successful
-        navigate('/NilakshanParent');
-        window.location.reload(); // Refresh the entire page
+        window.location.href = "NilakshanParent";
     } catch (error) {
         console.error('Logout failed:', error);
     }

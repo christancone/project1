@@ -1,6 +1,6 @@
 .dashboard {
     padding-left: 20%;
-} 
+}
 
 .dashboard .content {
     padding-top: 10%;
@@ -41,13 +41,13 @@
     border-radius: 16px;
     border-collapse: separate; /* Make sure cells are not collapsed to see the border radius */
     border-spacing: 0; /* Optional, you can adjust spacing if needed */
-    overflow: hidden; 
+    overflow: hidden;
 }
 .dashboard .food table{
     padding: 10px 20px;
 }
 .dashboard .food td{
-    padding: 10px 20px 10px 0; 
+    padding: 10px 20px 10px 0;
 }
 
 .dashboard .food .bold{

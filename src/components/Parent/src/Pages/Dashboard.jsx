@@ -1,91 +1,133 @@
-import React from 'react'
-import './Dashboard.css'
+// src/components/Dashboard.jsx
+
+import React, { useEffect, useState } from 'react';
+import './Dashboard.css';
 import Navbar from '../Components/Navbar';
 
-import r1 from '../assets/r1.png';
-import r2 from '../assets/r2.png';
-import r3 from '../assets/r3.png';
-
-
 const Dashboard = () => {
-    <Navbar />
+    const [childrenData, setChildrenData] = useState([]);
+    const [napData, setNapData] = useState([]);
+
+    // Fetching the data from the backend
+    const fetchData = async () => {
+        try {
+            const response = await fetch('http://localhost/backend/Parents/dashboard.php', {
+                method: 'GET',
+                credentials: 'include' // This includes cookies/session data in the request
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Fetched data:', data);
+
+            setChildrenData(data.dining || []); // Ensure it's an array
+            setNapData(data.naps || []); // Ensure it's an array
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        console.log('Updated childrenData:', childrenData);
+    }, [childrenData]);
+
+    useEffect(() => {
+        console.log('Updated napData:', napData);
+    }, [napData]);
+
     return (
         <div className="dashboard">
             <div className="content">
                 <h1>Hi, Parent</h1>
-                <h2>Your Childs, total history appear here</h2>
+                <h2>Your Child's total history appears here</h2>
             </div>
 
             <div className="tables">
+                {/* Dining Table */}
                 <div className="food">
                     <table>
+                        <thead>
                         <tr>
-                            <th>Take Food</th>
-                            <th></th>
-                            <th></th>
+                            <th>Child Name</th>
+                            <th>Food</th>
+                            <th>Breakfast Status</th>
+                            <th>Lunch Status</th>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td className='bold'>Breakfast</td>
-                            <td className='bold'>Lunch</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>30 Sep 2024</td>
-                            <td className='green'>Complete</td>
-                            <td className='green'>Complete</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>1 Oct 2024</td>
-                            <td className='green'>Complete</td>
-                            <td className='green'>Complete</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>2 Oct 2024</td>
-                            <td className='green'>Complete</td>
-                            <td className='green'>Complete</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>3 Oct 2024</td>
-                            <td className='green'>Complete</td>
-                            <td className='green'>Complete</td>
-                        </tr>
+                        </thead>
+                        <tbody>
+                        {childrenData.length > 0 ? (
+                            childrenData.map((child, index) => (
+                                child.dining && child.dining.length > 0 ? (
+                                    child.dining.map((dining, diningIndex) => (
+                                        <tr key={`${index}-${diningIndex}`}>
+                                            <td className='bold'>{child.firstname} {child.lastname}</td>
+                                            <td className='bold'>{dining.food}</td>
+                                            <td className={dining.breakfastStatus.includes('not complete') ? 'red' : 'green'}>
+                                                {dining.breakfastStatus}
+                                            </td>
+                                            <td className={dining.lunchStatus.includes('not complete') ? 'red' : 'green'}>
+                                                {dining.lunchStatus}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr key={index}>
+                                        <td className='bold'>{child.firstname} {child.lastname}</td>
+                                        <td className='bold'>N/A</td>
+                                        <td className='green'>No Dining Data</td>
+                                        <td className='green'>No Dining Data</td>
+                                    </tr>
+                                )
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={4}>No children data available</td>
+                            </tr>
+                        )}
+                        </tbody>
                     </table>
                 </div>
 
-
-                <div className="food">
+                {/* Nap Data Table */}
+                <div className="nap">
                     <table>
+                        <thead>
                         <tr>
-                            <th>Take nap</th>
-                            <th></th>
-                            <th></th>
+                            <th>Child Name</th>
+                            <th>Nap Duration</th>
+                            <th>Nap Status</th>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td className='bold'>Total nap time</td>
-                            <td className='bold'></td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>30 Sep 2024</td>
-                            <td className='green'>01 hr</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>1 Oct 2024</td>
-                            <td className='green'>01 hr 30 mins</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>2 Oct 2024</td>
-                            <td className='green'>02 hrs</td>
-                        </tr>
-                        <tr>
-                            <td className='bold'>3 Oct 2024</td>
-                            <td className='green'>03 hrs</td>
-                        </tr>
+                        </thead>
+                        <tbody>
+                        {napData.length > 0 ? (
+                            napData.map((nap, index) => (
+                                <tr key={index}>
+                                    <td className='bold'>{nap.firstname} {nap.lastname}</td>
+                                    <td className='bold'>{nap.from_time} - {nap.to_time}</td>
+                                    <td className={`nap-status ${nap.napStatus === 'Not perfect sleep' ? 'red' : 'green'}`}>
+                                        {nap.napStatus}
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={3}>No nap data available</td>
+                            </tr>
+                        )}
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Dashboard;
