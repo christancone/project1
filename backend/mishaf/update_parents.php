@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'Parent.php';  // Ensure the correct file is included
+require_once 'classes/Parent.php';
 
 // Read the incoming JSON data
 $inputData = json_decode(file_get_contents("php://input"), true);

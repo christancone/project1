@@ -1,5 +1,5 @@
 <?php
-include 'Admin.php'; // Include the Admin class
+include 'classes/Admin.php'; // Include the Admin class
 use mishaf\Admin;
 
 // Allow access from your frontend origin
