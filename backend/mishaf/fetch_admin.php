@@ -7,7 +7,7 @@ header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true"); // Allow credentials
 
-include 'Admin.php'; // Include the Admin class
+include 'classes/Admin.php'; // Include the Admin class
 use mishaf\Admin;
 
 // Check if the request method is OPTIONS (preflight request)
