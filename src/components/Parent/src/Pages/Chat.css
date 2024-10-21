@@ -1,12 +1,28 @@
+/* Default styles for larger screens */
 .chat {
     width: 80%;
     padding-left: 20%;
-
 }
 
 .chat .content {
     padding-top: 10%;
     margin-left: 10%;
     width: 80%;
-    color:#6A41AE;
+    color: #6A41AE;
+}
+
+
+
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+    .chat {
+        width: 100%;  /* Full width for mobile */
+        padding-left: 0;  /* No padding on the left */
+    }
+
+    .chat .content {
+        padding-top: 5%;  /* Adjust top padding */
+        margin-left: 0;  /* Remove left margin */
+        width: 100%;  /* Full width for mobile */
+    }
 }

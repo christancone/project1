@@ -1,29 +1,27 @@
+/* Base sidebar styling */
 .sidebar {
     width: 20%;
     margin: 0;
     position: fixed;
     height: 100%;
     box-shadow: 0px 4px 14px 0px #6A41AE;
-    
 }
 
-
-/* In your App.css or another relevant CSS file */
+/* Link styles */
 .link-style {
-    text-decoration: none;  /* Removes the underline */
-    color: inherit;         /* Inherits the color from the parent element */
-  }
-  
-  .link-style h4 {
-    color: inherit;         /* Ensures the h4 element inherits the parent color */
-  }
-  
-  .link-style h4:hover {
-    color: #9290C3;            /* Optional: Add a hover effect */
-  }
+    text-decoration: none;
+    color: inherit;
+}
 
+.link-style h4 {
+    color: inherit;
+}
 
+.link-style h4:hover {
+    color: #9290C3;
+}
 
+/* Container and field styling */
 .sidebar .container {
     color: #6A41AE;
     font-size: 15px;
@@ -32,37 +30,23 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: -100px;
+    margin-top: -220px;
 }
 
 .sidebar .container .logo-container {
     display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center;   
-    margin-bottom: 40px;  /* Centers vertically */
-              /* Ensure the container takes up the full height */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
 }
 
-.sidebar .container .logo-container img {
-    width: 10%;
-    height: auto; /* Maintain aspect ratio */
-}
 
-.sidebar .container .container1 img {
-    width: 20%;
-    height: 100%;
-}
-
-.sidebar .container .container2 img {
-    width: 20%;
-    height: 100%;
-}
-
+.sidebar .container .container1 img,
+.sidebar .container .container2 img,
 .sidebar .container .container3 img {
     width: 20%;
     height: 100%;
 }
-
 
 .field {
     display: flex;
@@ -80,4 +64,43 @@
 .field h4 {
     font-size: 15px;
     font-weight: 500;
+}
+
+/* Responsive styling for mobile */
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        width: 25%; /* Make sidebar wider on mobile for better readability */
+    }
+
+    .sidebar .container .logo-container img {
+        width: 25%; /* Increase logo size */
+    }
+
+    .sidebar .container .container1 img,
+    .sidebar .container .container2 img,
+    .sidebar .container .container3 img {
+        width: 20px; /* Adjust icon size for mobile */
+    }
+
+    .field {
+        padding: 10% 15%; /* Reduce padding for smaller screens */
+    }
+
+    .field img {
+        width: 18px; /* Reduce icon size */
+        height: 18px;
+        padding-right: 5%;
+    }
+
+    .field h4 {
+        font-size: 14px; /* Adjust text size for mobile */
+    }
+    
+    .sidebar .container .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 40px;
+        margin-top: 40%;
+    }
 }
