@@ -124,3 +124,110 @@
     font-weight: 500;
     line-height: normal;
 }
+
+
+
+/* Responsive styling for mobile */
+@media only screen and (max-width: 768px) {
+    /* Adjust the padding and width for mobile screens */
+    .dashboard {
+
+        padding-left: 0; /* No padding on mobile */
+    }
+
+    .dashboard .content {
+        padding-top: 15%; /* Reduce padding for mobile */
+        margin-left: 35%; /* Adjust margin for mobile */
+        width: 90%; /* Full width on mobile */
+    }
+
+    .dashboard .content h1 {
+        font-size: 14px; /* Reduce heading size for mobile */
+        padding-bottom: 2%;
+    }
+
+    .dashboard .content h2 {
+        font-size: 12px; /* Adjust subheading size for mobile */
+        padding-bottom: 2%;
+        text-align: left;
+    }
+
+    .dashboard .tables {
+        margin-left: 35%;
+        flex-direction: column; /* Stack tables vertically */
+        padding: 0; /* No padding for mobile */
+    }
+
+    .dashboard .food {
+        margin-left: 0; /* Align tables to the center on mobile */
+        width: 100%; /* Make table take full width on mobile */
+    }
+
+    .dashboard .food table {
+        width: 100%; /* Full width for tables on mobile */
+        padding: 5px 10px; /* Reduce padding for mobile */
+    }
+
+    .dashboard .food td {
+        padding: 5px 10px 5px 0; /* Adjust padding inside table cells */
+        font-size: 12px; /* Smaller text size for table content */
+    }
+
+    .dashboard .food .bold {
+        font-size: 14px; /* Adjust bold text size */
+    }
+
+    .dashboard .food .green {
+        font-size: 10px; /* Adjust status font size */
+    }
+
+    .dashboard .content p {
+        font-size: 14px; /* Smaller font size for paragraphs */
+        text-align: left; /* Align text to left on mobile */
+    }
+
+    .dashboard .content .image-container {
+        flex-direction: column; /* Stack images and content vertically on mobile */
+    }
+
+    .dashboard .content .image-container img {
+        width: 150px; /* Smaller image size on mobile */
+        height: 150px;
+    }
+
+    .dashboard .content .image-container h3 {
+        font-size: 14px; /* Adjust heading size in the image container */
+    }
+
+    .dashboard .content .para {
+        font-size: 14px; /* Adjust font size for paragraph text */
+        padding-top: 3%;
+    }
+
+
+
+
+    .dashboard .nap {
+        margin-left: 0; /* Align tables to the center on mobile */
+        width: 100%; /* Make table take full width on mobile */
+    }
+
+    .dashboard .nap table {
+        width: 100%; /* Full width for tables on mobile */
+        padding: 5px 10px; /* Reduce padding for mobile */
+    }
+
+    .dashboard .nap td {
+        padding: 5px 10px 5px 0; /* Adjust padding inside table cells */
+        font-size: 12px; /* Smaller text size for table content */
+    }
+
+    .dashboard .nap .bold {
+        font-size: 14px; /* Adjust bold text size */
+    }
+
+    .dashboard .nap .green {
+        font-size: 10px; /* Adjust status font size */
+    }
+
+}

@@ -1,30 +1,36 @@
+/* Base navbar styling */
 .navbar {
     background-color: #6A41AE;
-    width: 100%;
-
+    width: 80%; /* Initially set to 80%, adjusted for desktop */
     color: #fff;
-
     display: flex;
     align-items: center;
-    width: 80%;
     margin: auto;
     box-shadow: 8px 8px 20px 0px #9290C3;
-
-    
-    position:fixed;
-
+    position: fixed;
     padding: 2%;
-
-    margin-left: 20%;
-
+    margin-left: 20%; /* Account for sidebar width on larger screens */
 }
 
-.navbar h4{
+/* Navbar text styling */
+.navbar h4 {
     color: #FFF;
     font-size: 18px;
-    font-style: normal;
     font-weight: 500;
     line-height: normal;
-
-    
 }
+
+/* Responsive styling for tablet-sized devices */
+@media only screen and (max-width: 768px) {
+    .navbar {
+        width: 100%; /* Full width on tablets */
+        margin-left: 0; /* No need for left margin on smaller screens */
+        padding: 3%; /* Increase padding for better touch targets */
+    }
+
+    .navbar h4 {
+        font-size: 14px; /* Slightly reduce text size for tablets */
+        margin-left: 25%;
+    }
+}
+

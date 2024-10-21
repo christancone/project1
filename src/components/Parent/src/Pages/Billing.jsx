@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 import './Billing.css';
 
 const Billing = () => {
@@ -13,7 +14,6 @@ const Billing = () => {
             try {
                 const response = await fetch('http://localhost/backend/parents/billing.php', {
                     credentials: 'include',
-
                 });
 
                 // Check if the response is in the correct format (JSON)
@@ -40,7 +40,6 @@ const Billing = () => {
             }
         };
 
-
         fetchBillingData();
     }, []);
 
@@ -50,50 +49,50 @@ const Billing = () => {
             {errorMessage && <div className="error-message">{errorMessage}</div>}
 
             {/* Billing Information Table */}
-            <div className="bill">
-                <h2>Billing Information</h2>
-                <table className="billing-table">
-                    <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Amount</th>
-                        <th>Last Paid Date</th>
-                        <th>Last Paid Amount</th>
-                        <th>Outstanding Amount</th>
-                        <th>Due Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {billingData.length > 0 ? (
-                        billingData.map((item, index) =>
-                            item.billing.map((bill, billIndex) => (
-                                <tr key={`${index}-${billIndex}`}>
+            <div className="bill-table-container">
+                <TableContainer component={Paper}>
+                    <Table aria-label="Billing Information Table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>First Name</TableCell>
+                                <TableCell>Last Name</TableCell>
+                                <TableCell>Amount</TableCell>
+                                <TableCell>Last Paid Date</TableCell>
+                                <TableCell>Last Paid Amount</TableCell>
+                                <TableCell>Outstanding Amount</TableCell>
+                                <TableCell>Due Date</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {billingData.length > 0 ? (
+                                billingData.map((item, index) =>
+                                    item.billing.map((bill, billIndex) => (
+                                        <TableRow key={`${index}-${billIndex}`}>
+                                            <TableCell>{item.firstname}</TableCell>
+                                            <TableCell>{item.lastname}</TableCell>
+                                            <TableCell>{bill.amount}</TableCell>
+                                            <TableCell>{bill.last_paid_date}</TableCell>
+                                            <TableCell>{bill.last_paid_amount}</TableCell>
+                                            <TableCell>{bill.outstanding_amt}</TableCell>
+                                            <TableCell>{bill.due_date}</TableCell>
+                                        </TableRow>
+                                    ))
+                                )
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={7}>No billing records found.</TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
 
 
-                                    <td>{item.firstname}</td>
-                                    <td>{item.lastname}</td>
-                                    <td>{bill.amount}</td>
-                                    <td>{bill.last_paid_date}</td>
-                                    <td>{bill.last_paid_amount}</td>
-                                    <td>{bill.outstanding_amt}</td>
-                                    <td>{bill.due_date}</td>
-                                </tr>
-                            ))
-                        )
-                    ) : (
-                        <tr>
-                            <td colSpan="7">No billing records found.</td>
-                        </tr>
-                    )}
-                    </tbody>
-                </table>
-
-                {/* Totals Display */}
-                <div className="totals">
-                    <h3>Total Amount: {totalAmount}</h3>
-                    <h3>Total Outstanding: {totalOutstanding}</h3>
-                </div>
+            {/* Totals Display */}
+            <div className="totals">
+                <h3>Total Amount: {totalAmount}</h3>
+                <h3>Total Outstanding: {totalOutstanding}</h3>
             </div>
         </div>
     );

@@ -56,12 +56,12 @@ const Sidebar = () => {
                             <h4>Child info</h4>
                         </Link>
                     </div>
-                    <div className="field">
+                    {/* <div className="field">
                         <img src={image4} alt="" />
                         <Link to="/leaveNote" className="link-style">
                             <h4>Leave notes</h4>
                         </Link>
-                    </div>
+                    </div> */}
                     <div className="field">
                         <img src={image5} alt="" />
                         <Link to="/chat" className="link-style">
@@ -70,32 +70,32 @@ const Sidebar = () => {
                     </div>
                 </div>
                 <div className="container2">
-                    <div className="field">
+                    {/* <div className="field">
                         <img src={image6} alt="" />
                         <Link to="/attendee" className="link-style">
                             <h4>Attendees Details</h4>
                         </Link>
-                    </div>
-                    <div className="field">
+                    </div> */}
+                    {/* <div className="field">
                         <img src={image7} alt="" className='foot_image' />
                         <Link to="/details" className="link-style">
                             <h4>Daycare Details</h4>
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="container3">
                     <div className="field">
                         <img src={image8} alt="" />
                         <Link to="/bill" className="link-style">
-                            <h4>Billing & Payments</h4>
+                            <h4>Billing</h4>
                         </Link>
                     </div>
-                    <div className="field">
+                    {/* <div className="field">
                         <img src={image9} alt="" />
                         <Link to="/feedback" className="link-style">
                             <h4>Feedback</h4>
                         </Link>
-                    </div>
+                    </div> */}
                     <div className="field">
                         <img src={image10} alt="" />
                         <Link to="/profile" className="link-style">
